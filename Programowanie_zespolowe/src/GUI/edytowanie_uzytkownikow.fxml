@@ -4,21 +4,21 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="400.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="400.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: linear-gradient(#33cccc, #aeeaea);" styleClass="tlo" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ChoiceBox fx:id="eu_id" layoutX="100.0" layoutY="109.0" prefWidth="150.0" AnchorPane.leftAnchor="95.0" />
-        <Label layoutX="45.0" layoutY="113.0" text="ID" AnchorPane.leftAnchor="20.0" />
-        <Label layoutX="95.0" layoutY="69.0" prefHeight="17.0" prefWidth="110.0" text="Edytuj użytkownika" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="95.0" />
+        <Label layoutX="45.0" layoutY="113.0" text="ID" textFill="#3f5a5a" AnchorPane.leftAnchor="20.0" />
+        <Label layoutX="95.0" layoutY="69.0" prefHeight="17.0" prefWidth="110.0" text="Edytuj użytkownika" textFill="#3f5a5a" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="95.0" />
         <HBox layoutX="20.0" layoutY="336.0" spacing="40.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
             <children>
-                <Button fx:id="eu_edytuj" layoutX="45.0" layoutY="226.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="110.0" text="Edytuj" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="145.0" />
-                <Button fx:id="eu_anuluj" layoutX="175.0" layoutY="226.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="110.0" text="Anuluj" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="15.0" />
+                <Button fx:id="eu_edytuj" layoutX="45.0" layoutY="226.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="110.0" style="-fx-background-color: linear-gradient(#004d66, #0099cc);" text="Edytuj" textFill="#f8f8f8" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="145.0" />
+                <Button fx:id="eu_anuluj" layoutX="175.0" layoutY="226.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="110.0" style="-fx-background-color: linear-gradient(#004d66, #0099cc);" text="Anuluj" textFill="#f8f8f8" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="15.0" />
             </children>
         </HBox>
-      <Label layoutX="39.0" layoutY="169.0" text="Imie" AnchorPane.leftAnchor="20.0" />
-      <Label layoutX="25.0" layoutY="200.0" text="Nazwisko" AnchorPane.leftAnchor="20.0" />
-      <Label layoutX="20.0" layoutY="238.0" text="Stanowisko" AnchorPane.leftAnchor="20.0" />
-      <Label layoutX="19.0" layoutY="274.0" text="Nowe hasło" AnchorPane.leftAnchor="20.0" />
+      <Label layoutX="39.0" layoutY="169.0" text="Imie" textFill="#3f5a5a" AnchorPane.leftAnchor="20.0" />
+      <Label layoutX="25.0" layoutY="200.0" text="Nazwisko" textFill="#3f5a5a" AnchorPane.leftAnchor="20.0" />
+      <Label layoutX="20.0" layoutY="238.0" text="Stanowisko" textFill="#3f5a5a" AnchorPane.leftAnchor="20.0" />
+      <Label layoutX="19.0" layoutY="274.0" text="Nowe hasło" textFill="#3f5a5a" AnchorPane.leftAnchor="20.0" />
       <TextField fx:id="eu_i" layoutX="95.0" layoutY="165.0" AnchorPane.leftAnchor="95.0" />
       <TextField fx:id="eu_n" layoutX="95.0" layoutY="196.0" AnchorPane.leftAnchor="95.0" />
       <TextField fx:id="eu_s" layoutX="95.0" layoutY="234.0" AnchorPane.leftAnchor="95.0" />

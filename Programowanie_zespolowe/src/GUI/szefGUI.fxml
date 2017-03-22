@@ -8,13 +8,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab closable="false" text="Pracownicy">
+          <Tab closable="false" style="-fx-background-color: linear-gradient(to bottom, #33cccc 0%, #aeeaea 100%);" text="Pracownicy">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to top left, #33cccc 0%, #aeeaea 100%);">
                      <children>
                         <TableView fx:id="pracownicyTable" layoutX="172.0" layoutY="165.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80.0">
                           <columns>
@@ -26,19 +26,19 @@
                         </TableView>
                         <HBox layoutX="17.0" layoutY="14.0" spacing="10.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="213.0">
                            <children>
-                              <Button fx:id="addUser" layoutX="33.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" text="Dodaj użytkownika" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="632.0" />
-                              <Button fx:id="deleteUser" layoutX="179.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" text="Usuń użytkownika" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="486.0" />
-                              <Button fx:id="editUser" layoutX="333.0" layoutY="16.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" text="Edytuj użytkownika" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="332.0" />
-                              <Button fx:id="refresh" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" text="Odśwież" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="182.0" />
+                              <Button fx:id="addUser" layoutX="33.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);" text="Dodaj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="632.0" />
+                              <Button fx:id="deleteUser" layoutX="179.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);" text="Usuń użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="486.0" />
+                              <Button fx:id="editUser" layoutX="333.0" layoutY="16.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);" text="Edytuj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="332.0" />
+                              <Button fx:id="refresh" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);" text="Odśwież" textFill="#f8f8f8" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="182.0" />
                            </children>
                         </HBox>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab closable="false" text="Informacje o projektach">
+          <Tab closable="false" style="-fx-background-color: linear-gradient(to bottom, #33cccc 0%, #aeeaea 100%);" text="Informacje o projektach">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to top left, #33cccc 0%, #aeeaea 100%);">
                      <children>
                         <TableView layoutX="181.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80.0">
                           <columns>
@@ -50,22 +50,22 @@
                               <TableColumn fx:id="wp_progress" prefWidth="171.0" text="Progress" />
                           </columns>
                         </TableView>
-                        <Button fx:id="wp_refresh" layoutX="17.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" text="Wyświetl projekty" AnchorPane.leftAnchor="17.0" />
+                        <Button fx:id="wp_refresh" layoutX="17.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);" text="Wyświetl projekty" textFill="#f8f8f8" AnchorPane.leftAnchor="17.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab closable="false" text="Tworzenie projektów">
+            <Tab closable="false" style="-fx-background-color: linear-gradient(to bottom, #33cccc 0%, #aeeaea 100%);" text="Tworzenie projektów">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to top left, #33cccc 0%, #aeeaea 100%);">
                      <children>
-                        <Label layoutX="59.0" layoutY="59.0" text="Nazwa nowego projektu" />
-                        <Label layoutX="59.0" layoutY="101.0" text="Wybór heada" />
+                        <Label layoutX="59.0" layoutY="59.0" text="Nazwa nowego projektu" textFill="#3f5a5a" />
+                        <Label layoutX="59.0" layoutY="101.0" text="Wybór heada" textFill="#3f5a5a" />
                         <ChoiceBox layoutX="258.0" layoutY="97.0" prefWidth="150.0" />
                         <TextField layoutX="259.0" layoutY="55.0" />
                         <TextArea layoutX="234.0" layoutY="179.0" prefHeight="200.0" prefWidth="200.0" />
-                        <Label layoutX="59.0" layoutY="190.0" text="Taski (separator ',')" />
-                        <Button layoutX="266.0" layoutY="415.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" text="Stwórz" />
+                        <Label layoutX="59.0" layoutY="190.0" text="Taski (separator ',')" textFill="#3f5a5a" />
+                        <Button layoutX="266.0" layoutY="415.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);" text="Stwórz" textFill="#f8f8f8" />
                      </children></AnchorPane>
               </content>
             </Tab>
