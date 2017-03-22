@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="400.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: linear-gradient(#33cccc, #aeeaea);" styleClass="tlo" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.AddUserController">
+   <children>
+      <HBox layoutX="39.0" layoutY="292.0" prefHeight="50.0" prefWidth="241.0" spacing="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <Button fx:id="du_dodaj" layoutX="74.0" layoutY="292.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="110.0" style="-fx-background-color: linear-gradient(#004d66, #0099cc);" text="Dodaj" textFill="#f8f8f8" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="174.0" />
+            <Button fx:id="closeButton" layoutX="169.0" layoutY="292.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="50.0" prefWidth="110.0" style="-fx-background-color: linear-gradient(#004d66, #0099cc);" text="Anuluj" textFill="#f8f8f8" AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="87.0" />
+         </children>
+      </HBox>
+      <ChoiceBox fx:id="du_stanowisko" layoutX="85.0" layoutY="222.0" prefWidth="150.0" />
+      <Label layoutX="17.0" layoutY="226.0" text="Stanowisko" textFill="#3f5a5a" />
+      <Label layoutX="36.0" layoutY="109.0" text="Imie" textFill="#3f5a5a" />
+      <Label layoutX="22.0" layoutY="164.0" text="Nazwisko" textFill="#3f5a5a" />
+      <Label layoutX="100.0" layoutY="70.0" text="Dodaj użytkownika" textFill="#3f5a5a" />
+      <TextField fx:id="du_login" layoutX="86.0" layoutY="105.0" />
+      <TextField fx:id="du_pass" layoutX="86.0" layoutY="160.0" />
+   </children>
+</AnchorPane>
