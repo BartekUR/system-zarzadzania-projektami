@@ -4,12 +4,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LogowanieController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: linear-gradient(#33cccc, #aeeaea);" styleClass="tlo" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LogowanieController">
    <children>
       <HBox layoutX="65.0" layoutY="214.0" spacing="10.0" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="65.0">
          <children>
-            <Button layoutX="105.0" layoutY="216.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" text="Zaloguj" />
-            <Button fx:id="closeButton" layoutX="191.0" layoutY="216.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="50.0" prefWidth="130.0" text="Anuluj" />
+            <Button layoutX="105.0" layoutY="216.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-color: linear-gradient(#004d66, #0099cc);" styleClass="button_big2" text="Zaloguj" textFill="#f8f8f8" />
+            <Button fx:id="closeButton" layoutX="191.0" layoutY="216.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="50.0" prefWidth="130.0" style="-fx-background-color: linear-gradient(#004d66, #0099cc);" text="Anuluj" textFill="#f8f8f8" />
          </children>
       </HBox>
       <Label layoutX="65.0" layoutY="96.0" text="Login" />
