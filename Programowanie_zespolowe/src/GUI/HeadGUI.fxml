@@ -21,6 +21,7 @@
                             <TreeTableColumn prefWidth="155.0" text="Pracownik" />
                               <TreeTableColumn prefWidth="175.0" text="Taski" />
                               <TreeTableColumn minWidth="0.0" prefWidth="160.0" text="Progress" />
+                              <TreeTableColumn prefWidth="114.0" text="Termin" />
                           </columns>
                         </TreeTableView>
                      </children>
@@ -72,7 +73,12 @@
                         <Label layoutX="429.0" layoutY="50.0" text="Pracownik" />
                         <Label layoutX="17.0" layoutY="103.0" text="Taski projektu" />
                         <Label layoutX="478.0" layoutY="103.0" text="Taski pracownika" />
-                        <Button layoutX="333.0" layoutY="321.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
+                        <VBox layoutX="333.0" layoutY="283.0" spacing="20.0">
+                           <children>
+                              <Button layoutX="333.0" layoutY="286.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
+                              <Button layoutX="333.0" layoutY="393.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
+                           </children>
+                        </VBox>
                         <TableView layoutX="67.0" layoutY="234.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="132.0">
                           <columns>
                             <TableColumn prefWidth="75.0" text="ID" />

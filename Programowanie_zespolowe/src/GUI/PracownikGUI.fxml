@@ -12,14 +12,14 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki" stylesheets="@style.css">
                      <children>
-                        <TreeTableView layoutX="94.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80.0">
+                        <TreeTableView layoutX="94.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
                           <columns>
                             <TreeTableColumn prefWidth="75.0" text="ID" />
                             <TreeTableColumn prefWidth="217.0" text="Projekt" />
-                              <TreeTableColumn prefWidth="473.0" text="Moje taski" />
+                              <TreeTableColumn prefWidth="361.0" text="Moje taski" />
+                              <TreeTableColumn prefWidth="112.0" text="Termin" />
                           </columns>
                         </TreeTableView>
-                        <Button layoutX="17.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="170.0" style="-fx-background-color: ;" styleClass="button_big" text="Wyświetl bieżące projekty" textFill="#f8f8f8" />
                      </children>
                   </AnchorPane>
             </content>
@@ -35,14 +35,17 @@
                         <TableView layoutX="14.0" layoutY="123.0" prefHeight="200.0" prefWidth="359.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="130.0">
                           <columns>
                             <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="161.0" text="Task" />
-                              <TableColumn prefWidth="122.0" text="Status" />
+                            <TableColumn prefWidth="112.0" text="Task" />
+                              <TableColumn prefWidth="93.0" text="Status" />
+                              <TableColumn prefWidth="78.0" text="Termin" />
                           </columns>
                         </TableView>
-                        <Label layoutX="419.0" layoutY="165.0" text="Zatwierdź zmiane statusu" />
-                        <Button layoutX="419.0" layoutY="198.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Zatwierdź" textFill="#f8f8f8" />
-                        <ProgressBar layoutX="419.0" layoutY="292.0" prefHeight="40.0" prefWidth="232.0" progress="0.0" />
-                        <Label layoutX="419.0" layoutY="262.0" text="Progress" />
+                        <Label layoutX="420.0" layoutY="325.0" text="Zatwierdź zmiane statusu" />
+                        <Button layoutX="419.0" layoutY="355.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Zatwierdź" textFill="#f8f8f8" />
+                        <Label layoutX="420.0" layoutY="176.0" text="Wybierz ID tasku" />
+                        <Label layoutX="419.0" layoutY="227.0" text="Wybierz status" />
+                        <ChoiceBox layoutX="529.0" layoutY="172.0" prefHeight="25.0" prefWidth="90.0" />
+                        <ChoiceBox layoutX="529.0" layoutY="223.0" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
             </content>
