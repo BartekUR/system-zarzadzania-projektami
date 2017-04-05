@@ -11,10 +11,10 @@ public class SqlConnect {
     public Connection open() {
         try {
             conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=" + user + "&password=" + pass);
-            System.out.println("Laczenie z baza powiodlo sie!");
+            System.out.println("Laczenie z MariaDB powiodlo sie!");
             return conn;
         } catch (Exception e) {
-            System.out.println("Laczenie z baza nie powiodlo sie!\n");
+            System.out.println("Laczenie z MariaDB nie powiodlo sie!\n");
             e.printStackTrace();
             return null;
         }
@@ -24,10 +24,10 @@ public class SqlConnect {
         if (conn != null) {
             try {
                 conn.close();
-                System.out.println("Rozlaczanie z baza powiodlo sie!");
+                System.out.println("Rozlaczanie z MariaDB powiodlo sie!");
                 return true;
             } catch (Exception e) {
-                System.out.println("Rozlaczanie z baza nie powiodlo sie!\n");
+                System.out.println("Rozlaczanie z MariaDB nie powiodlo sie!\n");
                 e.printStackTrace();
                 return false;
             }
