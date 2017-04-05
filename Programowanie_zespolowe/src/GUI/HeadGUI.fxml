@@ -4,11 +4,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane layoutX="176.0" layoutY="79.0" prefHeight="400.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab style="-fx-background-color: linear-gradient(to top, #33cccc 24%, #aeeaea 100%);" text="Moje projekty">
+          <Tab styleClass="tlo" text="Moje projekty">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
@@ -28,7 +28,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab style="-fx-background-color: linear-gradient(to top, #33cccc 24%, #aeeaea 100%);" text="Przydzielanie użytkowników">
+          <Tab styleClass="tlo" text="Przydzielanie użytkowników">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
@@ -36,13 +36,13 @@
                         <VBox layoutX="333.0" layoutY="283.0" spacing="20.0">
                            <children>
                               <Button layoutX="333.0" layoutY="269.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
-                              <Button layoutX="333.0" layoutY="343.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
+                              <Button layoutX="333.0" layoutY="343.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                            </children>
                         </VBox>
                         <ChoiceBox layoutX="137.0" layoutY="39.0" prefWidth="150.0" />
-                        <Label layoutX="30.0" layoutY="42.0" text="Wybierz projekt" />
-                        <Label layoutX="17.0" layoutY="92.0" text="Lista dostępnych pracowników" />
-                        <Label layoutX="478.0" layoutY="92.0" text="Lista pracowników w projekcie" />
+                        <Label layoutX="30.0" layoutY="42.0" styleClass="napisy" text="Wybierz projekt" />
+                        <Label layoutX="17.0" layoutY="92.0" styleClass="napisy" text="Lista dostępnych pracowników" />
+                        <Label layoutX="478.0" layoutY="92.0" styleClass="napisy" text="Lista pracowników w projekcie" />
                         <TableView layoutX="30.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="132.0">
                           <columns>
                             <TableColumn prefWidth="49.0" text="ID" />
@@ -61,18 +61,18 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab style="-fx-background-color: linear-gradient(to top, #33cccc 24%, #aeeaea 100%);" text="Przydzielanie tasków">
+            <Tab styleClass="tlo" text="Przydzielanie tasków">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
-                        <Button layoutX="278.0" layoutY="46.0" mnemonicParsing="false" styleClass="button_small" text="Wyświetl taski" textFill="#f8f8f8" />
+                        <Button layoutX="278.0" layoutY="46.0" mnemonicParsing="false" styleClass="button_small" text="Wyświetl taski" textFill="WHITE" />
                         <Button layoutX="659.0" layoutY="46.0" mnemonicParsing="false" styleClass="button_small" text="Wyświetl pracownika" textFill="#f8f8f8" />
                         <ChoiceBox layoutX="83.0" layoutY="46.0" prefWidth="150.0" />
                         <ChoiceBox layoutX="498.0" layoutY="46.0" prefWidth="150.0" />
-                        <Label layoutX="32.0" layoutY="50.0" text="Projekt" />
-                        <Label layoutX="429.0" layoutY="50.0" text="Pracownik" />
-                        <Label layoutX="17.0" layoutY="103.0" text="Taski projektu" />
-                        <Label layoutX="478.0" layoutY="103.0" text="Taski pracownika" />
+                        <Label layoutX="32.0" layoutY="50.0" styleClass="napisy" text="Projekt" />
+                        <Label layoutX="429.0" layoutY="50.0" styleClass="napisy" text="Pracownik" />
+                        <Label layoutX="17.0" layoutY="103.0" styleClass="napisy" text="Taski projektu" />
+                        <Label layoutX="478.0" layoutY="103.0" styleClass="napisy" text="Taski pracownika" />
                         <VBox layoutX="333.0" layoutY="283.0" spacing="20.0">
                            <children>
                               <Button layoutX="333.0" layoutY="286.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />

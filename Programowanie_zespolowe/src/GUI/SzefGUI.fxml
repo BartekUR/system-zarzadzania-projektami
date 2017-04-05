@@ -10,11 +10,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SzefGUIController">
     <children>
-        <TabPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TabPane prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
-                <Tab closable="false" style="-fx-background-color: linear-gradient(to bottom, #33cccc 0%, #aeeaea 100%);" text="Pracownicy">
+                <Tab closable="false" styleClass="tlo" text="Pracownicy">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki" stylesheets="@style.css">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                             <children>
                                 <TableView fx:id="pracownicyTable" layoutX="172.0" layoutY="165.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80.0">
                                     <columns>
@@ -36,9 +36,9 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab closable="false" style="-fx-background-color: linear-gradient(to bottom, #33cccc 0%, #aeeaea 100%);" text="Informacje o projektach">
+                <Tab closable="false" styleClass="tlo" text="Informacje o projektach">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki" stylesheets="@style.css">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                             <children>
                                 <TableView layoutX="181.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
                                     <columns>
@@ -54,30 +54,30 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab closable="false" style="-fx-background-color: linear-gradient(to bottom, #33cccc 0%, #aeeaea 100%);" text="Tworzenie projektów">
+                <Tab closable="false" styleClass="tlo" text="Tworzenie projektów">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki" stylesheets="@style.css">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                             <children>
-                                <Label layoutX="59.0" layoutY="59.0" text="Nazwa nowego projektu" textFill="#3f5a5a" />
-                                <Label layoutX="59.0" layoutY="101.0" text="Wybór heada" textFill="#3f5a5a" />
+                                <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Nazwa nowego projektu" textFill="#3f5a5a" />
+                                <Label layoutX="59.0" layoutY="101.0" styleClass="napisy" text="Wybór heada" textFill="#3f5a5a" />
                                 <ChoiceBox layoutX="258.0" layoutY="97.0" prefWidth="150.0" />
                                 <TextField layoutX="259.0" layoutY="55.0" />
                                 <TextArea layoutX="234.0" layoutY="179.0" prefHeight="200.0" prefWidth="200.0" />
-                                <Label layoutX="59.0" layoutY="190.0" text="Taski (separator ',')" textFill="#3f5a5a" />
+                                <Label layoutX="59.0" layoutY="190.0" styleClass="napisy" text="Taski (separator ',')" textFill="#3f5a5a" />
                                 <Button layoutX="266.0" layoutY="415.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Stwórz" textFill="#f8f8f8" />
-                        <Label layoutX="59.0" layoutY="138.0" prefHeight="17.0" prefWidth="89.0" text="Termin końcowy" />
+                        <Label layoutX="59.0" layoutY="138.0" prefHeight="17.0" prefWidth="89.0" styleClass="napisy" text="Termin końcowy" />
                         <TextField layoutX="259.0" layoutY="134.0" />
                             </children></AnchorPane>
                     </content>
                 </Tab>
-            <Tab closable="false" style="-fx-background-color: linear-gradient(to bottom, #33cccc 0%, #aeeaea 100%);" text="Usuwanie tasków">
+            <Tab closable="false" styleClass="tlo" text="Usuwanie tasków">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki" stylesheets="@style.css">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
-                        <Label layoutX="59.0" layoutY="59.0" text="Wybierz projekt" textFill="#3f5a5a" />
-                        <Label layoutX="305.0" layoutY="127.0" text="Wybierz task" textFill="#3f5a5a" />
+                        <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Wybierz projekt" textFill="#3f5a5a" />
+                        <Label layoutX="305.0" layoutY="127.0" styleClass="napisy" text="Wybierz task" textFill="#3f5a5a" />
                         <ChoiceBox layoutX="305.0" layoutY="153.0" prefWidth="150.0" />
-                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wświetl" textFill="#f8f8f8" />
+                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
                         <ChoiceBox layoutX="159.0" layoutY="55.0" prefWidth="150.0" />
                         <TableView layoutX="58.0" layoutY="121.0" prefHeight="244.0" prefWidth="215.0">
                           <columns>

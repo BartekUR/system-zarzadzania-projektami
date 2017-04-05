@@ -1,18 +1,11 @@
-/*.tlo
+.tlo
 {
-    fx-background-color: linear-gradient(#33cccc, #aeeaea);
-}*/
-.button_big2
-{
-    -fx-background-color: linear-gradient(#004d66, #0099cc);
+    -fx-background-color: linear-gradient(#33cccc, #aeeaea);
 }
 .napisy
 {
-    -fx-text-fill:#3f5a5a;
-}
-.nazwy_zakladek
-{
-    -fx-background-color: linear-gradient(to top, #33cccc 24%, #aeeaea 100%);
+    -fx-text-fill:#324848;
+
 }
 .zakladki
 {
@@ -21,8 +14,15 @@
 .button_small
 {
     -fx-background-color:linear-gradient(to bottom, #6600ff 24%, #000066 100%);
+    -fx-text-fill:#ffffff;
 }
 .button_big
 {
     -fx-background-color:linear-gradient(to top, #004d66 0%, #0099cc 100%);
+    -fx-text-fill:#f8f8f8;
+}
+.button_big2
+{
+    -fx-background-color: linear-gradient(#004d66, #0099cc);
+    -fx-text-fill:#f8f8f8;
 }
