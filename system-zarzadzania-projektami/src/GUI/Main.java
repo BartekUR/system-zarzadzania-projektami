@@ -8,8 +8,16 @@ import javafx.stage.*;
 
 public class Main extends Application {
 
+    public static void main(String[] args) {
+        System.out.println("Uruchamianie aplikacji.");
+        launch(args);
+    }
+
+    public void init() {
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("SzefGUI.fxml"));
 
         Scene scene = new Scene(root);
@@ -18,8 +26,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
+    public void stop() {
+        System.out.println("Zakonczenie dzialania aplikacji.");
     }
 }

@@ -26,7 +26,7 @@ public class SzefGUIController implements Initializable {
     @FXML
     private Button editUser;
     @FXML
-    private Button refresh;
+    private Button fillDB;
 
     @FXML
     private void AddUser(ActionEvent event) throws IOException {
@@ -59,6 +59,10 @@ public class SzefGUIController implements Initializable {
         info_stage.initModality(Modality.APPLICATION_MODAL);
         info_stage.initOwner(editUser.getScene().getWindow());
         info_stage.showAndWait();
+    }
+
+    @FXML
+    private void fillDB(ActionEvent event) throws IOException {
     }
 
     @Override
