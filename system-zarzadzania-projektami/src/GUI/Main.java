@@ -29,14 +29,14 @@ public class Main extends Application {
             while (resultSet.next()) {
                 if (resultSet.getString(1).contains("szp")) {
                     found = true;
-                    System.out.println("Korzystam z istniejacej bazy.");
+                    System.out.println("Znaleziono bazę. Korzystam z istniejącej bazy.");
                 }
             }
             if (!found) {
                 String line;
 
                 BufferedReader br = new BufferedReader(new FileReader("db_init.sql"));
-                System.out.println("Inicjalizowanie bazy...");
+                System.out.println("Nie znaleziono bazy. Inicjalizuję nową bazę...");
                 Statement stmt = conn.createStatement();
                 while ((line = br.readLine()) != null) {
                     if (line.length() != 0)
@@ -45,7 +45,7 @@ public class Main extends Application {
                 conn.commit();
             }
         } else {
-            System.out.println("Brak polaczenia z MariaDB!");
+            System.out.println("Brak połączenia z MariaDB!");
         }
     }
 
@@ -60,7 +60,7 @@ public class Main extends Application {
     }
 
     public void stop() {
-        System.out.println("Zakonczenie dzialania aplikacji.");
         sc.close();
+        System.out.println("Zamykanie aplikacji.");
     }
 }

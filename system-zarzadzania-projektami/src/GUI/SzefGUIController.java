@@ -77,13 +77,15 @@ public class SzefGUIController implements Initializable {
         String line;
 
         BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
-        System.out.println("Wypelnianie bazy testowymi danymi...");
+        System.out.println("Wypełnianie bazy testowymi danymi...");
         Statement stmt = conn.createStatement();
         while ((line = br.readLine()) != null) {
             if (line.length() != 0)
                 stmt.executeUpdate(line);
         }
         conn.commit();
+        parsePracownicy();
+        parseProjekty();
     }
 
     @FXML private TableView<DataPracownicy> pracownicyTable;
