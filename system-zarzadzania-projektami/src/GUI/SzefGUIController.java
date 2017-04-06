@@ -10,9 +10,12 @@ import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.*;
 
 /**
  * Created by Michal on 2017-03-22.
@@ -62,7 +65,20 @@ public class SzefGUIController implements Initializable {
     }
 
     @FXML
-    private void fillDB(ActionEvent event) throws IOException {
+    private void fillDB(ActionEvent event) throws SQLException, IOException {
+        SqlConnect sc = new SqlConnect();
+        Connection conn = sc.open();
+        String line;
+
+        BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
+        Statement stmt = conn.createStatement();
+        while ((line = br.readLine()) != null) {
+            if (line.length() != 0)
+                stmt.executeUpdate(line);
+        }
+
+        conn.commit();
+        sc.close();
     }
 
     @Override

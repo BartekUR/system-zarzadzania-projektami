@@ -33,9 +33,9 @@ public class Main extends Application {
                 }
             }
             if (!found) {
-                BufferedReader br = new BufferedReader(new FileReader("db_init.sql"));
                 String line;
 
+                BufferedReader br = new BufferedReader(new FileReader("db_init.sql"));
                 System.out.println("Inicjalizowanie bazy...");
                 Statement stmt = conn.createStatement();
                 while ((line = br.readLine()) != null) {
