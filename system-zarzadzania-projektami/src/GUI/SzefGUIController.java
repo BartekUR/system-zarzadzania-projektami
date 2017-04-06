@@ -1,5 +1,7 @@
 package GUI;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,6 +26,9 @@ import java.sql.*;
  * Created by Michal on 2017-03-22.
  */
 public class SzefGUIController implements Initializable {
+
+    private SqlConnect sc = new SqlConnect();
+    private Connection conn = sc.getConn();
 
     @FXML
     private Button addUser;
@@ -66,23 +74,81 @@ public class SzefGUIController implements Initializable {
 
     @FXML
     private void fillDB(ActionEvent event) throws SQLException, IOException {
-        SqlConnect sc = new SqlConnect();
-        Connection conn = sc.open();
         String line;
 
         BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
+        System.out.println("Wypelnianie bazy testowymi danymi...");
         Statement stmt = conn.createStatement();
         while ((line = br.readLine()) != null) {
             if (line.length() != 0)
                 stmt.executeUpdate(line);
         }
-
         conn.commit();
-        sc.close();
     }
+
+    @FXML private TableView<DataPracownicy> pracownicyTable;
+    @FXML private TableColumn<DataPracownicy, Integer> pracownicyTable_id;
+    @FXML private TableColumn<DataPracownicy, String> pracownicyTable_imie;
+    @FXML private TableColumn<DataPracownicy, String> pracownicyTable_nazwisko;
+    @FXML private TableColumn<DataPracownicy, String> pracownicyTable_dostep;
+
+    @FXML private TableView<DataProjekty> projektyTable;
+    @FXML private TableColumn<DataProjekty, Integer> projektyTable_id;
+    @FXML private TableColumn<DataProjekty, String> projektyTable_nazwa;
+    @FXML private TableColumn<DataProjekty, String> projektyTable_head;
+    @FXML private TableColumn<DataProjekty, String> projektyTable_pracownicy;
+    @FXML private TableColumn<DataProjekty, String> projektyTable_status;
+    @FXML private TableColumn<DataProjekty, String> projektyTable_progress;
+    //@FXML private TableColumn<DataProjekty, String> projektyTable_termin;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        pracownicyTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
+        pracownicyTable_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
+        pracownicyTable_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
+        pracownicyTable_dostep.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_dostep"));
+        projektyTable_id.setCellValueFactory(new PropertyValueFactory<>("projektyTable_id"));
+        projektyTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("projektyTable_nazwa"));
+        projektyTable_head.setCellValueFactory(new PropertyValueFactory<>("projektyTable_head"));
+        projektyTable_pracownicy.setCellValueFactory(new PropertyValueFactory<>("projektyTable_pracownicy"));
+        projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
+        projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
+        //projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
+        try {
+            parsePracownicy();
+            parseProjekty();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void parsePracownicy() throws SQLException {
+        ObservableList<DataPracownicy> data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy`;");
+        while (rs.next()) {
+            DataPracownicy dp = new DataPracownicy();
+            dp.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
+            dp.setPracownicyTable_imie(rs.getString("Imie"));
+            dp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
+            dp.setPracownicyTable_dostep(rs.getString("Stanowisko"));
+            data.add(dp);
+        }
+        pracownicyTable.setItems(data);
+    }
+
+    private void parseProjekty() throws SQLException {
+        ObservableList<DataProjekty> data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty`;");
+        while (rs.next()) {
+            DataProjekty dp = new DataProjekty();
+            dp.setProjektyTable_id(rs.getInt("ID_Projekt"));
+            dp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
+            dp.setProjektyTable_head(rs.getString("Head"));
+            dp.setProjektyTable_status(rs.getString("Status"));
+            dp.setProjektyTable_progress(rs.getString("Progress"));
+            //dp.setProjektyTable_termin(rs.getString("Termin"));
+            data.add(dp);
+        }
+        projektyTable.setItems(data);
     }
 }

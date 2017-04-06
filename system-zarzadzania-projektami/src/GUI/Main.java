@@ -13,16 +13,16 @@ import java.sql.*;
 
 public class Main extends Application {
 
+    private SqlConnect sc = new SqlConnect();
+
     public static void main(String[] args) {
         System.out.println("Uruchamianie aplikacji.");
         launch(args);
     }
 
     public void init() throws SQLException, IOException {
-        SqlConnect sc = new SqlConnect();
-        Connection conn = sc.open();
-
-        if (conn != null) {
+        if (sc.open()) {
+            Connection conn = sc.getConn();
             ResultSet resultSet = conn.getMetaData().getCatalogs();
             boolean found = false;
 
@@ -44,7 +44,8 @@ public class Main extends Application {
                 }
                 conn.commit();
             }
-            sc.close();
+        } else {
+            System.out.println("Brak polaczenia z MariaDB!");
         }
     }
 
@@ -60,5 +61,6 @@ public class Main extends Application {
 
     public void stop() {
         System.out.println("Zakonczenie dzialania aplikacji.");
+        sc.close();
     }
 }

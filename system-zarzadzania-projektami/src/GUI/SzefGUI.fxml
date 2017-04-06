@@ -33,7 +33,7 @@
                                         <Button fx:id="addUser" layoutX="33.0" layoutY="14.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="632.0" />
                                         <Button fx:id="deleteUser" layoutX="179.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="486.0" />
                                         <Button fx:id="editUser" layoutX="333.0" layoutY="16.0" mnemonicParsing="false" onAction="#editUser" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Edytuj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="332.0" />
-                                        <Button fx:id="refresh" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" onAction="#fillDB" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Wypełnij bazę" textFill="#f8f8f8" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="182.0" />
+                                        <Button fx:id="fillDB" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" onAction="#fillDB" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Wypełnij bazę" textFill="#f8f8f8" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="182.0" />
                                     </children>
                                 </HBox>
                             </children>
@@ -44,14 +44,14 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                             <children>
-                                <TableView layoutX="181.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
+                                <TableView fx:id="projektyTable" layoutX="181.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
                                     <columns>
-                                        <TableColumn fx:id="wp_id" prefWidth="41.0" text="ID" />
-                                        <TableColumn fx:id="wp_nazwa" prefWidth="164.0" text="Nazwa projektu" />
-                                        <TableColumn fx:id="wp_head" prefWidth="153.0" text="Head projektu" />
-                                        <TableColumn fx:id="wp_pracownicy" prefWidth="125.0" text="Pracownicy" />
-                                        <TableColumn fx:id="wp_status" prefWidth="111.0" text="Status" />
-                                        <TableColumn fx:id="wp_progress" prefWidth="171.0" text="Progress" />
+                                        <TableColumn fx:id="projektyTable_id" prefWidth="41.0" text="ID" />
+                                        <TableColumn fx:id="projektyTable_nazwa" prefWidth="164.0" text="Nazwa projektu" />
+                                        <TableColumn fx:id="projektyTable_head" prefWidth="153.0" text="Head projektu" />
+                                        <TableColumn fx:id="projektyTable_pracownicy" prefWidth="125.0" text="Pracownicy" />
+                                        <TableColumn fx:id="projektyTable_status" prefWidth="111.0" text="Status" />
+                                        <TableColumn fx:id="projektyTable_progress" prefWidth="171.0" text="Progress" />
                                     </columns>
                                 </TableView>
                             </children>
