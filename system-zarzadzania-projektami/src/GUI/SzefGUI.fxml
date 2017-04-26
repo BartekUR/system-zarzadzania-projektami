@@ -67,18 +67,15 @@
                             <children>
                                 <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Nazwa nowego projektu" textFill="#3f5a5a" />
                                 <Label layoutX="59.0" layoutY="101.0" styleClass="napisy" text="Wybór heada" textFill="#3f5a5a" />
-                                <ChoiceBox fx:id="headChoice" layoutX="258.0" layoutY="97.0" prefWidth="150.0" />
                                 <TextField fx:id="nazwaProjektu" layoutX="259.0" layoutY="55.0" />
-                                <TextArea layoutX="216.0" layoutY="269.0" prefHeight="200.0" prefWidth="200.0" />
-                                <Label layoutX="54.0" layoutY="286.0" styleClass="napisy" text="Taski (separator ',')" textFill="#3f5a5a" />
-                                <Button layoutX="248.0" layoutY="480.0" mnemonicParsing="false" onAction="#addProjekt" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Stwórz" textFill="#f8f8f8" />
+                                <Button layoutX="266.0" layoutY="286.0" mnemonicParsing="false" onAction="#addProjekt" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Stwórz" textFill="#f8f8f8" />
                         <Label layoutX="64.0" layoutY="227.0" prefHeight="17.0" prefWidth="89.0" styleClass="napisy" text="Termin końcowy" />
                         <TextField fx:id="termin_koncowyProjektu" layoutX="259.0" layoutY="223.0" />
                         <TextField fx:id="progressProjektu" layoutX="259.0" layoutY="177.0" />
                         <TextField fx:id="statusProjektu" layoutX="259.0" layoutY="134.0" />
                         <Label layoutX="90.0" layoutY="138.0" prefHeight="17.0" prefWidth="50.0" text="Status" />
                         <Label layoutX="90.0" layoutY="181.0" text="Progress" />
-                        <TextField fx:id="headProjektu" layoutX="454.0" layoutY="97.0" />
+                        <TextField fx:id="headProjektu" layoutX="259.0" layoutY="97.0" />
                             </children></AnchorPane>
                     </content>
                 </Tab>

@@ -108,7 +108,16 @@ public class SzefGUIController implements Initializable {
     @FXML private TextField termin_koncowyProjektu;
     @FXML private TextField headProjektu;
 
-    @FXML private ChoiceBox headChoice;
+    //@FXML private ChoiceBox headChoice;
+
+    //ObservableList<String> headChoiceList = FXCollections.observableArrayList("ll","LL");
+
+//@FXML
+//private void initialize(){
+  //  headChoice.setItems();
+    //headChoice.setAll("mmm");
+
+//}
 
 
 
@@ -164,6 +173,8 @@ public class SzefGUIController implements Initializable {
         projektyTable.setItems(data);
     }
 
+
+
     @FXML
     private void addProjekt(ActionEvent event) throws SQLException  {
         String name = nazwaProjektu.getText();
@@ -208,4 +219,6 @@ public class SzefGUIController implements Initializable {
     public void setNazwaProjektu(TextField nazwaProjektu) {
         this.nazwaProjektu = nazwaProjektu;
     }
+
+
 }
