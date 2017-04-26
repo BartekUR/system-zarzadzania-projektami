@@ -11,20 +11,20 @@ public class DataProjekty {
     private final SimpleStringProperty projektyTable_pracownicyProperty = new SimpleStringProperty("");
     private final SimpleStringProperty projektyTable_statusProperty = new SimpleStringProperty("");
     private final SimpleStringProperty projektyTable_progressProperty = new SimpleStringProperty("");
-    //private final SimpleStringProperty projektyTable_terminProperty = new SimpleStringProperty("");
+    private final SimpleStringProperty projektyTable_terminProperty = new SimpleStringProperty("");
 
-    public DataProjekty(Integer id, String nazwa, String head, String status, String progress) {
+    public DataProjekty(Integer id, String nazwa, String head, String status, String progress, String termin) {
         setProjektyTable_id(id);
         setProjektyTable_nazwa(nazwa);
         setProjektyTable_head(head);
         setProjektyTable_pracownicy("");
         setProjektyTable_status(status);
         setProjektyTable_progress(progress);
-        //setProjektyTable_termin(termin);
+        setProjektyTable_termin(termin);
     }
 
     public DataProjekty() {
-        this(0, "", "", "", "");
+        this(0, "", "", "", "","");
     }
 
     public Integer getProjektyTable_id() {
@@ -75,11 +75,15 @@ public class DataProjekty {
         projektyTable_progressProperty.set(progress);
     }
 
-    //public String getProjektyTable_termin() {
-    //    return projektyTable_terminProperty.get();
-    //}
+    /*public void setProjektyTable_termin(String projektyTable_termin) {
+        this.projektyTable_termin = projektyTable_termin;
+    }*/
 
-    //public void setProjektyTable_termin(String termin) {
-    //    projektyTable_terminProperty.set(termin);
-    //}
+    public String getProjektyTable_termin() {
+        return projektyTable_terminProperty.get();
+    }
+
+    public void setProjektyTable_termin(String termin) {
+        projektyTable_terminProperty.set(termin);
+    }
 }

@@ -8,13 +8,13 @@ public class DataPracownicy {
     private final SimpleIntegerProperty pracownicyTable_idProperty = new SimpleIntegerProperty(0);
     private final SimpleStringProperty pracownicyTable_imieProperty = new SimpleStringProperty("");
     private final SimpleStringProperty pracownicyTable_nazwiskoProperty = new SimpleStringProperty("");
-    private final SimpleStringProperty pracownicyTable_dostepProperty = new SimpleStringProperty("");
+    private final SimpleStringProperty pracownicyTable_stanowiskoProperty = new SimpleStringProperty("");
 
     public DataPracownicy(Integer id, String imie, String nazwisko, String dostep) {
         setPracownicyTable_id(id);
         setPracownicyTable_imie(imie);
         setPracownicyTable_nazwisko(nazwisko);
-        setPracownicyTable_dostep(dostep);
+        setPracownicyTable_stanowisko(dostep);
     }
 
     public DataPracownicy() {
@@ -45,11 +45,11 @@ public class DataPracownicy {
         pracownicyTable_nazwiskoProperty.set(nazwisko);
     }
 
-    public String getPracownicyTable_dostep() {
-        return pracownicyTable_dostepProperty.get();
+    public String getPracownicyTable_stanowisko() {
+        return pracownicyTable_stanowiskoProperty.get();
     }
 
-    public void setPracownicyTable_dostep(String dostep) {
-        pracownicyTable_dostepProperty.set(dostep);
+    public void setPracownicyTable_stanowisko(String dostep) {
+        pracownicyTable_stanowiskoProperty.set(dostep);
     }
 }

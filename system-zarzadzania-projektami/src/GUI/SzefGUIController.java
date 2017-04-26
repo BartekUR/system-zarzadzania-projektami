@@ -1,5 +1,6 @@
 package GUI;
 
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,9 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -74,7 +73,7 @@ public class SzefGUIController implements Initializable {
 
     @FXML
     private void fillDB(ActionEvent event) throws SQLException, IOException {
-        String line;
+/*        String line;
 
         BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
         System.out.println("Wypełnianie bazy testowymi danymi...");
@@ -85,37 +84,47 @@ public class SzefGUIController implements Initializable {
         }
         conn.commit();
         parsePracownicy();
-        parseProjekty();
+        parseProjekty();*/
     }
 
     @FXML private TableView<DataPracownicy> pracownicyTable;
     @FXML private TableColumn<DataPracownicy, Integer> pracownicyTable_id;
     @FXML private TableColumn<DataPracownicy, String> pracownicyTable_imie;
     @FXML private TableColumn<DataPracownicy, String> pracownicyTable_nazwisko;
-    @FXML private TableColumn<DataPracownicy, String> pracownicyTable_dostep;
+    @FXML private TableColumn<DataPracownicy, String> pracownicyTable_stanowisko;
 
     @FXML private TableView<DataProjekty> projektyTable;
     @FXML private TableColumn<DataProjekty, Integer> projektyTable_id;
     @FXML private TableColumn<DataProjekty, String> projektyTable_nazwa;
     @FXML private TableColumn<DataProjekty, String> projektyTable_head;
-    @FXML private TableColumn<DataProjekty, String> projektyTable_pracownicy;
+    //@FXML private TableColumn<DataProjekty, String> projektyTable_pracownicy;
     @FXML private TableColumn<DataProjekty, String> projektyTable_status;
     @FXML private TableColumn<DataProjekty, String> projektyTable_progress;
-    //@FXML private TableColumn<DataProjekty, String> projektyTable_termin;
+    @FXML private TableColumn<DataProjekty, String> projektyTable_termin;
+
+    @FXML private TextField nazwaProjektu;
+    @FXML private TextField statusProjektu;
+    @FXML private TextField progressProjektu;
+    @FXML private TextField termin_koncowyProjektu;
+    @FXML private TextField headProjektu;
+
+    @FXML private ChoiceBox headChoice;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         pracownicyTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownicyTable_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
         pracownicyTable_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
-        pracownicyTable_dostep.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_dostep"));
+        pracownicyTable_stanowisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_stanowisko"));
         projektyTable_id.setCellValueFactory(new PropertyValueFactory<>("projektyTable_id"));
         projektyTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("projektyTable_nazwa"));
         projektyTable_head.setCellValueFactory(new PropertyValueFactory<>("projektyTable_head"));
-        projektyTable_pracownicy.setCellValueFactory(new PropertyValueFactory<>("projektyTable_pracownicy"));
+        //projektyTable_pracownicy.setCellValueFactory(new PropertyValueFactory<>("projektyTable_pracownicy"));
         projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
         projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
-        //projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
+        projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
         try {
             parsePracownicy();
             parseProjekty();
@@ -132,7 +141,7 @@ public class SzefGUIController implements Initializable {
             dp.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
             dp.setPracownicyTable_imie(rs.getString("Imie"));
             dp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
-            dp.setPracownicyTable_dostep(rs.getString("Stanowisko"));
+            dp.setPracownicyTable_stanowisko(rs.getString("Stanowisko"));
             data.add(dp);
         }
         pracownicyTable.setItems(data);
@@ -148,9 +157,55 @@ public class SzefGUIController implements Initializable {
             dp.setProjektyTable_head(rs.getString("Head"));
             dp.setProjektyTable_status(rs.getString("Status"));
             dp.setProjektyTable_progress(rs.getString("Progress"));
-            //dp.setProjektyTable_termin(rs.getString("Termin"));
+            dp.setProjektyTable_termin(rs.getString("Termin"));
+
             data.add(dp);
         }
         projektyTable.setItems(data);
+    }
+
+    @FXML
+    private void addProjekt(ActionEvent event) throws SQLException  {
+        String name = nazwaProjektu.getText();
+        String status = statusProjektu.getText();
+        String progress = progressProjektu.getText();
+        String termin = termin_koncowyProjektu.getText();
+        String head = headProjektu.getText();
+
+        //String head_c = headChoice.getAccessibleText();
+
+        try {
+
+            String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
+                    + " values (?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, name);
+            preparedStmt.setString(2, head);
+            preparedStmt.setString(3, status);
+            preparedStmt.setString(4, progress);
+            preparedStmt.setString(5, termin);
+
+            preparedStmt.executeUpdate();
+
+            System.out.println("Rekord został wstawiony do tabeli projekty!");
+
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        }
+
+        //ResultSet rs = conn.createStatement().executeQuery("SELECT `Nazwisko` FROM `szp`.`pracownicy` where `Stanowisko`='Head';");
+
+    }
+
+
+    public TextField getNazwaProjektu() {
+        return nazwaProjektu;
+    }
+
+    public void setNazwaProjektu(TextField nazwaProjektu) {
+        this.nazwaProjektu = nazwaProjektu;
     }
 }
