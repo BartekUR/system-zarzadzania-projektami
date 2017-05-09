@@ -67,6 +67,7 @@ public class AddUserController {
 
             System.out.println(e.getMessage());
         }
+        //parsePracownicy();
     }
 
     @FXML

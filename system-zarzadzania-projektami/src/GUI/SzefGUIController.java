@@ -167,7 +167,6 @@ public class SzefGUIController implements Initializable {
         }
         projektyTable.setItems(data);
     }
-
     @FXML
     private void fillcomboBox() throws SQLException, IOException {
         final ObservableList<String> options = FXCollections.observableArrayList();
@@ -183,13 +182,14 @@ public class SzefGUIController implements Initializable {
         //rs.close();
     }
 
+
     @FXML
     private void addProjekt(ActionEvent event) throws SQLException  {
         String name = nazwaProjektu.getText();
+        String head = comboBoxSzef.getValue().toString();
         String status = statusProjektu.getText();
         String progress = progressProjektu.getText();
         String termin = termin_koncowyProjektu.getText();
-        String head = comboBoxSzef.getValue().toString();
 
         try {
             String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
@@ -211,6 +211,7 @@ public class SzefGUIController implements Initializable {
             System.out.println(e.getMessage());
 
         }
+        parseProjekty();
     }
 
     public TextField getNazwaProjektu() {
