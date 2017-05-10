@@ -174,4 +174,19 @@ public class HeadGUIController implements Initializable  {
 
     }
     
+    @FXML
+    public void fillcomboBox2() throws SQLException, IOException {
+        final ObservableList<String> options = FXCollections.observableArrayList();
+        String query = "SELECT * FROM `szp`.`projekty` where `Head`='Jacek Kowal';";
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        ResultSet rs = preparedStmt.executeQuery();
+        while (rs.next()){
+            options.add(rs.getString("Nazwa_projektu"));
+        }
+
+        comboBoxHead.setItems(options);
+        //conn.close();
+        //rs.close();
+    }
+    
 }
