@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.HeadGUIController">
    <children>
       <TabPane layoutX="176.0" layoutY="79.0" prefHeight="400.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -13,50 +13,51 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
                         <Label layoutX="60.0" layoutY="27.0" styleClass="napisy" stylesheets="@style.css" text="Wybierz projekt" />
-                        <ChoiceBox layoutX="158.0" layoutY="23.0" prefWidth="150.0" />
-                        <Button layoutX="336.0" layoutY="23.0" mnemonicParsing="false" styleClass="button_small" text="Pokaż" textFill="#f8f8f8" />
-                        <TreeTableView layoutX="58.0" layoutY="92.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80.0">
+                        <Button layoutX="336.0" layoutY="23.0" mnemonicParsing="false" onAction="#pokazProjekt" styleClass="button_small" text="Pokaż" textFill="#f8f8f8" />
+                        <TableView fx:id="mojeProjekty" layoutX="84.0" layoutY="135.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80.0">
                           <columns>
-                            <TreeTableColumn prefWidth="75.0" text="ID" />
-                            <TreeTableColumn prefWidth="155.0" text="Pracownik" />
-                              <TreeTableColumn prefWidth="175.0" text="Taski" />
-                              <TreeTableColumn minWidth="0.0" prefWidth="160.0" text="Progress" />
-                              <TreeTableColumn prefWidth="114.0" text="Termin" />
+                            <TableColumn fx:id="idMProjekty" prefWidth="75.0" text="ID" />
+                            <TableColumn fx:id="taskMProjekty" prefWidth="228.0" text="Task" />
+                              <TableColumn fx:id="pracownikMProjekty" prefWidth="164.0" text="Pracownik" />
+                              <TableColumn fx:id="progressMProjekty" prefWidth="132.0" text="Progress" />
+                              <TableColumn fx:id="terminMProjekty" prefWidth="166.0" text="Termin" />
                           </columns>
-                        </TreeTableView>
+                        </TableView>
+                        <ComboBox fx:id="comboBoxHead" layoutX="167.0" layoutY="23.0" onAction="#fillcomboBox2" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
           <Tab styleClass="tlo" text="Przydzielanie użytkowników">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
+              <AnchorPane fx:id="" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
-                        <Button layoutX="311.0" layoutY="39.0" mnemonicParsing="false" styleClass="button_small" text="Wyświetl" textFill="#f8f8f8" />
                         <VBox layoutX="333.0" layoutY="283.0" spacing="20.0">
                            <children>
-                              <Button layoutX="333.0" layoutY="269.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
+                              <Button fx:id="addButton" layoutX="333.0" layoutY="269.0" mnemonicParsing="false" onAction="#addEmployee" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
                               <Button layoutX="333.0" layoutY="343.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                            </children>
                         </VBox>
-                        <ChoiceBox layoutX="137.0" layoutY="39.0" prefWidth="150.0" />
-                        <Label layoutX="30.0" layoutY="42.0" styleClass="napisy" text="Wybierz projekt" />
+                        <Label layoutX="478.0" layoutY="51.0" styleClass="napisy" text="Wybierz projekt" />
                         <Label layoutX="17.0" layoutY="92.0" styleClass="napisy" text="Lista dostępnych pracowników" />
                         <Label layoutX="478.0" layoutY="92.0" styleClass="napisy" text="Lista pracowników w projekcie" />
-                        <TableView layoutX="30.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="132.0">
+                        <TableView fx:id="pracownicyTable" layoutX="30.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="132.0">
                           <columns>
-                            <TableColumn prefWidth="49.0" text="ID" />
-                            <TableColumn prefWidth="255.0" text="Imie Nazwisko" />
+                            <TableColumn fx:id="pracownicyTable_id" prefWidth="50.0" text="ID" />
+                            <TableColumn fx:id="pracownicyTable_imie" prefWidth="120.0" text="Imie" />
+                              <TableColumn fx:id="pracownicyTable_nazwisko" prefWidth="135.0" text="Nazwisko" />
                           </columns>
                         </TableView>
-                        <TableView layoutX="478.0" layoutY="172.0" prefHeight="422.0" prefWidth="305.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="478.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="132.0">
+                        <TableView fx:id="pracownicyInProject_Table" layoutX="478.0" layoutY="172.0" prefHeight="422.0" prefWidth="305.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="478.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="132.0">
                           <columns>
-                            <TableColumn prefWidth="49.0" text="ID" />
-                            <TableColumn prefWidth="291.0" text="Imie Nazwisko" />
+                            <TableColumn fx:id="pracownicyInProject_Table_id" prefWidth="50.0" text="ID" />
+                            <TableColumn fx:id="pracownicyInProject_Table_imie" minWidth="0.0" prefWidth="120.0" text="Imie " />
+                              <TableColumn fx:id="pracownicyInProject_Table_nazwisko" maxWidth="500.0" prefWidth="135.0" text="Nazwisko" />
                           </columns>
                         </TableView>
-                        <Button layoutX="205.0" layoutY="88.0" mnemonicParsing="false" styleClass="button_small" text="Wyświetl pracowników" textFill="#f8f8f8" />
-                        <Button layoutX="665.0" layoutY="88.0" mnemonicParsing="false" styleClass="button_small" text="Odśwież" textFill="#f8f8f8" />
+                        <Button layoutX="205.0" layoutY="88.0" mnemonicParsing="false" onAction="#displayEmployeesStatusPracownik" styleClass="button_small" text="Wyświetl pracowników" textFill="#f8f8f8" />
+                        <Button fx:id="pracownicy_projekt" layoutX="665.0" layoutY="88.0" mnemonicParsing="false" onAction="#displayEmployeesInProject" styleClass="button_small" text="Wyświetl" textFill="#f8f8f8" />
+                        <ComboBox fx:id="comboBoxSelectProject" layoutX="582.0" layoutY="47.0" onAction="#fillComboBoxSelectProject" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
             </content>

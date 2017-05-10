@@ -75,7 +75,7 @@
                         <TextField fx:id="statusProjektu" layoutX="259.0" layoutY="134.0" />
                         <Label layoutX="90.0" layoutY="138.0" prefHeight="17.0" prefWidth="50.0" text="Status" />
                         <Label layoutX="90.0" layoutY="181.0" text="Progress" />
-                        <TextField fx:id="headProjektu" layoutX="259.0" layoutY="97.0" />
+                        <ComboBox fx:id="comboBoxSzef" layoutX="259.0" layoutY="97.0" onAction="#fillcomboBox" prefWidth="150.0" />
                             </children></AnchorPane>
                     </content>
                 </Tab>

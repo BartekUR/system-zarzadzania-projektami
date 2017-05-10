@@ -121,20 +121,7 @@ public class SzefGUIController implements Initializable {
     @FXML private TextField statusProjektu;
     @FXML private TextField progressProjektu;
     @FXML private TextField termin_koncowyProjektu;
-    @FXML private TextField headProjektu;
-
-    //@FXML private ChoiceBox headChoice;
-
-    //ObservableList<String> headChoiceList = FXCollections.observableArrayList("ll","LL");
-
-//@FXML
-//private void initialize(){
-  //  headChoice.setItems();
-    //headChoice.setAll("mmm");
-
-//}
-
-
+    @FXML private ComboBox comboBoxSzef;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -153,6 +140,14 @@ public class SzefGUIController implements Initializable {
             parsePracownicy();
             parseProjekty();
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            fillcomboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -187,21 +182,31 @@ public class SzefGUIController implements Initializable {
         }
         projektyTable.setItems(data);
     }
-
+    @FXML
+    private void fillcomboBox() throws SQLException, IOException {
+        final ObservableList<String> options = FXCollections.observableArrayList();
+        String query = "SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Head';";
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        ResultSet rs = preparedStmt.executeQuery();
+        while (rs.next()){
+            //options.add(rs.getString("Imie"));
+            options.add(rs.getString("Nazwisko"));
+        }
+        comboBoxSzef.setItems(options);
+        //conn.close();
+        //rs.close();
+    }
 
 
     @FXML
     private void addProjekt(ActionEvent event) throws SQLException  {
         String name = nazwaProjektu.getText();
+        String head = comboBoxSzef.getValue().toString();
         String status = statusProjektu.getText();
         String progress = progressProjektu.getText();
         String termin = termin_koncowyProjektu.getText();
-        String head = headProjektu.getText();
-
-        //String head_c = headChoice.getAccessibleText();
 
         try {
-
             String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
                     + " values (?, ?, ?, ?, ?)";
 
@@ -221,11 +226,8 @@ public class SzefGUIController implements Initializable {
             System.out.println(e.getMessage());
 
         }
-
-        //ResultSet rs = conn.createStatement().executeQuery("SELECT `Nazwisko` FROM `szp`.`pracownicy` where `Stanowisko`='Head';");
-
+        parseProjekty();
     }
-
 
     public TextField getNazwaProjektu() {
         return nazwaProjektu;
@@ -234,6 +236,4 @@ public class SzefGUIController implements Initializable {
     public void setNazwaProjektu(TextField nazwaProjektu) {
         this.nazwaProjektu = nazwaProjektu;
     }
-
-
 }
