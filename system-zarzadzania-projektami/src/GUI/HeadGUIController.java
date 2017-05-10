@@ -35,16 +35,30 @@ public class HeadGUIController implements Initializable  {
     @FXML private TableColumn<DataPracownicy, String> pracownicyTable_imie,  pracownicyInProject_Table_imie;
     @FXML private TableColumn<DataPracownicy, String> pracownicyTable_nazwisko, pracownicyInProject_Table_nazwisko;
     @FXML private Button addButton;
+    @FXML private ComboBox comboBoxHead;
+    @FXML private TableView<DataMojeProjekty> mojeProjekty;
+    @FXML private TableColumn<DataMojeProjekty, Integer> idMProjekty;
+    @FXML private TableColumn<DataMojeProjekty, String> taskMProjekty;
+    @FXML private TableColumn<DataMojeProjekty, String> pracownikMProjekty;
+    @FXML private TableColumn<DataMojeProjekty, String> progressMProjekty;
+    @FXML private TableColumn<DataMojeProjekty, String> terminMProjekty;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            fillcombobox2();
             fillComboBoxSelectProject();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        idMProjekty.setCellValueFactory(new PropertyValueFactory<>("idMProjekty"));
+        taskMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskMProjekty"));
+        pracownikMProjekty.setCellValueFactory(new PropertyValueFactory<>("pracownikMProjekty"));
+        progressMProjekty.setCellValueFactory(new PropertyValueFactory<>("progressMProjekty"));
+        terminMProjekty.setCellValueFactory(new PropertyValueFactory<>("terminMProjekty"));
 
         pracownicyTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownicyTable_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
@@ -135,4 +149,29 @@ public class HeadGUIController implements Initializable  {
 
         }
     }
+    
+    @FXML
+    private void pokazProjekt(ActionEvent event) throws SQLException  {
+        Object projekt = comboBoxHead.getValue().toString();
+        ObservableList<DataMojeProjekty> data = FXCollections.observableArrayList();
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty` where `Head`='Jacek Kowal';");
+            while (rs.next()) {
+                DataMojeProjekty dp = new DataMojeProjekty();
+                dp.setidMProjekty(rs.getInt("ID_Projekt"));
+                // dp.settaskMProjekty(rs.getString("Task"));
+                // setpracownikMProjekty(rs.getString("Pracownik"));
+                dp.setprogressMProjekty(rs.getString("Progress"));
+                dp.setterminMProjekty(rs.getString("Termin"));
+                data.add(dp);
+            }
+            mojeProjekty.setItems(data);
+        }
+        catch(SQLException e) {
+
+            System.out.println(e.getMessage());
+        }
+
+    }
+    
 }
