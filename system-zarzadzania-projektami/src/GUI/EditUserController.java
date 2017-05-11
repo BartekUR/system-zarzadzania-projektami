@@ -85,7 +85,6 @@ public class EditUserController implements Initializable {
             preparedStmt.setString(4, nazwisko);
             preparedStmt.setObject(5, stanowisko);
 
-
             preparedStmt.executeUpdate();
 
             System.out.println("Rekord "+id+" został edytowany!");
