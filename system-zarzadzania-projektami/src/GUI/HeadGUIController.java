@@ -167,17 +167,21 @@ public class HeadGUIController implements Initializable  {
 
     }
     
-    @FXML
     private void pokazProjekt(ActionEvent event) throws SQLException  {
         Object projekt = comboBoxHead.getValue().toString();
         ObservableList<DataMojeProjekty> data = FXCollections.observableArrayList();
         try {
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty` where `Head`='Jacek Kowal';");
+            ResultSet rs = conn.createStatement().executeQuery("SELECT pra.Nazwisko, t.Nazwa_tasku\n" +
+                    "FROM pracownicy pra INNER JOIN pracownicy_i_taski pit INNER JOIN taski t INNER JOIN projekty pro\n" +
+                    "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
+                    "AND t.ID_Task=pit.ID_Taski_FK\n" +
+                    "AND pro.ID_Projekt=t.ID_Projekt_FK\n" +
+                    "AND pro.Nazwa_projektu='"+projekt+"';");
             while (rs.next()) {
                 DataMojeProjekty dp = new DataMojeProjekty();
                 dp.setidMProjekty(rs.getInt("ID_Projekt"));
-                // dp.settaskMProjekty(rs.getString("Task"));
-                // setpracownikMProjekty(rs.getString("Pracownik"));
+                dp.settaskMProjekty(rs.getString("Task"));
+                dp.setpracownikMProjekty(rs.getString("Pracownik"));
                 dp.setprogressMProjekty(rs.getString("Progress"));
                 dp.setterminMProjekty(rs.getString("Termin"));
                 data.add(dp);
