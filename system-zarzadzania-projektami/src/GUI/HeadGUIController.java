@@ -46,7 +46,7 @@ public class HeadGUIController implements Initializable  {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            fillcombobox2();
+            fillcomboBox2();
             fillComboBoxSelectProject();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,11 +118,10 @@ public class HeadGUIController implements Initializable  {
     }
 
     @FXML
-    private void addEmployee (ActionEvent e) throws SQLException{
+    private void addEmployeeInProject (ActionEvent e) throws SQLException{
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
         String id = person.getPracownicyTable_id().toString();
         System.out.println(id);
-
 
         /*Integer id_project;
         String project = comboBoxSelectProject.getValue().toString();
@@ -130,24 +129,42 @@ public class HeadGUIController implements Initializable  {
         id_project = rs.getInt("ID_Projekt");
         System.out.println(id_project);*/
 
+        if(person!=null){
+            try {
+                String query = " insert into `szp`.`pracownicy_i_projekty` (`ID_Pracownik_FK`, `ID_Projekt_FK`)\n" +
+                        "values (?, ?)";
 
-        try {
-            String query = " insert into `szp`.`pracownicy_i_projekty` (`ID_Pracownik_FK`, `ID_Projekt_FK`)\n" +
-                    "values (?, ?)";
+                PreparedStatement preparedStmt = conn.prepareStatement(query);
+                preparedStmt.setString(1, id);
+                preparedStmt.setString(2, "2");//powinna byc zmienna id_projektu wybranego z comboBoxa
 
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.setString(1, id);
-            preparedStmt.setString(2, "2");//powinna byc zmienna id_projektu wybranego z comboBoxa
+                preparedStmt.executeUpdate();
 
-            preparedStmt.executeUpdate();
+                System.out.println("Rekord został wstawiony do tabeli projekty!");
 
-            System.out.println("Rekord został wstawiony do tabeli projekty!");
+            } catch (SQLException d){
 
-        } catch (SQLException d) {
-
-            System.out.println(d.getMessage());
-
+                System.out.println(d.getMessage());
+            }
         }
+    }
+
+    @FXML
+    private void deleteUserInProject(ActionEvent event) throws IOException,SQLException {
+        DataPracownicy personDelete = pracownicyInProject_Table.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
+        String id_pracownik = personDelete.getPracownicyTable_id().toString();
+        System.out.println("id"+id_pracownik);
+
+        try { //id projektu, powinno byc pobrane z comoboBoxa
+            String query = "DELETE FROM szp.pracownicy_i_projekty WHERE ID_Pracownik_FK='"+id_pracownik+"' AND ID_Projekt_FK='5';";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.executeUpdate();
+            System.out.println("Pracownik został usunięty z projektu!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
     
     @FXML
@@ -171,7 +188,6 @@ public class HeadGUIController implements Initializable  {
 
             System.out.println(e.getMessage());
         }
-
     }
     
     @FXML
@@ -188,5 +204,4 @@ public class HeadGUIController implements Initializable  {
         //conn.close();
         //rs.close();
     }
-    
 }
