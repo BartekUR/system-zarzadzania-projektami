@@ -42,6 +42,7 @@ public class HeadGUIController implements Initializable  {
     @FXML private TableColumn<DataMojeProjekty, String> pracownikMProjekty;
     @FXML private TableColumn<DataMojeProjekty, String> progressMProjekty;
     @FXML private TableColumn<DataMojeProjekty, String> terminMProjekty;
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
