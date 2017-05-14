@@ -13,13 +13,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+
+import static java.lang.System.*;
 
 /**
  * Created by Michal on 2017-03-22.
@@ -37,6 +42,8 @@ public class SzefGUIController implements Initializable {
     private Button editUser;
     @FXML
     private Button fillDB;
+
+
 
     @FXML
     private void AddUser(ActionEvent event) throws IOException {
@@ -61,16 +68,16 @@ public class SzefGUIController implements Initializable {
 
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
         String id = person.getPracownicyTable_id().toString();
-        System.out.println("id"+id);
+        out.println("id"+id);
 
         try {
             String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik='"+id+"'";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.executeUpdate();
-            System.out.println("Rekord został usunięty z tabeli pracownicy!");
+            out.println("Rekord został usunięty z tabeli pracownicy!");
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            out.println(e.getMessage());
         }
         parsePracownicy();
     }
@@ -120,7 +127,9 @@ public class SzefGUIController implements Initializable {
     @FXML private TextField nazwaProjektu;
     @FXML private TextField statusProjektu;
     @FXML private TextField progressProjektu;
-    @FXML private TextField termin_koncowyProjektu;
+    @FXML private DatePicker termin_koncowyProjektu;
+
+
     @FXML private ComboBox comboBoxSzef;
 
     @Override
@@ -150,6 +159,7 @@ public class SzefGUIController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private void parsePracownicy() throws SQLException {
@@ -197,14 +207,14 @@ public class SzefGUIController implements Initializable {
         //rs.close();
     }
 
-
     @FXML
     private void addProjekt(ActionEvent event) throws SQLException  {
         String name = nazwaProjektu.getText();
         String head = comboBoxSzef.getValue().toString();
         String status = statusProjektu.getText();
         String progress = progressProjektu.getText();
-        String termin = termin_koncowyProjektu.getText();
+        String termin_koniec = termin_koncowyProjektu.getValue().toString();
+
 
         try {
             String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
@@ -215,7 +225,7 @@ public class SzefGUIController implements Initializable {
             preparedStmt.setString(2, head);
             preparedStmt.setString(3, status);
             preparedStmt.setString(4, progress);
-            preparedStmt.setString(5, termin);
+            preparedStmt.setString(5, termin_koniec);
 
             preparedStmt.executeUpdate();
 
@@ -223,7 +233,7 @@ public class SzefGUIController implements Initializable {
 
         } catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+           System.out.println(e.getMessage());
 
         }
         parseProjekty();
