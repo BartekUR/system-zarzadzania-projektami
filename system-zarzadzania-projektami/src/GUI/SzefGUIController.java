@@ -119,7 +119,7 @@ public class SzefGUIController implements Initializable {
     @FXML private TextField nazwaProjektu;
     @FXML private TextField statusProjektu;
     @FXML private TextField progressProjektu;
-    @FXML private TextField termin_koncowyProjektu;
+    @FXML private DatePicker termin_koncowyProjektu;
     @FXML private ComboBox comboBoxSzef;
 
     @Override
@@ -195,7 +195,7 @@ public class SzefGUIController implements Initializable {
         String head = comboBoxSzef.getValue().toString();
         String status = statusProjektu.getText();
         String progress = progressProjektu.getText();
-        String termin = termin_koncowyProjektu.getText();
+        String termin = termin_koncowyProjektu.getValue().toString();
 
         try {
             String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
