@@ -88,7 +88,7 @@ public class SzefGUIController implements Initializable {
 
     @FXML
     private void fillDB(ActionEvent event) throws SQLException, IOException {
-/*        String line;
+        String line;
 
         BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
         System.out.println("Wypełnianie bazy testowymi danymi...");
@@ -98,8 +98,7 @@ public class SzefGUIController implements Initializable {
                 stmt.executeUpdate(line);
         }
         conn.commit();
-        parsePracownicy();
-        parseProjekty();*/
+        refresh();
     }
 
     @FXML private TableView<DataPracownicy> pracownicyTable;
@@ -136,18 +135,10 @@ public class SzefGUIController implements Initializable {
         projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
         projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
         projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
-        try {
-            parsePracownicy();
-            parseProjekty();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         try {
-            fillcomboBox();
+            refresh();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -164,6 +155,7 @@ public class SzefGUIController implements Initializable {
             data.add(dp);
         }
         pracownicyTable.setItems(data);
+        pracownicyTable.refresh();
     }
 
     private void parseProjekty() throws SQLException {
@@ -177,24 +169,23 @@ public class SzefGUIController implements Initializable {
             dp.setProjektyTable_status(rs.getString("Status"));
             dp.setProjektyTable_progress(rs.getString("Progress"));
             dp.setProjektyTable_termin(rs.getString("Termin"));
-
             data.add(dp);
         }
         projektyTable.setItems(data);
+        projektyTable.refresh();
     }
+
     @FXML
-    private void fillcomboBox() throws SQLException, IOException {
+    private void fillcomboBox() throws SQLException {
         final ObservableList<String> options = FXCollections.observableArrayList();
         String query = "SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Head';";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
         ResultSet rs = preparedStmt.executeQuery();
-        while (rs.next()){
+        while (rs.next()) {
             //options.add(rs.getString("Imie"));
             options.add(rs.getString("Nazwisko"));
         }
         comboBoxSzef.setItems(options);
-        //conn.close();
-        //rs.close();
     }
 
 
@@ -220,13 +211,20 @@ public class SzefGUIController implements Initializable {
             preparedStmt.executeUpdate();
 
             System.out.println("Rekord został wstawiony do tabeli projekty!");
-
         } catch (SQLException e) {
-
             System.out.println(e.getMessage());
-
         }
-        parseProjekty();
+        refresh();
+    }
+
+    private void refresh() throws SQLException {
+        try {
+            parsePracownicy();
+            parseProjekty();
+            fillcomboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public TextField getNazwaProjektu() {
