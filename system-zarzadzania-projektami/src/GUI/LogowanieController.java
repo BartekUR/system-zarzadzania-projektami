@@ -7,13 +7,13 @@ import javafx.stage.Stage;
  * Created by Michal on 2017-03-22.
  */
 public class LogowanieController {
+
     @FXML
     private javafx.scene.control.Button closeButton;
+
     @FXML
-    private void closeButtonAction(){
-
+    private void closeButtonAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
-
         stage.close();
     }
 }

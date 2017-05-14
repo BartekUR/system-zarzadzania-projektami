@@ -13,18 +13,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
-
-import static java.lang.System.*;
 
 /**
  * Created by Michal on 2017-03-22.
@@ -42,8 +37,6 @@ public class SzefGUIController implements Initializable {
     private Button editUser;
     @FXML
     private Button fillDB;
-
-
 
     @FXML
     private void AddUser(ActionEvent event) throws IOException {
@@ -68,16 +61,16 @@ public class SzefGUIController implements Initializable {
 
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
         String id = person.getPracownicyTable_id().toString();
-        out.println("id"+id);
+        System.out.println("id"+id);
 
         try {
             String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik='"+id+"'";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.executeUpdate();
-            out.println("Rekord został usunięty z tabeli pracownicy!");
+            System.out.println("Rekord został usunięty z tabeli pracownicy!");
 
         } catch (SQLException e) {
-            out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         parsePracownicy();
     }
@@ -95,7 +88,7 @@ public class SzefGUIController implements Initializable {
 
     @FXML
     private void fillDB(ActionEvent event) throws SQLException, IOException {
-/*        String line;
+        String line;
 
         BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
         System.out.println("Wypełnianie bazy testowymi danymi...");
@@ -105,8 +98,7 @@ public class SzefGUIController implements Initializable {
                 stmt.executeUpdate(line);
         }
         conn.commit();
-        parsePracownicy();
-        parseProjekty();*/
+        refresh();
     }
 
     @FXML private TableView<DataPracownicy> pracownicyTable;
@@ -127,9 +119,7 @@ public class SzefGUIController implements Initializable {
     @FXML private TextField nazwaProjektu;
     @FXML private TextField statusProjektu;
     @FXML private TextField progressProjektu;
-    @FXML private DatePicker termin_koncowyProjektu;
-
-
+    @FXML private TextField termin_koncowyProjektu;
     @FXML private ComboBox comboBoxSzef;
 
     @Override
@@ -145,21 +135,12 @@ public class SzefGUIController implements Initializable {
         projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
         projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
         projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
+
         try {
-            parsePracownicy();
-            parseProjekty();
+            refresh();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        try {
-            fillcomboBox();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void parsePracownicy() throws SQLException {
@@ -174,6 +155,7 @@ public class SzefGUIController implements Initializable {
             data.add(dp);
         }
         pracownicyTable.setItems(data);
+        pracownicyTable.refresh();
     }
 
     private void parseProjekty() throws SQLException {
@@ -187,25 +169,25 @@ public class SzefGUIController implements Initializable {
             dp.setProjektyTable_status(rs.getString("Status"));
             dp.setProjektyTable_progress(rs.getString("Progress"));
             dp.setProjektyTable_termin(rs.getString("Termin"));
-
             data.add(dp);
         }
         projektyTable.setItems(data);
+        projektyTable.refresh();
     }
+
     @FXML
-    private void fillcomboBox() throws SQLException, IOException {
+    private void fillcomboBox() throws SQLException {
         final ObservableList<String> options = FXCollections.observableArrayList();
         String query = "SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Head';";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
         ResultSet rs = preparedStmt.executeQuery();
-        while (rs.next()){
+        while (rs.next()) {
             //options.add(rs.getString("Imie"));
             options.add(rs.getString("Nazwisko"));
         }
         comboBoxSzef.setItems(options);
-        //conn.close();
-        //rs.close();
     }
+
 
     @FXML
     private void addProjekt(ActionEvent event) throws SQLException  {
@@ -213,8 +195,7 @@ public class SzefGUIController implements Initializable {
         String head = comboBoxSzef.getValue().toString();
         String status = statusProjektu.getText();
         String progress = progressProjektu.getText();
-        String termin_koniec = termin_koncowyProjektu.getValue().toString();
-
+        String termin = termin_koncowyProjektu.getText();
 
         try {
             String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
@@ -225,18 +206,25 @@ public class SzefGUIController implements Initializable {
             preparedStmt.setString(2, head);
             preparedStmt.setString(3, status);
             preparedStmt.setString(4, progress);
-            preparedStmt.setString(5, termin_koniec);
+            preparedStmt.setString(5, termin);
 
             preparedStmt.executeUpdate();
 
             System.out.println("Rekord został wstawiony do tabeli projekty!");
-
         } catch (SQLException e) {
-
-           System.out.println(e.getMessage());
-
+            System.out.println(e.getMessage());
         }
-        parseProjekty();
+        refresh();
+    }
+
+    private void refresh() throws SQLException {
+        try {
+            parsePracownicy();
+            parseProjekty();
+            fillcomboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public TextField getNazwaProjektu() {
