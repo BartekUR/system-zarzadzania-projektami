@@ -10,9 +10,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.BufferedReader;
@@ -104,16 +107,21 @@ public class SzefGUIController implements Initializable {
     @FXML private TableColumn<DataProjekty, Integer> projektyTable_id;
     @FXML private TableColumn<DataProjekty, String> projektyTable_nazwa;
     @FXML private TableColumn<DataProjekty, String> projektyTable_head;
-    //@FXML private TableColumn<DataProjekty, String> projektyTable_pracownicy;
     @FXML private TableColumn<DataProjekty, String> projektyTable_status;
     @FXML private TableColumn<DataProjekty, String> projektyTable_progress;
     @FXML private TableColumn<DataProjekty, String> projektyTable_termin;
+
+    @FXML private TableView<DataTaski> taskiTable;
+    @FXML private TableColumn<DataTaski, Integer> taskiTable_id;
+    @FXML private TableColumn<DataTaski, String> taskiTable_nazwa;
 
     @FXML private TextField nazwaProjektu;
     @FXML private TextField statusProjektu;
     @FXML private TextField progressProjektu;
     @FXML private DatePicker termin_koncowyProjektu;
     @FXML private ComboBox comboBoxSzef;
+    @FXML private ComboBox comboBoxProjects;
+    @FXML private ComboBox comboBoxTasks;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -127,6 +135,8 @@ public class SzefGUIController implements Initializable {
         projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
         projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
         projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
+        taskiTable_id.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
+        taskiTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
 
         System.out.println("Zainicjalizowano kontroler Szefa dla: " + who);
 
@@ -171,18 +181,62 @@ public class SzefGUIController implements Initializable {
 
     @FXML
     private void fillcomboBox() throws SQLException {
-        final ObservableList<String> options = FXCollections.observableArrayList();
+        ObservableList<String> options = FXCollections.observableArrayList();
         String query = "SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Head';";
         PreparedStatement pst = conn.prepareStatement(query);
         ResultSet rs = pst.executeQuery();
         while (rs.next()) {
-            //options.add(rs.getString("Imie"));
-            options.add(rs.getString("Nazwisko"));
+            options.add(rs.getString("Imie") + " " + rs.getString("Nazwisko"));
         }
         comboBoxSzef.setItems(options);
     }
 
+    @FXML
+    private void fillProjects() throws SQLException {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        String query = "SELECT * FROM `szp`.`projekty`;";
+        PreparedStatement pst = conn.prepareStatement(query);
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            options.add(rs.getString("Nazwa_projektu"));
+        }
+        comboBoxProjects.setItems(options);
+    }
 
+    @FXML
+    private void parseTasks() throws SQLException {
+        ObservableList<DataTaski> data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`taski` WHERE ID_PROJEKT_FK=1;");
+        while (rs.next()) {
+            DataTaski dt = new DataTaski();
+            dt.setTaskiTable_id(rs.getInt("ID_Task"));
+            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+            data.add(dt);
+        }
+        taskiTable.setItems(data);
+        taskiTable.refresh();
+    }
+
+    @FXML
+    private void deleteTask(ActionEvent event) throws SQLException {
+        DataTaski taskDelete = taskiTable.getSelectionModel().getSelectedItem();
+
+        if(taskDelete != null) {
+            String id_task = taskDelete.getTaskiTable_id().toString();
+            try {
+                String query = "DELETE FROM szp.taski WHERE ID_Task=" + id_task + ";";
+                System.out.println("Wykonuje zapytanie: " + query);
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.executeUpdate();
+                System.out.println("Task został usunięty z projektu!");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+            parseTasks();
+        }
+
+    }
     @FXML
     private void addProjekt(ActionEvent event) throws SQLException  {
         String name = nazwaProjektu.getText();
@@ -216,6 +270,7 @@ public class SzefGUIController implements Initializable {
             parsePracownicy();
             parseProjekty();
             fillcomboBox();
+            fillProjects();
         } catch (SQLException e) {
             e.printStackTrace();
         }

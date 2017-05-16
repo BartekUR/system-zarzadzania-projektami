@@ -121,6 +121,7 @@ public class HeadGUIController implements Initializable  {
         //conn.close();
         //rs.close();
      }*/
+
     @FXML
     private void displayHeadsProjects() throws SQLException {
         ObservableList<DataProjekty> headProjects  = FXCollections.observableArrayList();

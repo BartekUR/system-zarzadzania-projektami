@@ -73,16 +73,16 @@
                      <children>
                         <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Wybierz projekt" textFill="#3f5a5a" />
                         <Label layoutX="305.0" layoutY="127.0" styleClass="napisy" text="Wybierz task" textFill="#3f5a5a" />
-                        <ChoiceBox layoutX="305.0" layoutY="153.0" prefWidth="150.0" />
-                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
-                        <ChoiceBox layoutX="159.0" layoutY="55.0" prefWidth="150.0" />
-                        <TableView layoutX="58.0" layoutY="121.0" prefHeight="244.0" prefWidth="215.0">
+                        <ComboBox fx:id="comboBoxTasks" layoutX="305.0" layoutY="153.0" prefWidth="150.0" />
+                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false"  onAction="#parseTasks" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
+                        <ComboBox fx:id="comboBoxProjects" layoutX="159.0" layoutY="55.0" prefWidth="150.0" />
+                        <TableView fx:id="taskiTable" layoutX="58.0" layoutY="121.0" prefHeight="244.0" prefWidth="215.0">
                           <columns>
-                            <TableColumn prefWidth="45.0" text="ID" />
-                            <TableColumn prefWidth="169.0" text="Task" />
+                            <TableColumn fx:id="taskiTable_id" prefWidth="45.0" text="ID" />
+                            <TableColumn fx:id="taskiTable_nazwa" prefWidth="169.0" text="Task" />
                           </columns>
                         </TableView>
-                        <Button layoutX="305.0" layoutY="198.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
+                        <Button layoutX="305.0" layoutY="198.0" mnemonicParsing="false" onAction="#deleteTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                      </children>
                   </AnchorPane>
                </content>
