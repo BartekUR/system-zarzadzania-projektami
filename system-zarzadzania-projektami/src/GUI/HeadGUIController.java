@@ -1,7 +1,9 @@
 package GUI;
 
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +20,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
@@ -28,31 +33,39 @@ public class HeadGUIController implements Initializable  {
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
-    @FXML private ComboBox comboBoxSelectProject = new ComboBox();
+    //@FXML private ComboBox comboBoxSelectProject = new ComboBox();
     //@FXML private Button button;
-    @FXML private TableView<DataPracownicy> pracownicyTable, pracownicyInProject_Table;
-    @FXML private TableColumn<DataPracownicy, Integer> pracownicyTable_id, pracownicyInProject_Table_id;
-    @FXML private TableColumn<DataPracownicy, String> pracownicyTable_imie,  pracownicyInProject_Table_imie;
-    @FXML private TableColumn<DataPracownicy, String> pracownicyTable_nazwisko, pracownicyInProject_Table_nazwisko;
+    @FXML private TableView<DataPracownicy> pracownikTable, pracownicyInProject_Table;
+    @FXML private TableColumn<DataPracownicy, Integer> pracownikTable_id, pracownicyInProject_Table_id;
+    @FXML private TableColumn<DataPracownicy, String> pracownikTable_imie,  pracownicyInProject_Table_imie;
+    @FXML private TableColumn<DataPracownicy, String> pracownikTable_nazwisko, pracownicyInProject_Table_nazwisko;
     @FXML private Button addButton;
     @FXML private ComboBox comboBoxHead;
+
     @FXML private TableView<DataMojeProjekty> mojeProjekty;
     @FXML private TableColumn<DataMojeProjekty, Integer> idMProjekty;
     @FXML private TableColumn<DataMojeProjekty, String> taskMProjekty;
     @FXML private TableColumn<DataMojeProjekty, String> pracownikMProjekty;
     @FXML private TableColumn<DataMojeProjekty, String> progressMProjekty;
     @FXML private TableColumn<DataMojeProjekty, String> terminMProjekty;
-    
+
+    @FXML private TableView<DataProjekty> projectsOfTheOnlineHead;
+    @FXML private TableColumn<DataProjekty, Integer> idProjectHead;
+    @FXML private TableColumn<DataProjekty, String> nazwaProjektHead;
+
+    @FXML private Button pokazProjekty;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             fillcomboBox2();
-            fillComboBoxSelectProject();
+            displayEmployeesStatusPracownik();
+            displayHeadsProjects();
+            //fillComboBoxSelectProject();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
         
         idMProjekty.setCellValueFactory(new PropertyValueFactory<>("idMProjekty"));
@@ -61,32 +74,68 @@ public class HeadGUIController implements Initializable  {
         progressMProjekty.setCellValueFactory(new PropertyValueFactory<>("progressMProjekty"));
         terminMProjekty.setCellValueFactory(new PropertyValueFactory<>("terminMProjekty"));
 
-        pracownicyTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
-        pracownicyTable_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
-        pracownicyTable_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
+        pracownikTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
+        pracownikTable_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
+        pracownikTable_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
+
+        idProjectHead.setCellValueFactory(new PropertyValueFactory<>("projektyTable_id"));
+        nazwaProjektHead.setCellValueFactory(new PropertyValueFactory<>("projektyTable_nazwa"));
 
         pracownicyInProject_Table_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownicyInProject_Table_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
         pracownicyInProject_Table_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
     }
 
-    @FXML
+    /*@FXML
     private void fillComboBoxSelectProject() throws SQLException, IOException {
-        final ObservableList<String> projects = FXCollections.observableArrayList();
+        ObservableMap <Integer, String> projects = FXCollections.observableHashMap();
+        /*projects.addListener(new MapChangeListener<Integer, String>() {
+            @Override
+                    public void onChanged(
+                            javafx.collections.MapChangeListener.Change<? extends Integer, ? extends String> change) {
+                        if(change.wasAdded()) {
+                            comboBoxSelectProject.getItems().add(change.getValueAdded());
+                        } else if(change.wasRemoved()) {
+                            comboBoxSelectProject.getItems().remove(change.getValueRemoved());
+                        }
+                    }
+                });*/
+        /*String query = "SELECT * FROM `szp`.`projekty`;";
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        ResultSet rs = preparedStmt.executeQuery();
+        while (rs.next()){
+            HashMap <Integer, String> dataProject = new HashMap<>();
+            Integer idProjektu = rs.getInt("ID_Projekt");
+            String nazwaProjektu = rs.getString("Nazwa_projektu");
+            //dataProject.put(rs.getInt("ID_Projekt"), rs.getString("Nazwa_projektu"));
+            dataProject.put( idProjektu, nazwaProjektu);
+            projects.putAll(dataProject);
+
+            //projects.add(rs.getString("ID_Projekt"));
+            //projects.add(rs.getString("Nazwa_projektu"));
+        }
+        comboBoxSelectProject.getItems().setAll(projects);
+        //System.out.println(projects.values());
+        //conn.close();
+        //rs.close();
+     }*/
+    @FXML
+    private void displayHeadsProjects()throws SQLException {
+        ObservableList <DataProjekty> headProjects  = FXCollections.observableArrayList();
         String query = "SELECT * FROM `szp`.`projekty`;";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
         ResultSet rs = preparedStmt.executeQuery();
         while (rs.next()){
-            //projects.add(rs.getString("ID_Projekt"));
-            projects.add(rs.getString("Nazwa_projektu"));
+            DataProjekty hp = new DataProjekty();
+            hp.setProjektyTable_id(rs.getInt("ID_Projekt"));
+            hp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
+            headProjects.add(hp);
         }
-        comboBoxSelectProject.setItems(projects);
-        //conn.close();
-        //rs.close();
+        projectsOfTheOnlineHead.setItems(headProjects);
     }
 
     @FXML
-    private void displayEmployeesStatusPracownik(ActionEvent event) throws SQLException {
+    private void displayEmployeesStatusPracownik() throws SQLException {
         ObservableList<DataPracownicy> employees = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Pracownik';");
         while (rs.next()) {
@@ -96,116 +145,135 @@ public class HeadGUIController implements Initializable  {
             emp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
             employees.add(emp);
         }
-        pracownicyTable.setItems(employees);
+        pracownikTable.setItems(employees);
+    }
+
+    @FXML
+    private void refreshEmployees(ActionEvent event) throws SQLException {
+        displayEmployeesStatusPracownik();
     }
 
     @FXML
     private void displayEmployeesInProject(ActionEvent event) throws SQLException {
-        String project = comboBoxSelectProject.getValue().toString();
-        ObservableList<DataPracownicy> employeesInProject = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT pra.ID_pracownik, pra.Imie, pra.Nazwisko \n" +
-                "FROM szp.pracownicy pra INNER JOIN szp.pracownicy_i_projekty pip INNER JOIN szp.projekty pro\n" +
-                "WHERE pra.ID_Pracownik=pip.ID_Pracownik_FK\n" +
-                "AND pro.ID_Projekt=pip.ID_Projekt_FK\n" +
-                "AND pro.Nazwa_projektu='"+project+"';");
-        while (rs.next()) {
-            DataPracownicy ep = new DataPracownicy();
-            ep.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
-            ep.setPracownicyTable_imie(rs.getString("Imie"));
-            ep.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
-            employeesInProject.add(ep);
+        //String project = comboBoxSelectProject.getValue().toString();
+        DataProjekty projectHead =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
+        if(projectHead != null) {
+            String name_project = projectHead.getProjektyTable_nazwa();
+            ObservableList<DataPracownicy> employeesInProject = FXCollections.observableArrayList();
+            try {
+                String query = ("SELECT pra.ID_pracownik, pra.Imie, pra.Nazwisko \n" +
+                        "FROM szp.pracownicy pra INNER JOIN szp.pracownicy_i_projekty pip INNER JOIN szp.projekty pro\n" +
+                        "WHERE pra.ID_Pracownik=pip.ID_Pracownik_FK\n" +
+                        "AND pro.ID_Projekt=pip.ID_Projekt_FK\n" +
+                        "AND pro.Nazwa_projektu=(?)");
+                PreparedStatement preparedStmt = conn.prepareStatement(query);
+                preparedStmt.setString(1, name_project);
+                ResultSet rs = preparedStmt.executeQuery();
+                while (rs.next()) {
+                    DataPracownicy ep = new DataPracownicy();
+                    ep.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
+                    ep.setPracownicyTable_imie(rs.getString("Imie"));
+                    ep.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
+                    employeesInProject.add(ep);
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+            pracownicyInProject_Table.setItems(employeesInProject);
         }
-        pracownicyInProject_Table.setItems(employeesInProject);
+
     }
 
     @FXML
-    private void addEmployeeInProject (ActionEvent e) throws SQLException{
-        DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
-        String id = person.getPracownicyTable_id().toString();
-        System.out.println(id);
+    private void addEmployeeToProject (ActionEvent e) throws SQLException{
+        DataPracownicy person = pracownikTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
+        DataProjekty project =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
 
-        /*Integer id_project;
-        String project = comboBoxSelectProject.getValue().toString();
-        ResultSet rs = conn.createStatement().executeQuery("select ID_Projekt from szp.projekty where Nazwa_projektu='"+project+"'");
-        id_project = rs.getInt("ID_Projekt");
-        System.out.println(id_project);*/
-
-        if(person!=null){
+        if(person!=null && project!=null){
+            String id_person = person.getPracownicyTable_id().toString();
+            String id_project = project.getProjektyTable_id().toString();
             try {
                 String query = " insert into `szp`.`pracownicy_i_projekty` (`ID_Pracownik_FK`, `ID_Projekt_FK`)\n" +
                         "values (?, ?)";
 
                 PreparedStatement preparedStmt = conn.prepareStatement(query);
-                preparedStmt.setString(1, id);
-                preparedStmt.setString(2, "2");//powinna byc zmienna id_projektu wybranego z comboBoxa
-
+                preparedStmt.setString(1, id_person);
+                preparedStmt.setString(2, id_project);
                 preparedStmt.executeUpdate();
 
                 System.out.println("Rekord został wstawiony do tabeli projekty!");
 
             } catch (SQLException d){
-
                 System.out.println(d.getMessage());
             }
+            displayEmployeesInProject(e);
         }
     }
 
     @FXML
     private void deleteUserInProject(ActionEvent event) throws IOException,SQLException {
         DataPracownicy personDelete = pracownicyInProject_Table.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
-        String id_pracownik = personDelete.getPracownicyTable_id().toString();
-        System.out.println("id"+id_pracownik);
+        DataProjekty projectDel =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
 
-        try { //id projektu, powinno byc pobrane z comoboBoxa
-            String query = "DELETE FROM szp.pracownicy_i_projekty WHERE ID_Pracownik_FK='"+id_pracownik+"' AND ID_Projekt_FK='5';";
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.executeUpdate();
-            System.out.println("Pracownik został usunięty z projektu!");
+        if(personDelete != null && projectDel != null) {
+            String id_pracownik = personDelete.getPracownicyTable_id().toString();
+            String id_projekt = projectDel.getProjektyTable_id().toString();
+            try {
+                String query = "DELETE FROM szp.pracownicy_i_projekty WHERE ID_Pracownik_FK=(?) AND ID_Projekt_FK=(?);";
+                PreparedStatement preparedStmt = conn.prepareStatement(query);
+                preparedStmt.setString(1, id_pracownik);
+                preparedStmt.setString(2, id_projekt);
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+                preparedStmt.executeUpdate();
+                System.out.println("Pracownik został usunięty z projektu!");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+            displayEmployeesInProject(event);
         }
 
     }
-    
+
+    @FXML
     private void pokazProjekt(ActionEvent event) throws SQLException  {
-        Object projekt = comboBoxHead.getValue().toString();
+        String projekt = comboBoxHead.getValue().toString();
         ObservableList<DataMojeProjekty> data = FXCollections.observableArrayList();
-        try {
-            ResultSet rs = conn.createStatement().executeQuery("SELECT pra.Nazwisko, t.Nazwa_tasku\n" +
-                    "FROM pracownicy pra INNER JOIN pracownicy_i_taski pit INNER JOIN taski t INNER JOIN projekty pro\n" +
+        String query = ("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, t.Progress, t.Termin\n" +
+                    "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
                     "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
                     "AND t.ID_Task=pit.ID_Taski_FK\n" +
                     "AND pro.ID_Projekt=t.ID_Projekt_FK\n" +
-                    "AND pro.Nazwa_projektu='"+projekt+"';");
-            while (rs.next()) {
-                DataMojeProjekty dp = new DataMojeProjekty();
-                dp.setidMProjekty(rs.getInt("ID_Projekt"));
-                dp.settaskMProjekty(rs.getString("Task"));
-                dp.setpracownikMProjekty(rs.getString("Pracownik"));
-                dp.setprogressMProjekty(rs.getString("Progress"));
-                dp.setterminMProjekty(rs.getString("Termin"));
-                data.add(dp);
-            }
-            mojeProjekty.setItems(data);
+                    "AND pro.Nazwa_projektu=(?)");
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        preparedStmt.setString(1, projekt);
+        ResultSet rs = preparedStmt.executeQuery();
+        while (rs.next()) {
+            DataMojeProjekty dp = new DataMojeProjekty();
+            dp.setidMProjekty(rs.getInt("t.ID_Projekt_FK"));
+            dp.settaskMProjekty(rs.getString("t.Nazwa_tasku"));
+            dp.setpracownikMProjekty(rs.getString("pra.Nazwisko"));
+            dp.setprogressMProjekty(rs.getString("t.Progress"));
+            dp.setterminMProjekty(rs.getString("t.Termin"));
+            data.add(dp);
         }
-        catch(SQLException e) {
-
-            System.out.println(e.getMessage());
-        }
+        mojeProjekty.setItems(data);
+        System.out.println(data);
     }
     
     @FXML
     public void fillcomboBox2() throws SQLException, IOException {
         final ObservableList<String> options = FXCollections.observableArrayList();
-        String query = "SELECT * FROM `szp`.`projekty` where `Head`='Jacek Kowal';";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        ResultSet rs = preparedStmt.executeQuery();
-        while (rs.next()){
-            options.add(rs.getString("Nazwa_projektu"));
+        try {
+            String query ="SELECT Nazwa_projektu FROM szp.projekty WHERE Head = 'Glik'";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            while (rs.next()){
+                options.add(rs.getString("Nazwa_projektu"));
+            }comboBoxHead.setItems(options);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
 
-        comboBoxHead.setItems(options);
         //conn.close();
         //rs.close();
     }

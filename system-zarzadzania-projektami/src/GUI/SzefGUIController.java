@@ -52,22 +52,14 @@ public class SzefGUIController implements Initializable {
 
     @FXML
     private void deleteUser(ActionEvent event) throws IOException,SQLException {
-        /*Parent loader = FXMLLoader.load(getClass().getResource("DeleteUser.fxml"));
-        Scene info_scene= new Scene(loader);
-        Stage info_stage =new Stage();
-        info_stage.setScene(info_scene);
-        info_stage.initModality(Modality.APPLICATION_MODAL);
-        info_stage.initOwner(deleteUser.getScene().getWindow());
-        info_stage.showAndWait();*/
-
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
         String id = person.getPracownicyTable_id().toString();
-        System.out.println("id"+id);
 
         try {
-            String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik='"+id+"'";
-            PreparedStatement pst = conn.prepareStatement(query);
-            pst.executeUpdate();
+            String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik=(?)";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1,id);
+            preparedStmt.executeUpdate();
             System.out.println("Rekord został usunięty z tabeli pracownicy!");
 
         } catch (SQLException e) {
