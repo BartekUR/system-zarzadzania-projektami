@@ -7,14 +7,14 @@
    <children>
       <HBox layoutX="65.0" layoutY="214.0" spacing="10.0" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="65.0">
          <children>
-            <Button layoutX="105.0" layoutY="216.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" styleClass="button_big2" text="Zaloguj" textFill="#f8f8f8" />
+            <Button fx:id="loginButton" layoutX="105.0" layoutY="216.0" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="130.0" styleClass="button_big2" text="Zaloguj" textFill="#f8f8f8" />
             <Button fx:id="closeButton" layoutX="191.0" layoutY="216.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="50.0" prefWidth="130.0" styleClass="button_big2" text="Anuluj" textFill="#f8f8f8" />
          </children>
       </HBox>
       <Label layoutX="65.0" layoutY="96.0" styleClass="napisy" text="Login" />
       <Label layoutX="65.0" layoutY="150.0" styleClass="napisy" text="Hasło" />
       <Label layoutX="171.0" layoutY="53.0" styleClass="napisy" text="Logowanie" AnchorPane.leftAnchor="171.0" AnchorPane.rightAnchor="171.0" />
-      <PasswordField layoutX="126.0" layoutY="146.0" AnchorPane.leftAnchor="126.0" AnchorPane.rightAnchor="125.0" />
-      <TextField layoutX="126.0" layoutY="92.0" />
+      <PasswordField fx:id="log_pass" layoutX="126.0" layoutY="146.0" AnchorPane.leftAnchor="126.0" AnchorPane.rightAnchor="125.0" />
+      <TextField fx:id="log_user" layoutX="126.0" layoutY="92.0" />
    </children>
 </AnchorPane>

@@ -13,13 +13,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+
+import static GUI.LogowanieController.who;
 
 /**
  * Created by Michal on 2017-03-22.
@@ -65,8 +66,8 @@ public class SzefGUIController implements Initializable {
 
         try {
             String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik='"+id+"'";
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.executeUpdate();
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.executeUpdate();
             System.out.println("Rekord został usunięty z tabeli pracownicy!");
 
         } catch (SQLException e) {
@@ -136,6 +137,8 @@ public class SzefGUIController implements Initializable {
         projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
         projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
 
+        System.out.println("Zainicjalizowano kontroler Szefa dla: " + who);
+
         try {
             refresh();
         } catch (SQLException e) {
@@ -179,8 +182,8 @@ public class SzefGUIController implements Initializable {
     private void fillcomboBox() throws SQLException {
         final ObservableList<String> options = FXCollections.observableArrayList();
         String query = "SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Head';";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        ResultSet rs = preparedStmt.executeQuery();
+        PreparedStatement pst = conn.prepareStatement(query);
+        ResultSet rs = pst.executeQuery();
         while (rs.next()) {
             //options.add(rs.getString("Imie"));
             options.add(rs.getString("Nazwisko"));
@@ -201,14 +204,14 @@ public class SzefGUIController implements Initializable {
             String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
                     + " values (?, ?, ?, ?, ?)";
 
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.setString(1, name);
-            preparedStmt.setString(2, head);
-            preparedStmt.setString(3, status);
-            preparedStmt.setString(4, progress);
-            preparedStmt.setString(5, termin);
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, name);
+            pst.setString(2, head);
+            pst.setString(3, status);
+            pst.setString(4, progress);
+            pst.setString(5, termin);
 
-            preparedStmt.executeUpdate();
+            pst.executeUpdate();
 
             System.out.println("Rekord został wstawiony do tabeli projekty!");
         } catch (SQLException e) {
