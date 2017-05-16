@@ -124,7 +124,6 @@ public class SzefGUIController implements Initializable {
         projektyTable_id.setCellValueFactory(new PropertyValueFactory<>("projektyTable_id"));
         projektyTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("projektyTable_nazwa"));
         projektyTable_head.setCellValueFactory(new PropertyValueFactory<>("projektyTable_head"));
-        //projektyTable_pracownicy.setCellValueFactory(new PropertyValueFactory<>("projektyTable_pracownicy"));
         projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
         projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
         projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));

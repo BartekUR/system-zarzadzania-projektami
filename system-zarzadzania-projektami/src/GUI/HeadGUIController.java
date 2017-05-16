@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import static GUI.LogowanieController.who;
+
 /**
  * Created by Michal on 2017-03-22.
  */
@@ -101,8 +103,8 @@ public class HeadGUIController implements Initializable  {
                     }
                 });*/
         /*String query = "SELECT * FROM `szp`.`projekty`;";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        ResultSet rs = preparedStmt.executeQuery();
+        PreparedStatement pst = conn.prepareStatement(query);
+        ResultSet rs = pst.executeQuery();
         while (rs.next()){
             HashMap <Integer, String> dataProject = new HashMap<>();
             Integer idProjektu = rs.getInt("ID_Projekt");
@@ -120,18 +122,17 @@ public class HeadGUIController implements Initializable  {
         //rs.close();
      }*/
     @FXML
-    private void displayHeadsProjects()throws SQLException {
-        ObservableList <DataProjekty> headProjects  = FXCollections.observableArrayList();
-        String query = "SELECT * FROM `szp`.`projekty`;";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        ResultSet rs = preparedStmt.executeQuery();
-        while (rs.next()){
+    private void displayHeadsProjects() throws SQLException {
+        ObservableList<DataProjekty> headProjects  = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty`;");
+        while (rs.next()) {
             DataProjekty hp = new DataProjekty();
             hp.setProjektyTable_id(rs.getInt("ID_Projekt"));
             hp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
             headProjects.add(hp);
         }
         projectsOfTheOnlineHead.setItems(headProjects);
+        projectsOfTheOnlineHead.refresh();
     }
 
     @FXML
@@ -146,6 +147,7 @@ public class HeadGUIController implements Initializable  {
             employees.add(emp);
         }
         pracownikTable.setItems(employees);
+        pracownikTable.refresh();
     }
 
     @FXML
@@ -166,9 +168,9 @@ public class HeadGUIController implements Initializable  {
                         "WHERE pra.ID_Pracownik=pip.ID_Pracownik_FK\n" +
                         "AND pro.ID_Projekt=pip.ID_Projekt_FK\n" +
                         "AND pro.Nazwa_projektu=(?)");
-                PreparedStatement preparedStmt = conn.prepareStatement(query);
-                preparedStmt.setString(1, name_project);
-                ResultSet rs = preparedStmt.executeQuery();
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, name_project);
+                ResultSet rs = pst.executeQuery();
                 while (rs.next()) {
                     DataPracownicy ep = new DataPracownicy();
                     ep.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
@@ -193,16 +195,13 @@ public class HeadGUIController implements Initializable  {
             String id_person = person.getPracownicyTable_id().toString();
             String id_project = project.getProjektyTable_id().toString();
             try {
-                String query = " insert into `szp`.`pracownicy_i_projekty` (`ID_Pracownik_FK`, `ID_Projekt_FK`)\n" +
-                        "values (?, ?)";
-
-                PreparedStatement preparedStmt = conn.prepareStatement(query);
-                preparedStmt.setString(1, id_person);
-                preparedStmt.setString(2, id_project);
-                preparedStmt.executeUpdate();
+                String query = " insert into `szp`.`pracownicy_i_projekty` (`ID_Pracownik_FK`, `ID_Projekt_FK`) values (?, ?)";
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, id_person);
+                pst.setString(2, id_project);
+                pst.executeUpdate();
 
                 System.out.println("Rekord został wstawiony do tabeli projekty!");
-
             } catch (SQLException d){
                 System.out.println(d.getMessage());
             }
@@ -220,11 +219,11 @@ public class HeadGUIController implements Initializable  {
             String id_projekt = projectDel.getProjektyTable_id().toString();
             try {
                 String query = "DELETE FROM szp.pracownicy_i_projekty WHERE ID_Pracownik_FK=(?) AND ID_Projekt_FK=(?);";
-                PreparedStatement preparedStmt = conn.prepareStatement(query);
-                preparedStmt.setString(1, id_pracownik);
-                preparedStmt.setString(2, id_projekt);
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, id_pracownik);
+                pst.setString(2, id_projekt);
 
-                preparedStmt.executeUpdate();
+                pst.executeUpdate();
                 System.out.println("Pracownik został usunięty z projektu!");
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -244,9 +243,9 @@ public class HeadGUIController implements Initializable  {
                     "AND t.ID_Task=pit.ID_Taski_FK\n" +
                     "AND pro.ID_Projekt=t.ID_Projekt_FK\n" +
                     "AND pro.Nazwa_projektu=(?)");
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        preparedStmt.setString(1, projekt);
-        ResultSet rs = preparedStmt.executeQuery();
+        PreparedStatement pst = conn.prepareStatement(query);
+        pst.setString(1, projekt);
+        ResultSet rs = pst.executeQuery();
         while (rs.next()) {
             DataMojeProjekty dp = new DataMojeProjekty();
             dp.setidMProjekty(rs.getInt("t.ID_Projekt_FK"));
@@ -257,24 +256,22 @@ public class HeadGUIController implements Initializable  {
             data.add(dp);
         }
         mojeProjekty.setItems(data);
-        System.out.println(data);
     }
     
     @FXML
     public void fillcomboBox2() throws SQLException, IOException {
         final ObservableList<String> options = FXCollections.observableArrayList();
         try {
-            String query ="SELECT Nazwa_projektu FROM szp.projekty WHERE Head = 'Glik'";
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            ResultSet rs = preparedStmt.executeQuery();
+            String query ="SELECT * FROM `szp`.`projekty` WHERE `Head`='" + who + "'";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
             while (rs.next()){
                 options.add(rs.getString("Nazwa_projektu"));
-            }comboBoxHead.setItems(options);
+            }
+            comboBoxHead.setItems(options);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        //conn.close();
-        //rs.close();
     }
 }
