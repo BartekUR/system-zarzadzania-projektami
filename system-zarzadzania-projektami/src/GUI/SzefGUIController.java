@@ -56,19 +56,22 @@ public class SzefGUIController implements Initializable {
     @FXML
     private void deleteUser(ActionEvent event) throws IOException,SQLException {
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
-        String id = person.getPracownicyTable_id().toString();
 
-        try {
-            String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik=(?)";
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.setString(1,id);
-            preparedStmt.executeUpdate();
-            System.out.println("Rekord został usunięty z tabeli pracownicy!");
+        if(person != null) {
+            String id = person.getPracownicyTable_id().toString();
+            try {
+                String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik=(?)";
+                PreparedStatement preparedStmt = conn.prepareStatement(query);
+                preparedStmt.setString(1, id);
+                preparedStmt.executeUpdate();
+                System.out.println("Rekord został usunięty z tabeli pracownicy!");
+                parsePracownicy();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
         }
-        parsePracownicy();
+
     }
 
     @FXML

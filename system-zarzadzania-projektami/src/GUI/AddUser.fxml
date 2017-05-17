@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -18,5 +21,12 @@
       <Label layoutX="100.0" layoutY="70.0" styleClass="napisy" text="Dodaj użytkownika" />
       <TextField fx:id="du_imie" layoutX="86.0" layoutY="105.0" />
       <TextField fx:id="du_nazwisko" layoutX="86.0" layoutY="160.0" />
+      <Label fx:id="labelWypelnijPola" layoutX="3.0" layoutY="350.0" text="Nie można dodać użytkownika. Wypełnij wszystkie pola!" textFill="#d70c0c" visible="false" />
+      <Label fx:id="labelUzytkownikDodany" layoutX="22.0" layoutY="350.0" text="Użytkownik został dodany!" visible="false" />
+      <Label fx:id="labelRekordIstnieje" layoutX="5.0" layoutY="350.0" text="Nie można dodać rekordu. Użytkownik już istnieje w bazie!" textFill="#d70c0c" visible="false">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

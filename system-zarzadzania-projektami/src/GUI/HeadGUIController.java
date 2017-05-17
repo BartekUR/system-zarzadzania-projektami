@@ -244,6 +244,7 @@ public class HeadGUIController implements Initializable  {
                     "AND t.ID_Task=pit.ID_Taski_FK\n" +
                     "AND pro.ID_Projekt=t.ID_Projekt_FK\n" +
                     "AND pro.Nazwa_projektu=(?)");
+
         PreparedStatement pst = conn.prepareStatement(query);
         pst.setString(1, projekt);
         ResultSet rs = pst.executeQuery();
