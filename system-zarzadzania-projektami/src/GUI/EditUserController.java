@@ -65,6 +65,8 @@ public class EditUserController implements Initializable {
                 euStanowisko.setValue(stanowisko);
                 euNoweHaslo.setText(haslo);
             }
+        }
+    }
 
 
     @Override
