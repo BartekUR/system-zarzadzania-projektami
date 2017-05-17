@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SzefGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SzefGUIController">
     <children>
         <TabPane prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
@@ -35,7 +44,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                             <children>
-                                <TableView fx:id="projektyTable" layoutX="181.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
+                                <TableView fx:id="projektyTable" layoutX="18.0" layoutY="111.0" prefHeight="486.0" prefWidth="765.0" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
                                     <columns>
                                         <TableColumn fx:id="projektyTable_id" prefWidth="41.0" text="ID" />
                                         <TableColumn fx:id="projektyTable_nazwa" prefWidth="164.0" text="Nazwa projektu" />
@@ -45,6 +54,7 @@
                                         <TableColumn fx:id="projektyTable_termin" prefWidth="125.0" text="Termin" />
                                     </columns>
                                 </TableView>
+                        <Button layoutX="372.0" layoutY="510.0" mnemonicParsing="false"  onAction="#deleteProject" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -72,17 +82,15 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
                         <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Wybierz projekt" textFill="#3f5a5a" />
-                        <Label layoutX="305.0" layoutY="127.0" styleClass="napisy" text="Wybierz task" textFill="#3f5a5a" />
-                        <ComboBox fx:id="comboBoxTasks" layoutX="305.0" layoutY="153.0" prefWidth="150.0" />
-                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false"  onAction="#parseTasks" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
+                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" onAction="#parseTasks" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
                         <ComboBox fx:id="comboBoxProjects" layoutX="159.0" layoutY="55.0" prefWidth="150.0" />
-                        <TableView fx:id="taskiTable" layoutX="58.0" layoutY="121.0" prefHeight="244.0" prefWidth="215.0">
+                        <TableView fx:id="taskiTable" layoutX="58.0" layoutY="121.0" prefHeight="244.0" prefWidth="253.0">
                           <columns>
                             <TableColumn fx:id="taskiTable_id" prefWidth="45.0" text="ID" />
                             <TableColumn fx:id="taskiTable_nazwa" prefWidth="169.0" text="Task" />
                           </columns>
                         </TableView>
-                        <Button layoutX="305.0" layoutY="198.0" mnemonicParsing="false" onAction="#deleteTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
+                        <Button layoutX="326.0" layoutY="195.0" mnemonicParsing="false" onAction="#deleteTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                      </children>
                   </AnchorPane>
                </content>

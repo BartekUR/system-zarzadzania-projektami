@@ -209,7 +209,11 @@ public class SzefGUIController implements Initializable {
     @FXML
     private void parseTasks() throws SQLException {
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`taski` WHERE ID_PROJEKT_FK=1;");
+        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku\n" +
+                "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
+                "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
+                "AND t.ID_Task=pit.ID_Taski_FK AND pro.ID_Projekt=t.ID_Projekt_FK AND pro.Nazwa_projektu='" +
+                comboBoxProjects.getValue().toString() + "';");
         while (rs.next()) {
             DataTaski dt = new DataTaski();
             dt.setTaskiTable_id(rs.getInt("ID_Task"));
@@ -221,14 +225,13 @@ public class SzefGUIController implements Initializable {
     }
 
     @FXML
-    private void deleteTask(ActionEvent event) throws SQLException {
+    private void deleteTask() throws SQLException {
         DataTaski taskDelete = taskiTable.getSelectionModel().getSelectedItem();
 
-        if(taskDelete != null) {
+        if (taskDelete != null) {
             String id_task = taskDelete.getTaskiTable_id().toString();
             try {
                 String query = "DELETE FROM szp.taski WHERE ID_Task=" + id_task + ";";
-                System.out.println("Wykonuje zapytanie: " + query);
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.executeUpdate();
                 System.out.println("Task został usunięty z projektu!");
@@ -238,8 +241,27 @@ public class SzefGUIController implements Initializable {
 
             parseTasks();
         }
-
     }
+
+    @FXML
+    private void deleteProject() throws SQLException {
+        DataProjekty projectDelete = projektyTable.getSelectionModel().getSelectedItem();
+
+        if(projectDelete != null) {
+            String id_project = projectDelete.getProjektyTable_id().toString();
+            try {
+                String query = "DELETE FROM szp.projekty WHERE ID_Projekt=" + id_project + ";";
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.executeUpdate();
+                System.out.println("Projekt został usunięty!");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+            parseProjekty();
+        }
+    }
+
     @FXML
     private void addProjekt(ActionEvent event) throws SQLException  {
         String name = nazwaProjektu.getText();

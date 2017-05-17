@@ -86,6 +86,8 @@ public class HeadGUIController implements Initializable  {
         pracownicyInProject_Table_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownicyInProject_Table_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
         pracownicyInProject_Table_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
+
+        System.out.println("Zainicjalizowano kontroler Heada dla: " + who);
     }
 
     /*@FXML
