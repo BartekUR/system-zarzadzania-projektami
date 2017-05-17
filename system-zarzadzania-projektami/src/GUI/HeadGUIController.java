@@ -57,6 +57,15 @@ public class HeadGUIController implements Initializable  {
 
     @FXML private Button pokazProjekty;
 
+    @FXML private ComboBox comboBoxSelectProject2;
+    @FXML private ComboBox comboBoxSelectPracownik;
+    @FXML private TableView<DataTaski> taskiTable;
+    @FXML private TableColumn<DataTaski, Integer> taskiTable_id;
+    @FXML private TableColumn<DataTaski, String> taskiTable_nazwa;
+    @FXML private TableView<DataTaski> taskiPracownik;
+    @FXML private TableColumn<DataTaski, Integer> taskiPracownik_id;
+    @FXML private TableColumn<DataTaski, String> taskiPracownik_nazwa;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -66,10 +75,8 @@ public class HeadGUIController implements Initializable  {
             //fillComboBoxSelectProject();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-           e.printStackTrace();
         }
-        
+
         idMProjekty.setCellValueFactory(new PropertyValueFactory<>("idMProjekty"));
         taskMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskMProjekty"));
         pracownikMProjekty.setCellValueFactory(new PropertyValueFactory<>("pracownikMProjekty"));
@@ -86,6 +93,9 @@ public class HeadGUIController implements Initializable  {
         pracownicyInProject_Table_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownicyInProject_Table_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
         pracownicyInProject_Table_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
+
+        taskiTable_id.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
+        taskiTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
 
         System.out.println("Zainicjalizowano kontroler Heada dla: " + who);
     }
@@ -160,7 +170,6 @@ public class HeadGUIController implements Initializable  {
 
     @FXML
     private void displayEmployeesInProject(ActionEvent event) throws SQLException {
-        //String project = comboBoxSelectProject.getValue().toString();
         DataProjekty projectHead =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
         if(projectHead != null) {
             String name_project = projectHead.getProjektyTable_nazwa();
@@ -262,19 +271,58 @@ public class HeadGUIController implements Initializable  {
     }
     
     @FXML
-    public void fillcomboBox2() throws SQLException, IOException {
-        final ObservableList<String> options = FXCollections.observableArrayList();
+    public void fillcomboBox2() throws SQLException {
+        ObservableList<String> options = FXCollections.observableArrayList();
         try {
-            String query ="SELECT * FROM `szp`.`projekty` WHERE `Head`='" + who + "'";
+            String query = "SELECT * FROM `szp`.`projekty` WHERE `Head`='" + who + "'";
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 options.add(rs.getString("Nazwa_projektu"));
             }
             comboBoxHead.setItems(options);
+            comboBoxSelectProject2.setItems(options);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
+
+    @FXML
+    public void fillcomboBox3() throws SQLException {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        try {
+            String query = ("SELECT pra.ID_pracownik, pra.Imie, pra.Nazwisko \n" +
+                    "FROM szp.pracownicy pra INNER JOIN szp.pracownicy_i_projekty pip INNER JOIN szp.projekty pro\n" +
+                    "WHERE pra.ID_Pracownik=pip.ID_Pracownik_FK\n" +
+                    "AND pro.ID_Projekt=pip.ID_Projekt_FK\n" +
+                    "AND pro.Nazwa_projektu='" + comboBoxSelectProject2.getValue().toString() + "';");
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                options.add(rs.getString("Imie") + " " + rs.getString("Nazwisko"));
+            }
+            comboBoxSelectPracownik.setItems(options);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    @FXML
+    private void parseTasks() throws SQLException {
+        ObservableList<DataTaski> data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku\n" +
+                "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
+                "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
+                "AND t.ID_Task=pit.ID_Taski_FK AND pro.ID_Projekt=t.ID_Projekt_FK AND pro.Nazwa_projektu='" +
+                comboBoxSelectProject2.getValue().toString() + "';");
+        while (rs.next()) {
+            DataTaski dt = new DataTaski();
+            dt.setTaskiTable_id(rs.getInt("ID_Task"));
+            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+            data.add(dt);
+        }
+        taskiTable.setItems(data);
+        taskiTable.refresh();
+        fillcomboBox3();
+    }
+
 }
