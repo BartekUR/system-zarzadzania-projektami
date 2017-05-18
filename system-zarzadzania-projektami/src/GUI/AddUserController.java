@@ -52,7 +52,7 @@ public class AddUserController {
         Object stanowisko = du_stanowisko.getValue();
         int numberOfRows = 0;
 
-        if (imie == null || nazwisko == null || stanowisko == null) {
+        if (imie.length() == 0 || nazwisko == "" || stanowisko == null) {
             labelWypelnijPola.setVisible(true);
         } else {
             labelWypelnijPola.setVisible(false);

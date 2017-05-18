@@ -51,9 +51,9 @@ public class EditUserController implements Initializable {
         //conn.close();
         //rs.close();
 
-        if (comboBoxWyborUzytkownika != null){
-            //String id = comboBoxWyborUzytkownika.getValue().toString(); - nie wiem dlaczego wyskakuje nullpointer przy recznym wpisaniu id działa
-            rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `ID_Pracownik`='3';");
+        if (comboBoxWyborUzytkownika.getValue() != null){
+            String id = comboBoxWyborUzytkownika.getValue().toString(); //- nie wiem dlaczego wyskakuje nullpointer przy recznym wpisaniu id działa
+            rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `ID_Pracownik`='"+id+"';");
 
             while(rs.next()) {
                 String imie = rs.getString("Imie");
