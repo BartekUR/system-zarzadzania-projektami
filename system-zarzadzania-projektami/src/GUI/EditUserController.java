@@ -52,7 +52,7 @@ public class EditUserController implements Initializable {
         //rs.close();
 
         if (comboBoxWyborUzytkownika.getValue() != null){
-            String id = comboBoxWyborUzytkownika.getValue().toString(); //- nie wiem dlaczego wyskakuje nullpointer przy recznym wpisaniu id działa
+            String id = comboBoxWyborUzytkownika.getValue().toString(); 
             rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `ID_Pracownik`='"+id+"';");
 
             while(rs.next()) {
@@ -91,8 +91,7 @@ public class EditUserController implements Initializable {
 
         try {
 
-            String query = " insert into `szp`.`pracownicy` (`Login`, `Haslo`, `Imie`, `Nazwisko`, `Stanowisko`) where `ID_Pracownik`='"+id+"'; "
-                    + " values (?, ?, ?, ?, ?)";
+            String query = " UPDATE `szp`.`pracownicy` set `Login` = ?, `Haslo` = ?, `Imie` = ?, `Nazwisko` = ?, `Stanowisko` = ? where `ID_Pracownik`='"+id+"'; ";
 
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString(1, nazwisko + imie);
