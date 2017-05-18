@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -30,6 +31,7 @@ public class EditUserController implements Initializable {
     private Connection conn = sc.getConn();
     @FXML private javafx.scene.control.Button closeButton;
     @FXML private ComboBox comboBoxWyborUzytkownika;
+    @FXML private Label labelEditUser;
     @FXML
     private void closeButtonAction(){
 
@@ -88,7 +90,7 @@ public class EditUserController implements Initializable {
         String nazwisko = euNazwisko.getText();
         Object stanowisko = euStanowisko.getValue();
         String haslo = euNoweHaslo.getText();
-
+        
         try {
 
             String query = " UPDATE `szp`.`pracownicy` set `Login` = ?, `Haslo` = ?, `Imie` = ?, `Nazwisko` = ?, `Stanowisko` = ? where `ID_Pracownik`='"+id+"'; ";
@@ -102,6 +104,7 @@ public class EditUserController implements Initializable {
 
             preparedStmt.executeUpdate();
 
+            labelEditUser.setVisible(true);
             System.out.println("Rekord "+id+" został edytowany!");
 
         } catch (SQLException e) {
