@@ -24,19 +24,18 @@ public class PracownikGUIController implements Initializable {
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
-    @FXML private TableView<DataProjektyPracownika> tableProjektPracownika;
-    @FXML private TableColumn<DataProjektyPracownika, String> columnProjekt;
-    @FXML private TableColumn<DataProjektyPracownika, String> columnHead;
-    @FXML private TableColumn<DataProjektyPracownika, String> columnStatus;
-    @FXML private TableColumn<DataProjektyPracownika, String> columnTermin;
-
+    @FXML private TableView<DataProjekty> tableProjektPracownika;
+    @FXML private TableColumn<DataProjekty, String> columnProjekt;
+    @FXML private TableColumn<DataProjekty, String> columnHead;
+    @FXML private TableColumn<DataProjekty, String> columnStatus;
+    @FXML private TableColumn<DataProjekty, String> columnTermin;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        columnProjekt.setCellValueFactory(new PropertyValueFactory<>("columnProjekt"));
-        columnHead.setCellValueFactory(new PropertyValueFactory<>("columnHead"));
-        columnStatus.setCellValueFactory(new PropertyValueFactory<>("columnStatus"));
-        columnTermin.setCellValueFactory(new PropertyValueFactory<>("columnTermin"));
+        columnProjekt.setCellValueFactory(new PropertyValueFactory<>("projektyTable_nazwa"));
+        columnHead.setCellValueFactory(new PropertyValueFactory<>("projektyTable_head"));
+        columnStatus.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
+        columnTermin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
 
         System.out.println("Zainicjalizowano kontroler Pracownika dla: " + who);
 
@@ -49,28 +48,25 @@ public class PracownikGUIController implements Initializable {
 
     @FXML
     private void wyswietlProjektyPracownika() throws SQLException {
-        ObservableList<DataProjektyPracownika> dataProjekty = FXCollections.observableArrayList();
+        ObservableList<DataProjekty> dataProjekty2 = FXCollections.observableArrayList();
 
-        try {
-            ResultSet rs = conn.createStatement().executeQuery("SELECT pro.`Nazwa_projektu`, pro.`Head`, pro.`Status`, pro.`Termin`\n" +
-                    "FROM szp.projekty pro , szp.pracownicy_i_projekty pip, szp.pracownicy pra\n" +
-                    "WHERE pro.ID_Projekt = pip.ID_Projekt_FK\n" +
-                    "AND pra.ID_Pracownik = pip.ID_Pracownik_FK\n" +
-                    "AND pra.Login ='" + whoLogin + "'");
-            while (rs.next()) {
-                DataProjektyPracownika dpp = new DataProjektyPracownika();
-                dpp.setProjektyPracownika_nazwa(rs.getString("Nazwa_projektu"));
-                dpp.setProjektyPracownika_head(rs.getString("Head"));
-                dpp.setProjektyPracownika_status(rs.getString("Status"));
-                dpp.setProjektyPracownika_termin(rs.getString("Termin"));
-                dataProjekty.add(dpp);
-                System.out.println(dataProjekty);
-            }
+        ResultSet rs = conn.createStatement().executeQuery("SELECT pro.`Nazwa_projektu`, pro.`Head`, pro.`Status`, pro.`Termin`\n" +
+                "FROM szp.projekty pro , szp.pracownicy_i_projekty pip, szp.pracownicy pra\n" +
+                "WHERE pro.ID_Projekt = pip.ID_Projekt_FK\n" +
+                "AND pra.ID_Pracownik = pip.ID_Pracownik_FK\n" +
+                "AND pra.Login ='" + whoLogin + "'");
 
-
-        } catch (SQLException d) {
-            System.out.println(d.getMessage());
+        while (rs.next()) {
+            DataProjekty dp = new DataProjekty();
+            dp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
+            dp.setProjektyTable_head(rs.getString("Head"));
+            dp.setProjektyTable_status(rs.getString("Status"));
+            dp.setProjektyTable_termin(rs.getString("Termin"));
+            dataProjekty2.add(dp);
+            System.out.println(dataProjekty2);
         }
-        tableProjektPracownika.setItems(dataProjekty);
+
+        tableProjektPracownika.setItems(dataProjekty2);
+        tableProjektPracownika.refresh();
     }
 }

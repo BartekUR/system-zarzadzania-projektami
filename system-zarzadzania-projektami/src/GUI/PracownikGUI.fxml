@@ -19,14 +19,14 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
-                        <TreeTableView fx:id="tableProjektPracownika" layoutX="94.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
+                        <TableView fx:id="tableProjektPracownika" layoutX="94.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
                           <columns>
-                            <TreeTableColumn fx:id="columnProjekt" prefWidth="171.0" text="Projekt" />
-                            <TreeTableColumn fx:id="columnHead" prefWidth="181.0" text="Head" />
-                              <TreeTableColumn fx:id="columnStatus" prefWidth="198.0" text="Status" />
-                              <TreeTableColumn fx:id="columnTermin" prefWidth="215.0" text="Termin" />
+                            <TableColumn fx:id="columnProjekt" prefWidth="171.0" text="Projekt" />
+                            <TableColumn fx:id="columnHead" prefWidth="181.0" text="Head" />
+                              <TableColumn fx:id="columnStatus" prefWidth="198.0" text="Status" />
+                              <TableColumn fx:id="columnTermin" prefWidth="215.0" text="Termin" />
                           </columns>
-                        </TreeTableView>
+                        </TableView>
                      </children>
                   </AnchorPane>
             </content>
