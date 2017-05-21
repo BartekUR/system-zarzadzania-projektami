@@ -18,7 +18,7 @@ public class LogowanieController {
 
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
-    public static String who, what;
+    public static String who, what, whoLogin;
 
     @FXML
     private TextField log_user;
@@ -36,6 +36,7 @@ public class LogowanieController {
 
         if (rs.next()) {
             who = rs.getString("Imie") + " " + rs.getString("Nazwisko");
+            whoLogin = rs.getString( "Login");
             what = rs.getString("Stanowisko");
             System.out.println("Zostałeś zalogowany jako " + who + " ze stanowiskiem " + what + ".");
 
