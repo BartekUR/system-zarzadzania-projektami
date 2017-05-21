@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -30,6 +31,7 @@ public class EditUserController implements Initializable {
     private Connection conn = sc.getConn();
     @FXML private javafx.scene.control.Button closeButton;
     @FXML private ComboBox comboBoxWyborUzytkownika;
+    @FXML private Label labelEditUser;
     @FXML
     private void closeButtonAction(){
 
@@ -52,7 +54,7 @@ public class EditUserController implements Initializable {
         //rs.close();
 
         if (comboBoxWyborUzytkownika.getValue() != null){
-            String id = comboBoxWyborUzytkownika.getValue().toString(); //- nie wiem dlaczego wyskakuje nullpointer przy recznym wpisaniu id działa
+            String id = comboBoxWyborUzytkownika.getValue().toString(); 
             rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `ID_Pracownik`='"+id+"';");
 
             while(rs.next()) {
@@ -88,11 +90,10 @@ public class EditUserController implements Initializable {
         String nazwisko = euNazwisko.getText();
         Object stanowisko = euStanowisko.getValue();
         String haslo = euNoweHaslo.getText();
-
+        
         try {
 
-            String query = " insert into `szp`.`pracownicy` (`Login`, `Haslo`, `Imie`, `Nazwisko`, `Stanowisko`) where `ID_Pracownik`='"+id+"'; "
-                    + " values (?, ?, ?, ?, ?)";
+            String query = " UPDATE `szp`.`pracownicy` set `Login` = ?, `Haslo` = ?, `Imie` = ?, `Nazwisko` = ?, `Stanowisko` = ? where `ID_Pracownik`='"+id+"'; ";
 
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString(1, nazwisko + imie);
@@ -103,6 +104,7 @@ public class EditUserController implements Initializable {
 
             preparedStmt.executeUpdate();
 
+            labelEditUser.setVisible(true);
             System.out.println("Rekord "+id+" został edytowany!");
 
         } catch (SQLException e) {

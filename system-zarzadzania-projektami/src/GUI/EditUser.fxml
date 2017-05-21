@@ -23,5 +23,6 @@
       <TextField fx:id="euNoweHaslo" layoutX="95.0" layoutY="270.0" AnchorPane.leftAnchor="95.0" />
       <ComboBox fx:id="comboBoxWyborUzytkownika" layoutX="96.0" layoutY="109.0" onAction="#fillcomboBoxDU" prefWidth="150.0" />
       <ChoiceBox fx:id="euStanowisko" layoutX="96.0" layoutY="234.0" prefWidth="150.0" />
+      <Label fx:id="labelEditUser" layoutX="30.0" layoutY="302.0" text="Użytkownik został edytowany!" visible="false" />
     </children>
 </AnchorPane>

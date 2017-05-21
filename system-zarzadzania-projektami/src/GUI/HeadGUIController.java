@@ -35,7 +35,6 @@ public class HeadGUIController implements Initializable  {
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
-    //@FXML private ComboBox comboBoxSelectProject = new ComboBox();
     //@FXML private Button button;
     @FXML private TableView<DataPracownicy> pracownikTable, pracownicyInProject_Table;
     @FXML private TableColumn<DataPracownicy, Integer> pracownikTable_id, pracownicyInProject_Table_id;
@@ -72,7 +71,6 @@ public class HeadGUIController implements Initializable  {
             fillcomboBox2();
             displayEmployeesStatusPracownik();
             displayHeadsProjects();
-            //fillComboBoxSelectProject();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -100,44 +98,10 @@ public class HeadGUIController implements Initializable  {
         System.out.println("Zainicjalizowano kontroler Heada dla: " + who);
     }
 
-    /*@FXML
-    private void fillComboBoxSelectProject() throws SQLException, IOException {
-        ObservableMap <Integer, String> projects = FXCollections.observableHashMap();
-        /*projects.addListener(new MapChangeListener<Integer, String>() {
-            @Override
-                    public void onChanged(
-                            javafx.collections.MapChangeListener.Change<? extends Integer, ? extends String> change) {
-                        if(change.wasAdded()) {
-                            comboBoxSelectProject.getItems().add(change.getValueAdded());
-                        } else if(change.wasRemoved()) {
-                            comboBoxSelectProject.getItems().remove(change.getValueRemoved());
-                        }
-                    }
-                });*/
-        /*String query = "SELECT * FROM `szp`.`projekty`;";
-        PreparedStatement pst = conn.prepareStatement(query);
-        ResultSet rs = pst.executeQuery();
-        while (rs.next()){
-            HashMap <Integer, String> dataProject = new HashMap<>();
-            Integer idProjektu = rs.getInt("ID_Projekt");
-            String nazwaProjektu = rs.getString("Nazwa_projektu");
-            //dataProject.put(rs.getInt("ID_Projekt"), rs.getString("Nazwa_projektu"));
-            dataProject.put( idProjektu, nazwaProjektu);
-            projects.putAll(dataProject);
-
-            //projects.add(rs.getString("ID_Projekt"));
-            //projects.add(rs.getString("Nazwa_projektu"));
-        }
-        comboBoxSelectProject.getItems().setAll(projects);
-        //System.out.println(projects.values());
-        //conn.close();
-        //rs.close();
-     }*/
-
     @FXML
     private void displayHeadsProjects() throws SQLException {
         ObservableList<DataProjekty> headProjects  = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty`;");
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty` WHERE `Head`='" + who + "'");
         while (rs.next()) {
             DataProjekty hp = new DataProjekty();
             hp.setProjektyTable_id(rs.getInt("ID_Projekt"));
