@@ -8,7 +8,6 @@ public class DataProjekty {
     private final SimpleIntegerProperty projektyTable_idProperty = new SimpleIntegerProperty(0);
     private final SimpleStringProperty projektyTable_nazwaProperty = new SimpleStringProperty("");
     private final SimpleStringProperty projektyTable_headProperty = new SimpleStringProperty("");
-    private final SimpleStringProperty projektyTable_pracownicyProperty = new SimpleStringProperty("");
     private final SimpleStringProperty projektyTable_statusProperty = new SimpleStringProperty("");
     private final SimpleStringProperty projektyTable_progressProperty = new SimpleStringProperty("");
     private final SimpleStringProperty projektyTable_terminProperty = new SimpleStringProperty("");
@@ -17,7 +16,6 @@ public class DataProjekty {
         setProjektyTable_id(id);
         setProjektyTable_nazwa(nazwa);
         setProjektyTable_head(head);
-        setProjektyTable_pracownicy("");
         setProjektyTable_status(status);
         setProjektyTable_progress(progress);
         setProjektyTable_termin(termin);
@@ -51,14 +49,6 @@ public class DataProjekty {
         projektyTable_headProperty.set(head);
     }
 
-    public String getProjektyTable_pracownicy() {
-        return projektyTable_pracownicyProperty.get();
-    }
-
-    public void setProjektyTable_pracownicy(String pracownicy) {
-        projektyTable_pracownicyProperty.set(pracownicy);
-    }
-
     public String getProjektyTable_status() {
         return projektyTable_statusProperty.get();
     }
@@ -75,15 +65,9 @@ public class DataProjekty {
         projektyTable_progressProperty.set(progress);
     }
 
-    /*public void setProjektyTable_termin(String projektyTable_termin) {
-        this.projektyTable_termin = projektyTable_termin;
-    }*/
-
     public String getProjektyTable_termin() {
         return projektyTable_terminProperty.get();
     }
 
-    public void setProjektyTable_termin(String termin) {
-        projektyTable_terminProperty.set(termin);
-    }
+    public void setProjektyTable_termin(String termin) { projektyTable_terminProperty.set(termin); }
 }

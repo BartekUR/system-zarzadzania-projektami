@@ -41,13 +41,13 @@ public class DataTaski {
 
     public String getTaskiTable_pracownik() { return taskiTable_pracownikProperty.get(); }
 
-    public void setTaskiTable_pracownik(String nazwa) { taskiTable_pracownikProperty.set(nazwa); }
+    public void setTaskiTable_pracownik(String pracownik) { taskiTable_pracownikProperty.set(pracownik); }
 
     public String getTaskiTable_progress() { return taskiTable_progressProperty.get(); }
 
-    public void setTaskiTable_progress(String nazwa) { taskiTable_progressProperty.set(nazwa); }
+    public void setTaskiTable_progress(String progress) { taskiTable_progressProperty.set(progress); }
 
     public String getTaskiTable_termin() { return taskiTable_terminProperty.get(); }
 
-    public void setTaskiTable_termin(String nazwa) { taskiTable_terminProperty.set(nazwa); }
+    public void setTaskiTable_termin(String termin) { taskiTable_terminProperty.set(termin); }
 }

@@ -205,7 +205,7 @@ public class HeadGUIController implements Initializable  {
     private void pokazProjekt(ActionEvent event) throws SQLException  {
         String projekt = comboBoxHead.getValue().toString();
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        String query = ("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie, t.Progress, t.Termin\n" +
+        String query = ("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie, t.Progress, t.Termin, t.ID_Task\n" +
                     "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
                     "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
                     "AND t.ID_Task=pit.ID_Taski_FK\n" +
@@ -218,7 +218,7 @@ public class HeadGUIController implements Initializable  {
 
         while (rs.next()) {
             DataTaski dt = new DataTaski();
-            dt.setTaskiTable_id(rs.getInt("t.ID_Projekt_FK"));
+            dt.setTaskiTable_id(rs.getInt("t.ID_Task"));
             dt.setTaskiTable_nazwa(rs.getString("t.Nazwa_tasku"));
             dt.setTaskiTable_pracownik(rs.getString("pra.Nazwisko") + " " + rs.getString("pra.Imie"));
             dt.setTaskiTable_progress(rs.getString("t.Progress"));
