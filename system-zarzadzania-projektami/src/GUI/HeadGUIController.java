@@ -1,15 +1,13 @@
 package GUI;
 
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,9 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import static GUI.LogowanieController.who;
@@ -35,7 +30,6 @@ public class HeadGUIController implements Initializable  {
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
-    //@FXML private Button button;
     @FXML private TableView<DataPracownicy> pracownikTable, pracownicyInProject_Table;
     @FXML private TableColumn<DataPracownicy, Integer> pracownikTable_id, pracownicyInProject_Table_id;
     @FXML private TableColumn<DataPracownicy, String> pracownikTable_imie,  pracownicyInProject_Table_imie;
@@ -43,18 +37,16 @@ public class HeadGUIController implements Initializable  {
     @FXML private Button addButton;
     @FXML private ComboBox comboBoxHead;
 
-    @FXML private TableView<DataMojeProjekty> mojeProjekty;
-    @FXML private TableColumn<DataMojeProjekty, Integer> idMProjekty;
-    @FXML private TableColumn<DataMojeProjekty, String> taskMProjekty;
-    @FXML private TableColumn<DataMojeProjekty, String> pracownikMProjekty;
-    @FXML private TableColumn<DataMojeProjekty, String> progressMProjekty;
-    @FXML private TableColumn<DataMojeProjekty, String> terminMProjekty;
+    @FXML private TableView<DataTaski> mojeProjekty;
+    @FXML private TableColumn<DataTaski, Integer> idMProjekty;
+    @FXML private TableColumn<DataTaski, String> taskMProjekty;
+    @FXML private TableColumn<DataTaski, String> pracownikMProjekty;
+    @FXML private TableColumn<DataTaski, String> progressMProjekty;
+    @FXML private TableColumn<DataTaski, String> terminMProjekty;
 
     @FXML private TableView<DataProjekty> projectsOfTheOnlineHead;
     @FXML private TableColumn<DataProjekty, Integer> idProjectHead;
     @FXML private TableColumn<DataProjekty, String> nazwaProjektHead;
-
-    @FXML private Button pokazProjekty;
 
     @FXML private ComboBox comboBoxSelectProject2;
     @FXML private ComboBox comboBoxSelectPracownik;
@@ -75,11 +67,11 @@ public class HeadGUIController implements Initializable  {
             e.printStackTrace();
         }
 
-        idMProjekty.setCellValueFactory(new PropertyValueFactory<>("idMProjekty"));
-        taskMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskMProjekty"));
-        pracownikMProjekty.setCellValueFactory(new PropertyValueFactory<>("pracownikMProjekty"));
-        progressMProjekty.setCellValueFactory(new PropertyValueFactory<>("progressMProjekty"));
-        terminMProjekty.setCellValueFactory(new PropertyValueFactory<>("terminMProjekty"));
+        idMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
+        taskMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
+        pracownikMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_pracownik"));
+        progressMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_progress"));
+        terminMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_termin"));
 
         pracownikTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownikTable_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
@@ -212,8 +204,8 @@ public class HeadGUIController implements Initializable  {
     @FXML
     private void pokazProjekt(ActionEvent event) throws SQLException  {
         String projekt = comboBoxHead.getValue().toString();
-        ObservableList<DataMojeProjekty> data = FXCollections.observableArrayList();
-        String query = ("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, t.Progress, t.Termin\n" +
+        ObservableList<DataTaski> data = FXCollections.observableArrayList();
+        String query = ("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie, t.Progress, t.Termin\n" +
                     "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
                     "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
                     "AND t.ID_Task=pit.ID_Taski_FK\n" +
@@ -223,16 +215,18 @@ public class HeadGUIController implements Initializable  {
         PreparedStatement pst = conn.prepareStatement(query);
         pst.setString(1, projekt);
         ResultSet rs = pst.executeQuery();
+
         while (rs.next()) {
-            DataMojeProjekty dp = new DataMojeProjekty();
-            dp.setidMProjekty(rs.getInt("t.ID_Projekt_FK"));
-            dp.settaskMProjekty(rs.getString("t.Nazwa_tasku"));
-            dp.setpracownikMProjekty(rs.getString("pra.Nazwisko"));
-            dp.setprogressMProjekty(rs.getString("t.Progress"));
-            dp.setterminMProjekty(rs.getString("t.Termin"));
-            data.add(dp);
+            DataTaski dt = new DataTaski();
+            dt.setTaskiTable_id(rs.getInt("t.ID_Projekt_FK"));
+            dt.setTaskiTable_nazwa(rs.getString("t.Nazwa_tasku"));
+            dt.setTaskiTable_pracownik(rs.getString("pra.Nazwisko") + " " + rs.getString("pra.Imie"));
+            dt.setTaskiTable_progress(rs.getString("t.Progress"));
+            dt.setTaskiTable_termin(rs.getString("t.Termin"));
+            data.add(dt);
         }
         mojeProjekty.setItems(data);
+        mojeProjekty.refresh();
     }
     
     @FXML
