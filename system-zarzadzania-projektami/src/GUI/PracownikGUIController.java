@@ -24,16 +24,12 @@ public class PracownikGUIController implements Initializable {
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
-    @FXML
-    private TableView<DataProjektyPracownika> tableProjektPracownika;
-    @FXML
-    private TableColumn<DataProjektyPracownika, String> columnProjekt;
-    @FXML
-    private TableColumn<DataProjektyPracownika, String> columnHead;
-    @FXML
-    private TableColumn<DataProjektyPracownika, String> columnStatus;
-    @FXML
-    private TableColumn<DataProjektyPracownika, String> columnTermin;
+    @FXML private TableView<DataProjektyPracownika> tableProjektPracownika;
+    @FXML private TableColumn<DataProjektyPracownika, String> columnProjekt;
+    @FXML private TableColumn<DataProjektyPracownika, String> columnHead;
+    @FXML private TableColumn<DataProjektyPracownika, String> columnStatus;
+    @FXML private TableColumn<DataProjektyPracownika, String> columnTermin;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
