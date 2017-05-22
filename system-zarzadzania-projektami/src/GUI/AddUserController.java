@@ -4,17 +4,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
+import java.net.URL;
 import java.sql.*;
+import java.util.ResourceBundle;
 
 /**
  * Created by Michal on 2017-03-22.
  */
-public class AddUserController {
+public class AddUserController implements Initializable {
 
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
@@ -39,8 +43,8 @@ public class AddUserController {
 
     ObservableList <String> du_stanowiskoList = FXCollections.observableArrayList("Head","Pracownik");
 
-    @FXML
-    private void initialize(){
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         du_stanowisko.setItems(du_stanowiskoList);
         //du_stanowisko.setValue("mm");
     }
@@ -53,6 +57,7 @@ public class AddUserController {
         int numberOfRows = 0;
 
         if (imie.length() == 0 || nazwisko .length() == 0 || stanowisko == null) {
+            labelUzytkownikDodany.setVisible(false);
             labelRekordIstnieje.setVisible(false);
             labelWypelnijPola.setVisible(true);
         } else {
@@ -89,7 +94,7 @@ public class AddUserController {
                     } else if(numberOfRows >= 1){
                         labelUzytkownikDodany.setVisible(false);
                         labelRekordIstnieje.setVisible(true);
-                        System.out.println("rekord juz istnieje");
+                        System.out.println("Rekord juz istnieje");
                     }
                 } catch (SQLException e){
                     System.out.println(e.getMessage());

@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -41,6 +38,13 @@ public class PracownikGUIController implements Initializable {
     @FXML private TableColumn<DataTaski, String> columnNazwaTasku;
     @FXML private TableColumn<DataTaski, String> columnStatusTasku;
     @FXML private TableColumn<DataTaski, String> columnTerminTasku;
+    @FXML private ComboBox comboBoxIdTask;
+    @FXML private ComboBox comboBoxStatusTasku;
+    @FXML private Button buttonUpdateStatus;
+    @FXML private Label labelZmianaStatusu;
+
+    ObservableList <String> statusTaskuList = FXCollections.observableArrayList("Rozpoczęty","W trakcie","Opóźniony", "Zakończony" );
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,9 +64,12 @@ public class PracownikGUIController implements Initializable {
         try {
             wyswietlProjektyPracownika();
             fillcomboBoxProjektyPracownika();
+            fillcomboBoxIdTasku();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        comboBoxStatusTasku.setItems(statusTaskuList);
     }
 
     @FXML
@@ -119,33 +126,89 @@ public class PracownikGUIController implements Initializable {
     private void wyswietlTaskiProjektu(ActionEvent event) throws SQLException {
         String projekt = comboBoxProjektPracownika.getValue().toString();
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        try {
-            String query = "SELECT t.ID_Task, t.Nazwa_tasku, t.`Status`, t.Termin " +
-                    "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro " +
-                    "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK " +
-                    "AND t.ID_Task=pit.ID_Taski_FK " +
-                    "AND pro.ID_Projekt=t.ID_Projekt_FK " +
-                    "AND pro.Nazwa_projektu=(?) " +
-                    "AND pra.Login =(?);";
+        if(projekt != null) { //nie działa
+            try {
+                String query = "SELECT t.ID_Task, t.Nazwa_tasku, t.`Status`, t.Termin " +
+                        "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro " +
+                        "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK " +
+                        "AND t.ID_Task=pit.ID_Taski_FK " +
+                        "AND pro.ID_Projekt=t.ID_Projekt_FK " +
+                        "AND pro.Nazwa_projektu=(?)" +
+                        "AND pra.Login =(?);";
 
-            PreparedStatement pst = conn.prepareStatement(query);
-            pst.setString(1, projekt);
-            pst.setString(2, whoLogin);
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, projekt);
+                pst.setString(2, whoLogin);
 
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                DataTaski dt = new DataTaski();
-                dt.setTaskiTable_id(rs.getInt("t.ID_Task"));
-                dt.setTaskiTable_nazwa(rs.getString("t.Nazwa_tasku"));
-                dt.setTaskiTable_status(rs.getString("t.Status"));
-                dt.setTaskiTable_termin(rs.getString("t.Termin"));
-                data.add(dt);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    DataTaski dt = new DataTaski();
+                    dt.setTaskiTable_id(rs.getInt("t.ID_Task"));
+                    dt.setTaskiTable_nazwa(rs.getString("t.Nazwa_tasku"));
+                    dt.setTaskiTable_status(rs.getString("t.Status"));
+                    dt.setTaskiTable_termin(rs.getString("t.Termin"));
+                    data.add(dt);
+                }
+                tableTaskiProjektu.setItems(data);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-            tableTaskiProjektu.setItems(data);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
         }
     }
+
+    @FXML
+    private void fillcomboBoxIdTasku() throws SQLException {
+        ObservableList<String> idTaskuList = FXCollections.observableArrayList();
+       // String projekt2 = comboBoxProjektPracownika.getValue().toString();
+        //if(projekt2 != null) {
+            try {
+                String query = "SELECT t.ID_Task \n" +
+                        "FROM szp.taski t, szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.projekty pro\n" +
+                        "WHERE pra.ID_Pracownik = pit.ID_Pracownik_FK\n" +
+                        "AND t.ID_Task=pit.ID_Taski_FK\n" +
+                        "AND pro.ID_Projekt=t.ID_Projekt_FK\n" +
+                        "AND pra.`Login`=(?)";
+                       // "AND pro.Nazwa_projektu=(?)";
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, whoLogin);
+                //pst.setString(2, projekt2);
+
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    idTaskuList.add(rs.getString("ID_Task"));
+                }
+                comboBoxIdTask.setItems(idTaskuList);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        //}
+    }
+
+    @FXML
+    private void editStatusTasku(ActionEvent actionEvent) throws SQLException {
+        String status = comboBoxStatusTasku.getValue().toString();
+        String id_tasku = comboBoxIdTask.getValue().toString();
+
+        try {
+
+            String query = " UPDATE `szp`.`taski` SET `Status` = ? WHERE `ID_Task` = ? ";
+
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, status);
+            preparedStmt.setString(2, id_tasku);
+
+            preparedStmt.executeUpdate();
+
+            labelZmianaStatusu.setVisible(true);
+            System.out.println("Rekord "+id_tasku+" został edytowany!");
+
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+        }
+        wyswietlTaskiProjektu(actionEvent);
+    }
+
 
 
 

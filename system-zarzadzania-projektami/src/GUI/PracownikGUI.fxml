@@ -50,12 +50,13 @@
                           </columns>
                         </TableView>
                         <Label layoutX="420.0" layoutY="325.0" styleClass="napisy" text="Zatwierdź zmiane statusu" />
-                        <Button layoutX="419.0" layoutY="355.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Zatwierdź" textFill="#f8f8f8" />
+                        <Button fx:id="buttonUpdateStatus" layoutX="419.0" layoutY="355.0" mnemonicParsing="false" onAction="#editStatusTasku" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Zatwierdź" textFill="#f8f8f8" />
                         <Label layoutX="420.0" layoutY="176.0" styleClass="napisy" text="Wybierz ID tasku" />
                         <Label layoutX="419.0" layoutY="227.0" styleClass="napisy" text="Wybierz status" />
-                        <ChoiceBox layoutX="529.0" layoutY="172.0" prefHeight="25.0" prefWidth="90.0" />
-                        <ChoiceBox layoutX="529.0" layoutY="223.0" prefWidth="150.0" />
                         <ComboBox fx:id="comboBoxProjektPracownika" layoutX="122.0" layoutY="38.0" prefWidth="150.0" />
+                        <ComboBox fx:id="comboBoxIdTask" layoutX="516.0" layoutY="172.0" prefWidth="150.0" />
+                        <ComboBox fx:id="comboBoxStatusTasku" layoutX="516.0" layoutY="223.0" prefWidth="150.0" />
+                        <Label fx:id="labelZmianaStatusu" layoutX="419.0" layoutY="451.0" text="Zmiana statusu tasku została zatwierdzona!" visible="false" />
                      </children>
                   </AnchorPane>
             </content>

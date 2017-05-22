@@ -74,7 +74,7 @@ public class EditUserController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         euStanowisko.setItems(euStanowiskoList);
-        euStanowisko.setValue("mm");
+        //euStanowisko.setValue("mm");
         try {
             fillcomboBoxDU();
         } catch (SQLException e) {
