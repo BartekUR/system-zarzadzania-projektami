@@ -9,18 +9,20 @@ public class DataTaski {
     private final SimpleStringProperty taskiTable_nazwaProperty = new SimpleStringProperty("");
     private final SimpleStringProperty taskiTable_pracownikProperty = new SimpleStringProperty("");
     private final SimpleStringProperty taskiTable_progressProperty = new SimpleStringProperty("");
+    private final SimpleStringProperty taskiTable_statusProperty = new SimpleStringProperty("");
     private final SimpleStringProperty taskiTable_terminProperty = new SimpleStringProperty("");
 
-    public DataTaski(Integer id, String nazwa, String pracownik, String progress, String termin) {
+    public DataTaski(Integer id, String nazwa, String pracownik, String progress, String status, String termin) {
         setTaskiTable_id(id);
         setTaskiTable_nazwa(nazwa);
-        setTaskiTable_pracownik(nazwa);
-        setTaskiTable_progress(nazwa);
-        setTaskiTable_termin(nazwa);
+        setTaskiTable_pracownik(pracownik);
+        setTaskiTable_progress(progress);
+        setTaskiTable_status(status);
+        setTaskiTable_termin(termin);
     }
 
     public DataTaski() {
-        this(0, "", "", "", "");
+        this(0, "", "", "", "", "");
     }
 
     public Integer getTaskiTable_id() {
@@ -46,6 +48,10 @@ public class DataTaski {
     public String getTaskiTable_progress() { return taskiTable_progressProperty.get(); }
 
     public void setTaskiTable_progress(String progress) { taskiTable_progressProperty.set(progress); }
+
+    public String getTaskiTable_status() { return taskiTable_statusProperty.get(); }
+
+    public void setTaskiTable_status(String status) { taskiTable_statusProperty.set(status); }
 
     public String getTaskiTable_termin() { return taskiTable_terminProperty.get(); }
 
