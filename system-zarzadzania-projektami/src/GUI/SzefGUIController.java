@@ -269,25 +269,52 @@ public class SzefGUIController implements Initializable {
         String status = statusProjektu.getText();
         String progress = progressProjektu.getText();
         String termin = termin_koncowyProjektu.getValue().toString();
+        int numberOfRows = 0;
 
-        try {
-            String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
-                    + " values (?, ?, ?, ?, ?)";
+        if (name.length() == 0 || status.length() == 0 || progress.length() == 0) {
+            System.out.println("Wypełnij wszystkie pola");
+        } else {
+            try {
+                String query_exists = "SELECT COUNT(*) AS total FROM `szp`.`projekty` WHERE `Nazwa_projektu`=(?) AND `Head`=(?) AND `Status`=(?) AND `Progress`=(?) AND `Termin`=(?)";
+                PreparedStatement preparedStmte = conn.prepareStatement(query_exists);
+                preparedStmte.setString(1, name);
+                preparedStmte.setString(2, head);
+                preparedStmte.setString(3, status);
+                preparedStmte.setString(4, progress);
+                preparedStmte.setString(5, termin);
+                ResultSet rs = preparedStmte.executeQuery();
+                while(rs.next())
+                {
+                    numberOfRows = rs.getInt("total");
+                    //System.out.println(numberOfRows);
+                }
+                try {
+                    if (numberOfRows == 0) {
 
-            PreparedStatement pst = conn.prepareStatement(query);
-            pst.setString(1, name);
-            pst.setString(2, head);
-            pst.setString(3, status);
-            pst.setString(4, progress);
-            pst.setString(5, termin);
+                    String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
+                            + " values (?, ?, ?, ?, ?)";
 
-            pst.executeUpdate();
+                    PreparedStatement pst = conn.prepareStatement(query);
+                    pst.setString(1, name);
+                    pst.setString(2, head);
+                    pst.setString(3, status);
+                    pst.setString(4, progress);
+                    pst.setString(5, termin);
 
-            System.out.println("Rekord został wstawiony do tabeli projekty!");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+                    pst.executeUpdate();
+
+                    System.out.println("Rekord został wstawiony do tabeli projekty!");
+                    } else if(numberOfRows >= 1){
+                        System.out.println("Rekord juz istnieje");
+                    }
+                } catch (SQLException e){
+                    System.out.println(e.getMessage());
+                }
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
         }
-        refresh();
+            refresh();
     }
 
     private void refresh() throws SQLException {
