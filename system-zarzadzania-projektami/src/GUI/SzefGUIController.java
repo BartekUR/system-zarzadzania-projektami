@@ -111,7 +111,6 @@ public class SzefGUIController implements Initializable {
     @FXML private TableColumn<DataProjekty, String> projektyTable_nazwa;
     @FXML private TableColumn<DataProjekty, String> projektyTable_head;
     @FXML private TableColumn<DataProjekty, String> projektyTable_status;
-    @FXML private TableColumn<DataProjekty, String> projektyTable_progress;
     @FXML private TableColumn<DataProjekty, String> projektyTable_termin;
 
     @FXML private TableView<DataTaski> taskiTable;
@@ -119,12 +118,13 @@ public class SzefGUIController implements Initializable {
     @FXML private TableColumn<DataTaski, String> taskiTable_nazwa;
 
     @FXML private TextField nazwaProjektu;
-    @FXML private TextField statusProjektu;
-    @FXML private TextField progressProjektu;
     @FXML private DatePicker termin_koncowyProjektu;
     @FXML private ComboBox comboBoxSzef;
     @FXML private ComboBox comboBoxProjects;
     @FXML private ComboBox comboBoxTasks;
+    @FXML private ComboBox comboBoxStatus;
+
+    ObservableList <String> statusProjektuList = FXCollections.observableArrayList("Rozpoczęty","W trakcie","Opóźniony", "Zakończony" );
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -136,7 +136,6 @@ public class SzefGUIController implements Initializable {
         projektyTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("projektyTable_nazwa"));
         projektyTable_head.setCellValueFactory(new PropertyValueFactory<>("projektyTable_head"));
         projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
-        projektyTable_progress.setCellValueFactory(new PropertyValueFactory<>("projektyTable_progress"));
         projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
         taskiTable_id.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
         taskiTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
@@ -148,6 +147,8 @@ public class SzefGUIController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        comboBoxStatus.setItems(statusProjektuList);
     }
 
     private void parsePracownicy() throws SQLException {
@@ -174,7 +175,6 @@ public class SzefGUIController implements Initializable {
             dp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
             dp.setProjektyTable_head(rs.getString("Head"));
             dp.setProjektyTable_status(rs.getString("Status"));
-            dp.setProjektyTable_progress(rs.getString("Progress"));
             dp.setProjektyTable_termin(rs.getString("Termin"));
             data.add(dp);
         }
@@ -266,22 +266,20 @@ public class SzefGUIController implements Initializable {
     private void addProjekt(ActionEvent event) throws SQLException  {
         String name = nazwaProjektu.getText();
         String head = comboBoxSzef.getValue().toString();
-        String status = statusProjektu.getText();
-        String progress = progressProjektu.getText();
+        String status = comboBoxStatus.getValue().toString();
         String termin = termin_koncowyProjektu.getValue().toString();
         int numberOfRows = 0;
 
-        if (name.length() == 0 || status.length() == 0 || progress.length() == 0) {
+        if (name.length() == 0 || status.length() == 0 ) {
             System.out.println("Wypełnij wszystkie pola");
         } else {
             try {
-                String query_exists = "SELECT COUNT(*) AS total FROM `szp`.`projekty` WHERE `Nazwa_projektu`=(?) AND `Head`=(?) AND `Status`=(?) AND `Progress`=(?) AND `Termin`=(?)";
+                String query_exists = "SELECT COUNT(*) AS total FROM `szp`.`projekty` WHERE `Nazwa_projektu`=(?) AND `Head`=(?) AND `Status`=(?) AND `Termin`=(?)";
                 PreparedStatement preparedStmte = conn.prepareStatement(query_exists);
                 preparedStmte.setString(1, name);
                 preparedStmte.setString(2, head);
                 preparedStmte.setString(3, status);
-                preparedStmte.setString(4, progress);
-                preparedStmte.setString(5, termin);
+                preparedStmte.setString(4, termin);
                 ResultSet rs = preparedStmte.executeQuery();
                 while(rs.next())
                 {
@@ -291,15 +289,14 @@ public class SzefGUIController implements Initializable {
                 try {
                     if (numberOfRows == 0) {
 
-                    String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Progress`, `Termin`)"
-                            + " values (?, ?, ?, ?, ?)";
+                    String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Termin`)"
+                            + " values (?, ?, ?, ?)";
 
                     PreparedStatement pst = conn.prepareStatement(query);
                     pst.setString(1, name);
                     pst.setString(2, head);
                     pst.setString(3, status);
-                    pst.setString(4, progress);
-                    pst.setString(5, termin);
+                    pst.setString(4, termin);
 
                     pst.executeUpdate();
 

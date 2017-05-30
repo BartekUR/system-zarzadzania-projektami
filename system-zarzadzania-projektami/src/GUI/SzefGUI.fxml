@@ -50,7 +50,7 @@
                                         <TableColumn fx:id="projektyTable_nazwa" prefWidth="164.0" text="Nazwa projektu" />
                                         <TableColumn fx:id="projektyTable_head" prefWidth="153.0" text="Head projektu" />
                                         <TableColumn fx:id="projektyTable_status" prefWidth="111.0" text="Status" />
-                                        <TableColumn fx:id="projektyTable_progress" prefWidth="171.0" text="Progress" />
+                                       <!--<TableColumn fx:id="projektyTable_progress" prefWidth="171.0" text="Progress" />-->
                                         <TableColumn fx:id="projektyTable_termin" prefWidth="125.0" text="Termin" />
                                     </columns>
                                 </TableView>
@@ -63,17 +63,15 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                             <children>
-                                <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Nazwa nowego projektu" textFill="#3f5a5a" />
-                                <Label layoutX="59.0" layoutY="101.0" styleClass="napisy" text="Wybór heada" textFill="#3f5a5a" />
+                                <Label layoutX="90.0" layoutY="59.0" styleClass="napisy" text="Nazwa nowego projektu" textFill="#3f5a5a" />
+                                <Label layoutX="90.0" layoutY="101.0" styleClass="napisy" text="Wybór heada" textFill="#3f5a5a" />
                                 <TextField fx:id="nazwaProjektu" layoutX="247.0" layoutY="55.0" prefWidth="173.0" />
                                 <Button layoutX="266.0" layoutY="286.0" mnemonicParsing="false" onAction="#addProjekt" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Stwórz" textFill="#f8f8f8" />
-                        <Label layoutX="64.0" layoutY="227.0" prefHeight="17.0" prefWidth="89.0" styleClass="napisy" text="Termin końcowy" />
-                        <TextField fx:id="progressProjektu" layoutX="247.0" layoutY="177.0" prefHeight="25.0" prefWidth="173.0" />
-                        <TextField fx:id="statusProjektu" layoutX="248.0" layoutY="134.0" prefHeight="25.0" prefWidth="173.0" />
-                        <Label layoutX="90.0" layoutY="138.0" prefHeight="17.0" prefWidth="50.0" text="Status" />
-                        <Label layoutX="90.0" layoutY="181.0" text="Progress" />
-                        <ComboBox fx:id="comboBoxSzef" layoutX="248.0" layoutY="97.0" onAction="#fillcomboBox" prefHeight="25.0" prefWidth="173.0" />
-                        <DatePicker fx:id="termin_koncowyProjektu" layoutX="247.0" layoutY="223.0" />
+                                <Label layoutX="90.0" layoutY="181.0" prefHeight="17.0" prefWidth="89.0" styleClass="napisy" text="Termin końcowy" />
+                                <ComboBox fx:id="comboBoxStatus" layoutX="248.0" layoutY="134.0" prefHeight="25.0" prefWidth="173.0" />
+                                <Label layoutX="90.0" layoutY="138.0" prefHeight="17.0" prefWidth="50.0" text="Status" />
+                                <ComboBox fx:id="comboBoxSzef" layoutX="248.0" layoutY="97.0" onAction="#fillcomboBox" prefHeight="25.0" prefWidth="173.0" />
+                                <DatePicker fx:id="termin_koncowyProjektu" layoutX="247.0" layoutY="177.0" />
                             </children></AnchorPane>
                     </content>
                 </Tab>

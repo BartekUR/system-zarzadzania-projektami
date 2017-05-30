@@ -39,7 +39,7 @@ public class HeadGUIController implements Initializable  {
     @FXML private TableColumn<DataTaski, Integer> idMProjekty;
     @FXML private TableColumn<DataTaski, String> taskMProjekty;
     @FXML private TableColumn<DataTaski, String> pracownikMProjekty;
-    @FXML private TableColumn<DataTaski, String> progressMProjekty;
+    @FXML private TableColumn<DataTaski, String> statusMProjekty;
     @FXML private TableColumn<DataTaski, String> terminMProjekty;
 
     @FXML private TableView<DataProjekty> projectsOfTheOnlineHead;
@@ -59,7 +59,7 @@ public class HeadGUIController implements Initializable  {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            refresh();
+            //refresh();
             fillcomboBox2();
             displayEmployeesStatusPracownik();
             displayHeadsProjects();
@@ -70,7 +70,7 @@ public class HeadGUIController implements Initializable  {
         idMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
         taskMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
         pracownikMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_pracownik"));
-        progressMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_progress"));
+        statusMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_status"));
         terminMProjekty.setCellValueFactory(new PropertyValueFactory<>("taskiTable_termin"));
 
         pracownikTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
@@ -205,7 +205,7 @@ public class HeadGUIController implements Initializable  {
     private void pokazProjekt(ActionEvent event) throws SQLException  {
         String projekt = comboBoxHead.getValue().toString();
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        String query = ("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie, t.Progress, t.Termin, t.ID_Task\n" +
+        String query = ("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie,t.`Status`, t.Termin, t.ID_Task\n" +
                     "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
                     "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
                     "AND t.ID_Task=pit.ID_Taski_FK\n" +
@@ -221,7 +221,7 @@ public class HeadGUIController implements Initializable  {
             dt.setTaskiTable_id(rs.getInt("t.ID_Task"));
             dt.setTaskiTable_nazwa(rs.getString("t.Nazwa_tasku"));
             dt.setTaskiTable_pracownik(rs.getString("pra.Nazwisko") + " " + rs.getString("pra.Imie"));
-            dt.setTaskiTable_progress(rs.getString("t.Progress"));
+            dt.setTaskiTable_status(rs.getString("t.Status"));
             dt.setTaskiTable_termin(rs.getString("t.Termin"));
             data.add(dt);
         }
@@ -294,7 +294,7 @@ public class HeadGUIController implements Initializable  {
             options.add(rs.getString("Nazwa_projektu"));
         }
 
-        comboBoxProjects.setItems(options);
+       comboBoxProjects.setItems(options);
     }
 
     @FXML
