@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
@@ -27,6 +24,7 @@ import static GUI.LogowanieController.who;
  */
 public class HeadGUIController implements Initializable  {
 
+    public TextField nazwaTasku;
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
@@ -56,10 +54,12 @@ public class HeadGUIController implements Initializable  {
     @FXML private TableView<DataTaski> taskiPracownik;
     @FXML private TableColumn<DataTaski, Integer> taskiPracownik_id;
     @FXML private TableColumn<DataTaski, String> taskiPracownik_nazwa;
+    @FXML private ComboBox comboBoxProjects;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            refresh();
             fillcomboBox2();
             displayEmployeesStatusPracownik();
             displayHeadsProjects();
@@ -284,4 +284,68 @@ public class HeadGUIController implements Initializable  {
         fillcomboBox3();
     }
 
+    @FXML
+    private void fillProjects() throws SQLException {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        String query = "SELECT * FROM `szp`.`projekty` WHERE `Head`='" + who + "'";
+        PreparedStatement pst = conn.prepareStatement(query);
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            options.add(rs.getString("Nazwa_projektu"));
+        }
+
+        comboBoxProjects.setItems(options);
+    }
+
+    @FXML
+    private void parseTasks1() throws SQLException {
+        ObservableList<DataTaski> data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku\n" +
+                "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
+                "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
+                "AND t.ID_Task=pit.ID_Taski_FK AND pro.ID_Projekt=t.ID_Projekt_FK AND pro.Nazwa_projektu='" +
+                comboBoxProjects.getValue().toString() + "';");
+        while (rs.next()) {
+            DataTaski dt = new DataTaski();
+            dt.setTaskiTable_id(rs.getInt("ID_Task"));
+            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+            data.add(dt);
+        }
+        taskiTable.setItems(data);
+        taskiTable.refresh();
+    }
+
+
+
+    @FXML
+    private void deleteTask() throws SQLException {
+        DataTaski taskDelete = taskiTable.getSelectionModel().getSelectedItem();
+
+        if (taskDelete != null) {
+            String id_task = taskDelete.getTaskiTable_id().toString();
+            try {
+                String query = "DELETE FROM szp.taski WHERE ID_Task=" + id_task + ";";
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.executeUpdate();
+                System.out.println("Task został usunięty z projektu!");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+            parseTasks1();
+        }
+    }
+
+    private void refresh() throws SQLException {
+        try {
+
+            fillProjects();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+     public void addTask(ActionEvent actionEvent) {
+        
+    } 
 }
