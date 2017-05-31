@@ -30,10 +30,10 @@
                                 </TableView>
                                 <HBox layoutX="17.0" layoutY="14.0" spacing="10.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="213.0">
                                     <children>
-                                        <Button fx:id="addUser" layoutX="33.0" layoutY="14.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="632.0" />
-                                        <Button fx:id="deleteUser" layoutX="179.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="486.0" />
-                                        <Button fx:id="editUser" layoutX="333.0" layoutY="16.0" mnemonicParsing="false" onAction="#editUser" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Edytuj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="332.0" />
-                                        <Button fx:id="fillDB" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" onAction="#fillDB" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Wypełnij bazę" textFill="#f8f8f8" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="182.0" />
+                                        <Button fx:id="addUser" layoutX="33.0" layoutY="14.0" mnemonicParsing="false" onAction="#dodajUzytkownika" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="632.0" />
+                                        <Button fx:id="deleteUser" layoutX="179.0" layoutY="14.0" mnemonicParsing="false" onAction="#usunUzytkownika" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="486.0" />
+                                        <Button fx:id="editUser" layoutX="333.0" layoutY="16.0" mnemonicParsing="false" onAction="#edytujUzytkownika" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Edytuj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="332.0" />
+                                        <Button fx:id="fillDB" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" onAction="#wypelnijBaze" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Wypełnij bazę" textFill="#f8f8f8" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="182.0" />
                                     </children>
                                 </HBox>
                             </children>
@@ -54,7 +54,7 @@
                                         <TableColumn fx:id="projektyTable_termin" prefWidth="125.0" text="Termin" />
                                     </columns>
                                 </TableView>
-                        <Button layoutX="372.0" layoutY="510.0" mnemonicParsing="false"  onAction="#deleteProject" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
+                        <Button layoutX="372.0" layoutY="510.0" mnemonicParsing="false" onAction="#usunProjekt" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -66,11 +66,11 @@
                                 <Label layoutX="90.0" layoutY="59.0" styleClass="napisy" text="Nazwa nowego projektu" textFill="#3f5a5a" />
                                 <Label layoutX="90.0" layoutY="101.0" styleClass="napisy" text="Wybór heada" textFill="#3f5a5a" />
                                 <TextField fx:id="nazwaProjektu" layoutX="247.0" layoutY="55.0" prefWidth="173.0" />
-                                <Button layoutX="266.0" layoutY="286.0" mnemonicParsing="false" onAction="#addProjekt" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Stwórz" textFill="#f8f8f8" />
+                                <Button layoutX="266.0" layoutY="286.0" mnemonicParsing="false" onAction="#dodajProjekt" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Stwórz" textFill="#f8f8f8" />
                                 <Label layoutX="90.0" layoutY="181.0" prefHeight="17.0" prefWidth="89.0" styleClass="napisy" text="Termin końcowy" />
                                 <ComboBox fx:id="comboBoxStatus" layoutX="248.0" layoutY="134.0" prefHeight="25.0" prefWidth="173.0" />
                                 <Label layoutX="90.0" layoutY="138.0" prefHeight="17.0" prefWidth="50.0" text="Status" />
-                                <ComboBox fx:id="comboBoxSzef" layoutX="248.0" layoutY="97.0" onAction="#fillcomboBox" prefHeight="25.0" prefWidth="173.0" />
+                                <ComboBox fx:id="comboBoxSzef" layoutX="248.0" layoutY="97.0" onAction="#wyswietlHeadowCombo" prefHeight="25.0" prefWidth="173.0" />
                                 <DatePicker fx:id="termin_koncowyProjektu" layoutX="247.0" layoutY="177.0" />
                             </children></AnchorPane>
                     </content>
@@ -80,7 +80,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
                         <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Wybierz projekt" textFill="#3f5a5a" />
-                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" onAction="#parseTasks" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
+                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" onAction="#wyswietlTaskiProjektuTable" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
                         <ComboBox fx:id="comboBoxProjects" layoutX="159.0" layoutY="55.0" prefWidth="150.0" />
                         <TableView fx:id="taskiTable" layoutX="58.0" layoutY="121.0" prefHeight="244.0" prefWidth="253.0">
                           <columns>
@@ -88,7 +88,7 @@
                             <TableColumn fx:id="taskiTable_nazwa" prefWidth="169.0" text="Task" />
                           </columns>
                         </TableView>
-                        <Button layoutX="326.0" layoutY="195.0" mnemonicParsing="false" onAction="#deleteTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
+                        <Button layoutX="326.0" layoutY="195.0" mnemonicParsing="false" onAction="#usunTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                      </children>
                   </AnchorPane>
                </content>

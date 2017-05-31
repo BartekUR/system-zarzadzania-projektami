@@ -4,16 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.stage.*;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.*;
 
-/**
- * Created by Michal on 2017-03-22.
- */
 public class LogowanieController {
 
     private SqlConnect sc = new SqlConnect();

@@ -13,7 +13,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
                         <Label layoutX="60.0" layoutY="27.0" styleClass="napisy" stylesheets="@style.css" text="Wybierz projekt" />
-                        <Button fx:id="pokazProjekty" layoutX="336.0" layoutY="23.0" mnemonicParsing="false" onAction="#pokazProjekt" styleClass="button_small" text="Pokaż" textFill="#f8f8f8" />
+                        <Button fx:id="pokazProjekty" layoutX="336.0" layoutY="23.0" mnemonicParsing="false" onAction="#wyswietlTaskiProjektuTable1" styleClass="button_small" text="Pokaż" textFill="#f8f8f8" />
                         <TableView fx:id="mojeProjekty" layoutX="84.0" layoutY="135.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80.0">
                           <columns>
                             <TableColumn fx:id="idMProjekty" prefWidth="75.0" text="ID" />
@@ -23,7 +23,7 @@
                               <TableColumn fx:id="terminMProjekty" prefWidth="166.0" text="Termin" />
                           </columns>
                         </TableView>
-                        <ComboBox fx:id="comboBoxHead" layoutX="167.0" layoutY="23.0" onAction="#fillcomboBox2" prefWidth="150.0" />
+                        <ComboBox fx:id="comboBoxHead" layoutX="167.0" layoutY="23.0" onAction="#wyswietlProjektyHeadaCombo" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -34,8 +34,8 @@
                      <children>
                         <VBox layoutX="333.0" layoutY="283.0" spacing="20.0">
                            <children>
-                              <Button fx:id="addButton" layoutX="333.0" layoutY="269.0" mnemonicParsing="false" onAction="#addEmployeeToProject" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
-                              <Button fx:id="deleteButton" layoutX="333.0" layoutY="343.0" mnemonicParsing="false" onAction="#deleteUserInProject" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text=" Usuń pracownika z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
+                              <Button fx:id="addButton" layoutX="333.0" layoutY="269.0" mnemonicParsing="false" onAction="#dodajPracownikaDoProjektu" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
+                              <Button fx:id="deleteButton" layoutX="333.0" layoutY="343.0" mnemonicParsing="false" onAction="#usunPracownikaZProjektu" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text=" Usuń pracownika z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
                            </children>
                         </VBox>
                         <Label layoutX="384.0" layoutY="17.0" styleClass="napisy" text="Wybierz projekt" />
@@ -55,8 +55,8 @@
                               <TableColumn fx:id="pracownicyInProject_Table_nazwisko" maxWidth="500.0" prefWidth="135.0" text="Nazwisko" />
                           </columns>
                         </TableView>
-                        <Button layoutX="205.0" layoutY="88.0" mnemonicParsing="false" onAction="#refreshEmployees" styleClass="button_small" text="Odśwież" textFill="#f8f8f8" />
-                        <Button fx:id="pracownicy_projekt" layoutX="651.0" layoutY="186.0" mnemonicParsing="false" onAction="#displayEmployeesInProject" styleClass="button_small" text="Wyświetl" textFill="#f8f8f8" />
+                        <Button layoutX="205.0" layoutY="88.0" mnemonicParsing="false" styleClass="button_small" text="Odśwież" textFill="#f8f8f8" />
+                        <Button fx:id="pracownicy_projekt" layoutX="651.0" layoutY="186.0" mnemonicParsing="false" onAction="#wyswietlPracownikowProjektu" styleClass="button_small" text="Wyświetl" textFill="#f8f8f8" />
                         <TableView fx:id="projectsOfTheOnlineHead" layoutX="479.0" layoutY="13.0" prefHeight="168.0" prefWidth="305.0">
                           <columns>
                             <TableColumn fx:id="idProjectHead" prefWidth="45.0" text="ID" />
@@ -71,8 +71,8 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
-                        <Button layoutX="278.0" layoutY="46.0" mnemonicParsing="false" onAction="#parseTasks" styleClass="button_small" text="Wyświetl taski" textFill="WHITE" />
-                        <Button layoutX="659.0" layoutY="46.0" mnemonicParsing="false" onAction="#fillcomboBox3" styleClass="button_small" text="Wyświetl pracownika" textFill="#f8f8f8" />
+                        <Button layoutX="278.0" layoutY="46.0" mnemonicParsing="false" onAction="#wyswietlTaskiProjektuTable2" styleClass="button_small" text="Wyświetl taski" textFill="WHITE" />
+                        <Button layoutX="659.0" layoutY="46.0" mnemonicParsing="false" onAction="#wyswietlPracownikowCombo" styleClass="button_small" text="Wyświetl pracownika" textFill="#f8f8f8" />
                         <ComboBox fx:id="comboBoxSelectProject2" layoutX="83.0" layoutY="46.0" prefWidth="150.0" />
                         <ComboBox fx:id="comboBoxSelectPracownik" layoutX="498.0" layoutY="46.0" prefWidth="150.0" />
                         <Label layoutX="32.0" layoutY="50.0" styleClass="napisy" text="Projekt" />
@@ -106,15 +106,15 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
                         <Label layoutX="59.0" layoutY="59.0" styleClass="napisy" text="Wybierz projekt" textFill="#3f5a5a" />
-                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" onAction="#parseTasks1" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
-                        <ComboBox fx:id="comboBoxProjects1" layoutX="159.0" layoutY="55.0" prefWidth="150.0" />
+                        <Button layoutX="326.0" layoutY="50.0" mnemonicParsing="false" onAction="#wyswietlTaskiProjektuTable3" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Wyświetl" textFill="#f8f8f8" />
+                        <ComboBox fx:id="comboBoxProjects" layoutX="159.0" layoutY="55.0" prefWidth="150.0" />
                         <TableView fx:id="taskiTable1" layoutX="58.0" layoutY="121.0" prefHeight="244.0" prefWidth="253.0">
                            <columns>
                               <TableColumn fx:id="taskiTable_id1" prefWidth="45.0" text="ID" />
                               <TableColumn fx:id="taskiTable_nazwa1" prefWidth="169.0" text="Task" />
                            </columns>
                         </TableView>
-                        <Button layoutX="326.0" layoutY="257.0" mnemonicParsing="false" onAction="#deleteTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
+                        <Button layoutX="326.0" layoutY="257.0" mnemonicParsing="false" onAction="#usunTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
                         <TextField fx:id="nazwaTasku" layoutX="326.0" layoutY="186.0" prefHeight="25.0" prefWidth="202.0" />
                         <Button layoutX="544.0" layoutY="181.0" mnemonicParsing="false" onAction="#addTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
                         <Label layoutX="326.0" layoutY="150.0" text="Nazwa tasku" />
