@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.HeadGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.HeadGUIController">
    <children>
       <TabPane layoutX="176.0" layoutY="79.0" prefHeight="400.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -44,8 +51,8 @@
                         <TableView fx:id="pracownikTable" layoutX="30.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="132.0">
                           <columns>
                             <TableColumn fx:id="pracownikTable_id" prefWidth="50.0" text="ID" />
-                            <TableColumn fx:id="pracownikTable_imie" prefWidth="120.0" text="Imie" />
-                              <TableColumn fx:id="pracownikTable_nazwisko" prefWidth="135.0" text="Nazwisko" />
+                            <TableColumn fx:id="pracownikTable_imie" prefWidth="110.0" text="Imie" />
+                              <TableColumn fx:id="pracownikTable_nazwisko" prefWidth="125.0" text="Nazwisko" />
                           </columns>
                         </TableView>
                         <TableView fx:id="pracownicyInProject_Table" layoutX="478.0" layoutY="221.0" prefHeight="334.0" prefWidth="305.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="478.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="221.0">
@@ -60,7 +67,7 @@
                         <TableView fx:id="projectsOfTheOnlineHead" layoutX="479.0" layoutY="13.0" prefHeight="168.0" prefWidth="305.0">
                           <columns>
                             <TableColumn fx:id="idProjectHead" prefWidth="45.0" text="ID" />
-                            <TableColumn fx:id="nazwaProjektHead" prefWidth="259.0" text="Nazwa projektu" />
+                            <TableColumn fx:id="nazwaProjektHead" prefWidth="258.0" text="Nazwa projektu" />
                           </columns>
                         </TableView>
                      </children>

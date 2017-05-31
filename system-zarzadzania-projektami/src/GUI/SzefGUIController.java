@@ -135,7 +135,7 @@ public class SzefGUIController implements Initializable {
                 "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
                 "AND t.ID_Task=pit.ID_Taski_FK AND pro.ID_Projekt=t.ID_Projekt_FK AND pro.Nazwa_projektu='" +
                 comboBoxProjects.getValue().toString() + "';");
-        
+
         while (rs.next()) {
             DataTaski dt = new DataTaski();
             dt.setTaskiTable_id(rs.getInt("ID_Task"));

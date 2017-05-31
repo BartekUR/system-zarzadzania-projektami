@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.*;
@@ -38,11 +39,17 @@ public class LogowanieController {
 
             Stage oldStage = (Stage) loginButton.getScene().getWindow();
             oldStage.close();
-            Stage newStage = new Stage();
             Parent newroot = FXMLLoader.load(getClass().getResource(what + "GUI.fxml"));
             Scene newscene = new Scene(newroot);
+            Stage newStage = new Stage();
             newStage.setTitle("System zarządzania projektami 1.0");
+            newStage.initStyle(StageStyle.UNDECORATED);
+            newStage.setResizable(false);
             newStage.setScene(newscene);
+            newStage.setMaxWidth(800);
+            newStage.setMaxHeight(600);
+            newStage.setMinWidth(800);
+            newStage.setMinHeight(600);
             newStage.show();
         } else {
             System.out.println("Niepoprawne dane! Sprobuj ponownie.");
