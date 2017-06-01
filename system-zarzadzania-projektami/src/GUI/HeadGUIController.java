@@ -17,6 +17,9 @@ public class HeadGUIController implements Initializable  {
 
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
+    
+    public TextField nazwaTasku;
+    public DatePicker terminTasku;
 
     @FXML private TableView<DataPracownicy> pracownikTable, pracownicyInProject_Table;
     @FXML private TableColumn<DataPracownicy, Integer> pracownikTable_id, pracownicyInProject_Table_id;
@@ -321,6 +324,50 @@ public class HeadGUIController implements Initializable  {
     }
 
      public void dodajTask() {
+         String task = nazwaTasku.getText();
+        String termin = terminTasku.getValue().toString();
+        String projekt = comboBoxProjects.getValue().toString();
+        int numberOfRows = 0;
+        if (task.length() !=0 || termin.length() !=0) {
+            try {
+                String query_exists = "";
+                PreparedStatement preparedStmte = conn.prepareStatement(query_exists);
+                preparedStmte.setString(1, task);
+                preparedStmte.setString(2, termin);
+                preparedStmte.setString(3, projekt);
+                ResultSet rs = preparedStmte.executeQuery();
+                while(rs.next())
+                {
+                    numberOfRows = rs.getInt("total");
+                }
+                try {
+                    if (numberOfRows == 0) {
+
+                        String query = " insert into `szp`.`taski` ()"
+                                + " values (?, ?, ?)";
+
+                        PreparedStatement pst = conn.prepareStatement(query);
+                        pst.setString(1, task);
+                        pst.setString(2, termin);
+                        pst.setString(3, projekt);
+
+                        pst.executeUpdate();
+
+                        System.out.println("Rekord został wstawiony");
+                    } else if(numberOfRows >= 1){
+                        System.out.println("Rekord juz istnieje");
+                    }
+                } catch (SQLException e){
+                    System.out.println(e.getMessage());
+                }
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        else
+        {
+            System.out.println("Wypełnij pola");
+        }
         
     } 
 }
