@@ -43,7 +43,6 @@ public class LogowanieController {
             Scene newscene = new Scene(newroot);
             Stage newStage = new Stage();
             newStage.setTitle("System zarządzania projektami 1.0");
-            newStage.initStyle(StageStyle.UNDECORATED);
             newStage.setResizable(false);
             newStage.setScene(newscene);
             newStage.setMaxWidth(800);

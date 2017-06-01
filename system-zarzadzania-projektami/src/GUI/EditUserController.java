@@ -2,36 +2,26 @@ package GUI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.sql.*;
 
-/**
- * Created by Michal on 2017-03-22.
- */
 public class EditUserController implements Initializable {
-    public TextField euImie;
-    public TextField euNazwisko;
-    public ChoiceBox euStanowisko;
-    public TextField euNoweHaslo;
+
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
+
+    public ChoiceBox euStanowisko;
+    public TextField euImie, euNazwisko, euNoweHaslo;
     @FXML private javafx.scene.control.Button closeButton;
     @FXML private ComboBox comboBoxWyborUzytkownika;
     @FXML private Label labelEditUser;
+
     @FXML
     private void closeButtonAction(){
 
@@ -39,8 +29,9 @@ public class EditUserController implements Initializable {
 
         stage.close();
     }
+
     @FXML
-    private void fillcomboBoxDU() throws SQLException, IOException {
+    private void fillcomboBoxDU() throws SQLException {
         final ObservableList<Integer> options = FXCollections.observableArrayList();
         String query = "SELECT `ID_Pracownik` FROM `szp`.`pracownicy`;";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -50,8 +41,6 @@ public class EditUserController implements Initializable {
             options.add(rs.getInt("ID_Pracownik"));
         }
         comboBoxWyborUzytkownika.setItems(options);
-        //conn.close();
-        //rs.close();
 
         if (comboBoxWyborUzytkownika.getValue() != null){
             String id = comboBoxWyborUzytkownika.getValue().toString(); 
@@ -73,18 +62,18 @@ public class EditUserController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        ObservableList <String> euStanowiskoList = FXCollections.observableArrayList("Head","Pracownik","Szef");
         euStanowisko.setItems(euStanowiskoList);
-        //euStanowisko.setValue("mm");
+
         try {
             fillcomboBoxDU();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    public void editButtonAction(ActionEvent actionEvent) throws SQLException {
+    public void editButtonAction() throws SQLException {
         Object id = comboBoxWyborUzytkownika.getValue().toString();
         String imie = euImie.getText();
         String nazwisko = euNazwisko.getText();
@@ -108,11 +97,9 @@ public class EditUserController implements Initializable {
             System.out.println("Rekord "+id+" został edytowany!");
 
         } catch (SQLException e) {
-
             System.out.println(e.getMessage());
         }
 
 
     }
-    ObservableList <String> euStanowiskoList = FXCollections.observableArrayList("Head","Pracownik","Szef");
 }

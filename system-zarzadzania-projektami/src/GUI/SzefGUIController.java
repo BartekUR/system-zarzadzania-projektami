@@ -2,7 +2,6 @@ package GUI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,13 +34,9 @@ public class SzefGUIController implements Initializable {
     @FXML private TableColumn<DataProjekty, Integer> projektyTable_id;
     @FXML private TableColumn<DataProjekty, String> projektyTable_nazwa, projektyTable_head, projektyTable_status, projektyTable_termin;
 
-    @FXML private TableView<DataTaski> taskiTable;
-    @FXML private TableColumn<DataTaski, Integer> taskiTable_id;
-    @FXML private TableColumn<DataTaski, String> taskiTable_nazwa;
-
     @FXML private TextField nazwaProjektu;
     @FXML private DatePicker termin_koncowyProjektu;
-    @FXML private ComboBox comboBoxSzef, comboBoxProjects, comboBoxStatus;
+    @FXML private ComboBox comboBoxSzef, comboBoxStatus;
 
     @FXML private Button addUser;
     @FXML private Button editUser;
@@ -57,8 +52,6 @@ public class SzefGUIController implements Initializable {
         projektyTable_head.setCellValueFactory(new PropertyValueFactory<>("projektyTable_head"));
         projektyTable_status.setCellValueFactory(new PropertyValueFactory<>("projektyTable_status"));
         projektyTable_termin.setCellValueFactory(new PropertyValueFactory<>("projektyTable_termin"));
-        taskiTable_id.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
-        taskiTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
 
         System.out.println("Zainicjalizowano kontroler Szefa dla: " + who);
 
@@ -116,57 +109,6 @@ public class SzefGUIController implements Initializable {
     }
 
     @FXML
-    private void wyswietlProjektyCombo() throws SQLException {
-        ObservableList<String> options = FXCollections.observableArrayList();
-        String query = "SELECT * FROM `szp`.`projekty`;";
-        PreparedStatement pst = conn.prepareStatement(query);
-        ResultSet rs = pst.executeQuery();
-        while (rs.next()) {
-            options.add(rs.getString("Nazwa_projektu"));
-        }
-        comboBoxProjects.setItems(options);
-    }
-
-    @FXML
-    private void wyswietlTaskiProjektuTable() throws SQLException {
-        ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku\n" +
-                "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro\n" +
-                "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK\n" +
-                "AND t.ID_Task=pit.ID_Taski_FK AND pro.ID_Projekt=t.ID_Projekt_FK AND pro.Nazwa_projektu='" +
-                comboBoxProjects.getValue().toString() + "';");
-
-        while (rs.next()) {
-            DataTaski dt = new DataTaski();
-            dt.setTaskiTable_id(rs.getInt("ID_Task"));
-            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
-            data.add(dt);
-        }
-
-        taskiTable.setItems(data);
-        taskiTable.refresh();
-    }
-
-    @FXML
-    private void usunTask() throws SQLException {
-        DataTaski taskDelete = taskiTable.getSelectionModel().getSelectedItem();
-
-        if (taskDelete != null) {
-            String id_task = taskDelete.getTaskiTable_id().toString();
-            try {
-                String query = "DELETE FROM szp.taski WHERE ID_Task=" + id_task + ";";
-                PreparedStatement pst = conn.prepareStatement(query);
-                pst.executeUpdate();
-                System.out.println("Task został usunięty z projektu!");
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-
-            wyswietlTaskiProjektuTable();
-        }
-    }
-
-    @FXML
     private void usunProjekt() throws SQLException {
         DataProjekty projectDelete = projektyTable.getSelectionModel().getSelectedItem();
 
@@ -186,7 +128,7 @@ public class SzefGUIController implements Initializable {
     }
 
     @FXML
-    private void dodajProjekt(ActionEvent event) throws SQLException  {
+    private void dodajProjekt() throws SQLException  {
         String name = nazwaProjektu.getText();
         String head = comboBoxSzef.getValue().toString();
         String status = comboBoxStatus.getValue().toString();
@@ -236,7 +178,7 @@ public class SzefGUIController implements Initializable {
             refresh();
     }
     @FXML
-    private void dodajUzytkownika(ActionEvent event) throws IOException {
+    private void dodajUzytkownika() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("AddUser.fxml"));
         Scene info_scene= new Scene(loader);
         Stage info_stage =new Stage();
@@ -247,7 +189,7 @@ public class SzefGUIController implements Initializable {
     }
 
     @FXML
-    private void usunUzytkownika(ActionEvent event) throws IOException,SQLException {
+    private void usunUzytkownika() throws IOException,SQLException {
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
 
         if(person != null) {
@@ -267,7 +209,7 @@ public class SzefGUIController implements Initializable {
     }
 
     @FXML
-    private void edytujUzytkownika(ActionEvent event) throws IOException {
+    private void edytujUzytkownika() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("EditUser.fxml"));
         Scene info_scene= new Scene(loader);
         Stage info_stage =new Stage();
@@ -278,7 +220,7 @@ public class SzefGUIController implements Initializable {
     }
 
     @FXML
-    private void wypelnijBaze(ActionEvent event) throws SQLException, IOException {
+    private void wypelnijBaze() throws SQLException, IOException {
         String line;
 
         BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
@@ -297,7 +239,6 @@ public class SzefGUIController implements Initializable {
             wyswietlPracownikowTable();
             wyswietlProjektyTable();
             wyswietlHeadowCombo();
-            wyswietlProjektyCombo();
         } catch (SQLException e) {
             e.printStackTrace();
         }

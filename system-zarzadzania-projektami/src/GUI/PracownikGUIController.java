@@ -2,7 +2,6 @@ package GUI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -109,7 +108,7 @@ public class PracownikGUIController implements Initializable {
     }
 
     @FXML
-    private void wyswietlTaskiPracownikaProjektuTable(ActionEvent event) throws SQLException {
+    private void wyswietlTaskiPracownikaProjektuTable() throws SQLException {
 
         String projekt = comboBoxProjektPracownika.getValue().toString();
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
@@ -173,7 +172,7 @@ public class PracownikGUIController implements Initializable {
     }
 
     @FXML
-    private void zmienStatusTasku(ActionEvent actionEvent) throws SQLException {
+    private void zmienStatusTasku() throws SQLException {
 
         String status = comboBoxStatusTasku.getValue().toString();
         String id_tasku = comboBoxIdTask.getValue().toString();
@@ -193,6 +192,6 @@ public class PracownikGUIController implements Initializable {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        wyswietlTaskiPracownikaProjektuTable(actionEvent);
+        wyswietlTaskiPracownikaProjektuTable();
     }
 }

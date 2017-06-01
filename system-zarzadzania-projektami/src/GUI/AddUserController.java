@@ -2,55 +2,38 @@ package GUI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
 
 import java.net.URL;
-import java.sql.*;
 import java.util.ResourceBundle;
+import java.sql.*;
 
-/**
- * Created by Michal on 2017-03-22.
- */
 public class AddUserController implements Initializable {
 
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
-    @FXML
-    private Button closeButton;
+    @FXML private Button closeButton;
 
-    @FXML
-    private TextField du_imie;
-    @FXML
-    private TextField du_nazwisko;
-    @FXML
-    private ChoiceBox du_stanowisko;
-    @FXML
-    private Button du_dodaj;
-    @FXML
-    private Label labelWypelnijPola;
-    @FXML
-    private Label labelUzytkownikDodany;
-    @FXML
-    private Label labelRekordIstnieje;
+    @FXML private TextField du_imie;
+    @FXML private TextField du_nazwisko;
+    @FXML private ChoiceBox du_stanowisko;
+    @FXML private Label labelWypelnijPola;
+    @FXML private Label labelUzytkownikDodany;
+    @FXML private Label labelRekordIstnieje;
 
-    ObservableList <String> du_stanowiskoList = FXCollections.observableArrayList("Head","Pracownik");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ObservableList<String> du_stanowiskoList = FXCollections.observableArrayList("Head","Pracownik");
         du_stanowisko.setItems(du_stanowiskoList);
-        //du_stanowisko.setValue("mm");
     }
 
     @FXML
-    private void dodajUzytkownika(ActionEvent event) throws SQLException {
+    private void dodajUzytkownika() throws SQLException {
         String imie = du_imie.getText();
         String nazwisko = du_nazwisko.getText();
         Object stanowisko = du_stanowisko.getValue();
@@ -72,7 +55,6 @@ public class AddUserController implements Initializable {
                 while(rs.next())
                 {
                     numberOfRows = rs.getInt("total");
-                    //System.out.println(numberOfRows);
                 }
                 try {
                     if (numberOfRows == 0) {
@@ -103,8 +85,6 @@ public class AddUserController implements Initializable {
                 System.out.println(e.getMessage());
             }
         }
-        //SzefGUIController.refresh();
-        //SzefGUIController.parsePracownicy();
     }
 
     @FXML

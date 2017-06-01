@@ -2,7 +2,6 @@ package GUI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -110,7 +109,7 @@ public class HeadGUIController implements Initializable  {
     }
 
     @FXML
-    private void wyswietlPracownikowProjektu(ActionEvent event) throws SQLException {
+    private void wyswietlPracownikowProjektu() throws SQLException {
 
         DataProjekty projectHead =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
 
@@ -145,7 +144,7 @@ public class HeadGUIController implements Initializable  {
     }
 
     @FXML
-    private void dodajPracownikaDoProjektu(ActionEvent e) throws SQLException{
+    private void dodajPracownikaDoProjektu() throws SQLException{
         DataPracownicy person = pracownikTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
         DataProjekty project =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
 
@@ -163,13 +162,13 @@ public class HeadGUIController implements Initializable  {
             } catch (SQLException d){
                 System.out.println(d.getMessage());
             }
-            wyswietlPracownikowProjektu(e);
+            wyswietlPracownikowProjektu();
         }
     }
 
     @FXML
-    private void usunPracownikaZProjektu(ActionEvent event) throws SQLException {
-        DataPracownicy personDelete = pracownicyInProject_Table.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
+    private void usunPracownikaZProjektu() throws SQLException {
+        DataPracownicy personDelete = pracownicyInProject_Table.getSelectionModel().getSelectedItem();
         DataProjekty projectDel =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
 
         if(personDelete != null && projectDel != null) {
@@ -186,13 +185,13 @@ public class HeadGUIController implements Initializable  {
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-            wyswietlPracownikowProjektu(event);
+            wyswietlPracownikowProjektu();
         }
 
     }
 
     @FXML
-    private void wyswietlTaskiProjektuTable3(ActionEvent event) throws SQLException {
+    private void wyswietlTaskiProjektuTable3() throws SQLException {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
@@ -213,7 +212,7 @@ public class HeadGUIController implements Initializable  {
     }
 
     @FXML
-    private void wyswietlTaskiProjektuTable2(ActionEvent event) throws SQLException {
+    private void wyswietlTaskiProjektuTable2() throws SQLException {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
@@ -235,7 +234,7 @@ public class HeadGUIController implements Initializable  {
     }
 
     @FXML
-    private void wyswietlTaskiProjektuTable1(ActionEvent event) throws SQLException  {
+    private void wyswietlTaskiProjektuTable1() throws SQLException  {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie,t.Status, t.Termin, t.ID_Task " +
@@ -303,8 +302,8 @@ public class HeadGUIController implements Initializable  {
     }
 
     @FXML
-    private void usunTask(ActionEvent event) throws SQLException {
-        DataTaski taskDelete = taskiTable.getSelectionModel().getSelectedItem();
+    private void usunTask() throws SQLException {
+        DataTaski taskDelete = taskiTable1.getSelectionModel().getSelectedItem();
 
         if (taskDelete != null) {
             String id_task = taskDelete.getTaskiTable_id().toString();
@@ -317,11 +316,11 @@ public class HeadGUIController implements Initializable  {
                 System.out.println(e.getMessage());
             }
 
-            wyswietlTaskiProjektuTable2(event);
+            wyswietlTaskiProjektuTable3();
         }
     }
 
-     public void addTask(ActionEvent actionEvent) {
+     public void dodajTask() {
         
     } 
 }
