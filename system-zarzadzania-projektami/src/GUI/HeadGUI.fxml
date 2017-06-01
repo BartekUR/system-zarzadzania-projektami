@@ -109,7 +109,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab closable="false" styleClass="tlo" text="Dodawanie i usuwanie tasków">
+             <Tab closable="false" styleClass="tlo" text="Dodawanie i usuwanie tasków">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
@@ -124,8 +124,10 @@
                         </TableView>
                         <Button layoutX="170.0" layoutY="377.0" mnemonicParsing="false" onAction="#usunTask" prefHeight="46.0" prefWidth="128.0" styleClass="button_big" text="Usuń task z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
                         <TextField fx:id="nazwaTasku" layoutX="503.0" layoutY="165.0" prefHeight="25.0" prefWidth="202.0" />
-                        <Button layoutX="543.0" layoutY="208.0" mnemonicParsing="false" onAction="#dodajTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
+                        <Button layoutX="550.0" layoutY="330.0" mnemonicParsing="false" onAction="#addTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
                         <Label layoutX="481.0" layoutY="129.0" text="Wpisz nazwę tasku, aby dodać go do projektu:" />
+                        <DatePicker fx:id="terminTasku" layoutX="517.0" layoutY="261.0" />
+                        <Label layoutX="552.0" layoutY="219.0" text="Wybierz termin tasku:" />
                      </children>
                   </AnchorPane>
                </content>
