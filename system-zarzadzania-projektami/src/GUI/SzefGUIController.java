@@ -37,6 +37,7 @@ public class SzefGUIController implements Initializable {
     @FXML private TextField nazwaProjektu;
     @FXML private DatePicker termin_koncowyProjektu;
     @FXML private ComboBox comboBoxSzef, comboBoxStatus;
+    @FXML private Label labelProjektWstawiony;
 
     @FXML private Button addUser;
     @FXML private Button editUser;
@@ -163,7 +164,7 @@ public class SzefGUIController implements Initializable {
                     pst.setString(4, termin);
 
                     pst.executeUpdate();
-
+                    labelProjektWstawiony.setVisible(true);
                     System.out.println("Rekord został wstawiony do tabeli projekty!");
                     } else if(numberOfRows >= 1){
                         System.out.println("Rekord juz istnieje");

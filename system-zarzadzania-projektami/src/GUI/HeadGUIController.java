@@ -198,10 +198,9 @@ public class HeadGUIController implements Initializable  {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
-                "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro " +
-                "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK " +
-                "AND t.ID_Task=pit.ID_Taski_FK AND pro.ID_Projekt=t.ID_Projekt_FK AND pro.Nazwa_projektu='" +
-                comboBoxProjects.getValue().toString() + "';");
+                "FROM szp.taski t, szp.projekty pro " +
+                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
+                "AND pro.Nazwa_projektu='" + comboBoxProjects.getValue().toString() + "';");
 
         while (rs.next()) {
             DataTaski dt = new DataTaski();
@@ -219,10 +218,9 @@ public class HeadGUIController implements Initializable  {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
-                "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro " +
-                "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK " +
-                "AND t.ID_Task=pit.ID_Taski_FK AND pro.ID_Projekt=t.ID_Projekt_FK AND pro.Nazwa_projektu='" +
-                comboBoxSelectProject2.getValue().toString() + "';");
+                "FROM  szp.taski t, szp.projekty pro " +
+                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
+                "AND pro.Nazwa_projektu='" + comboBoxSelectProject2.getValue().toString() + "';");
 
         while (rs.next()) {
             DataTaski dt = new DataTaski();
@@ -323,18 +321,39 @@ public class HeadGUIController implements Initializable  {
         }
     }
 
-     public void dodajTask() {
-         String task = nazwaTasku.getText();
+     public void dodajTask() throws SQLException{
+        String task = nazwaTasku.getText();
         String termin = terminTasku.getValue().toString();
         String projekt = comboBoxProjects.getValue().toString();
         int numberOfRows = 0;
+        int id_project = 0;
+        String status = "Rozpoczęty";
+
+        try {
+            String query_id = "SELECT ID_Projekt AS id FROM szp.projekty WHERE Nazwa_projektu = (?);";
+            PreparedStatement pS = conn.prepareStatement(query_id);
+            pS.setString(1, projekt);
+            ResultSet rs = pS.executeQuery();
+            while(rs.next())
+            {
+                id_project = rs.getInt("id");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
         if (task.length() !=0 || termin.length() !=0) {
             try {
-                String query_exists = "";
+                String query_exists = "SELECT COUNT(*) AS total FROM `szp`.`taski`\n" +
+                        "WHERE `ID_Projekt_FK`=(?) \n" +
+                        "AND `Nazwa_tasku`=(?)\n" +
+                        "AND `Status`=(?) \n" +
+                        "AND `Termin`=(?);\n";
                 PreparedStatement preparedStmte = conn.prepareStatement(query_exists);
-                preparedStmte.setString(1, task);
-                preparedStmte.setString(2, termin);
-                preparedStmte.setString(3, projekt);
+                preparedStmte.setInt(1, id_project);
+                preparedStmte.setString(2, task);
+                preparedStmte.setString(3, status);
+                preparedStmte.setString(4, termin);
                 ResultSet rs = preparedStmte.executeQuery();
                 while(rs.next())
                 {
@@ -343,13 +362,14 @@ public class HeadGUIController implements Initializable  {
                 try {
                     if (numberOfRows == 0) {
 
-                        String query = " insert into `szp`.`taski` ()"
-                                + " values (?, ?, ?)";
+                        String query = " INSERT INTO `szp`.`taski` (`ID_Projekt_FK`, `Nazwa_tasku`, `Status`, `Termin`) \n" +
+                                "values (?, ?, ?, ?);";
 
                         PreparedStatement pst = conn.prepareStatement(query);
-                        pst.setString(1, task);
-                        pst.setString(2, termin);
-                        pst.setString(3, projekt);
+                        pst .setInt(1, id_project);
+                        pst .setString(2, task);
+                        pst .setString(3, status);
+                        pst .setString(4, termin);
 
                         pst.executeUpdate();
 
@@ -368,6 +388,6 @@ public class HeadGUIController implements Initializable  {
         {
             System.out.println("Wypełnij pola");
         }
-        
-    } 
+         wyswietlTaskiProjektuTable3();
+     }
 }

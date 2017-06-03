@@ -72,7 +72,7 @@
                             <TableColumn fx:id="nazwaProjektHead" prefWidth="258.0" text="Nazwa projektu" />
                           </columns>
                         </TableView>
-                        <Button fx:id="deleteButton" layoutX="548.0" layoutY="504.0" mnemonicParsing="false" onAction="#usunPracownikaZProjektu" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text=" Usuń pracownika z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
+                        <Button fx:id="deleteButton" layoutX="548.0" layoutY="490.0" mnemonicParsing="false" onAction="#usunPracownikaZProjektu" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text=" Usuń pracownika z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
                      </children>
                   </AnchorPane>
             </content>
@@ -124,7 +124,7 @@
                         </TableView>
                         <Button layoutX="170.0" layoutY="377.0" mnemonicParsing="false" onAction="#usunTask" prefHeight="46.0" prefWidth="128.0" styleClass="button_big" text="Usuń task z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
                         <TextField fx:id="nazwaTasku" layoutX="503.0" layoutY="165.0" prefHeight="25.0" prefWidth="202.0" />
-                        <Button layoutX="550.0" layoutY="330.0" mnemonicParsing="false" onAction="#addTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
+                        <Button layoutX="550.0" layoutY="330.0" mnemonicParsing="false" onAction="#dodajTask" prefHeight="35.0" prefWidth="108.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
                         <Label layoutX="481.0" layoutY="129.0" text="Wpisz nazwę tasku, aby dodać go do projektu:" />
                         <DatePicker fx:id="terminTasku" layoutX="517.0" layoutY="261.0" />
                         <Label layoutX="552.0" layoutY="219.0" text="Wybierz termin tasku:" />
