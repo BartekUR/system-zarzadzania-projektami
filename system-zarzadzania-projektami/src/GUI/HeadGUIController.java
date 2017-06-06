@@ -30,15 +30,11 @@ public class HeadGUIController implements Initializable  {
     @FXML private TableColumn<DataTaski, Integer> idMProjekty;
     @FXML private TableColumn<DataTaski, String> taskMProjekty, pracownikMProjekty, statusMProjekty, terminMProjekty;
 
-    @FXML private TableView<DataProjekty> projectsOfTheOnlineHead;
-    @FXML private TableColumn<DataProjekty, Integer> idProjectHead;
-    @FXML private TableColumn<DataProjekty, String> nazwaProjektHead;
-
     @FXML private TableView<DataTaski> taskiTable1, taskiTable2, taskiTable3;
     @FXML private TableColumn<DataTaski, Integer> taskiTable_id, taskiTable2_id, taskiTable_id1;
     @FXML private TableColumn<DataTaski, String> taskiTable_nazwa, taskiTable2_nazwa, taskiTable_nazwa1;
 
-    @FXML private ComboBox comboBoxProjects, comboBoxHead, comboBoxSelectProject2, comboBoxSelectPracownik;
+    @FXML private ComboBox comboBoxProjects, comboBoxHead, comboBoxSelectProject2, comboBoxSelectPracownik, comboBoxProjektHeada2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,9 +47,6 @@ public class HeadGUIController implements Initializable  {
         pracownikTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownikTable_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
         pracownikTable_nazwisko.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_nazwisko"));
-
-        idProjectHead.setCellValueFactory(new PropertyValueFactory<>("projektyTable_id"));
-        nazwaProjektHead.setCellValueFactory(new PropertyValueFactory<>("projektyTable_nazwa"));
 
         pracownicyInProject_Table_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
         pracownicyInProject_Table_imie.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_imie"));
@@ -72,28 +65,10 @@ public class HeadGUIController implements Initializable  {
 
         try {
             wyswietlProjektyHeadaCombo();
-            wyswietlProjektyHeadaTable();
             wyswietlPracownikowTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    private void wyswietlProjektyHeadaTable() throws SQLException {
-
-        ObservableList<DataProjekty> headProjects  = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty` WHERE `Head`='" + who + "'");
-
-        while (rs.next()) {
-            DataProjekty hp = new DataProjekty();
-            hp.setProjektyTable_id(rs.getInt("ID_Projekt"));
-            hp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
-            headProjects.add(hp);
-        }
-
-        projectsOfTheOnlineHead.setItems(headProjects);
-        projectsOfTheOnlineHead.refresh();
     }
 
     @FXML
@@ -117,11 +92,9 @@ public class HeadGUIController implements Initializable  {
     @FXML
     private void wyswietlPracownikowProjektuTable() throws SQLException {
 
-        DataProjekty projectHead =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
+        String name_project = comboBoxProjektHeada2.getValue().toString();
 
-        if(projectHead != null) {
-
-            String name_project = projectHead.getProjektyTable_nazwa();
+        if(name_project != null) {
             ObservableList<DataPracownicy> employeesInProject = FXCollections.observableArrayList();
 
             try {
@@ -143,7 +116,6 @@ public class HeadGUIController implements Initializable  {
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-
             pracownicyInProject_Table.setItems(employeesInProject);
         }
 
@@ -152,16 +124,31 @@ public class HeadGUIController implements Initializable  {
     @FXML
     private void dodajPracownikaDoProjektu() throws SQLException{
         DataPracownicy person = pracownikTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
-        DataProjekty project =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
+        String nazwa_projektu = comboBoxProjektHeada2.getValue().toString();
+        int id_project = 0;
 
-        if(person!=null && project!=null){
+        try {
+            String query_id = "SELECT ID_Projekt AS id FROM szp.projekty WHERE Nazwa_projektu=(?);";
+            PreparedStatement pS = conn.prepareStatement(query_id);
+            pS.setString(1, nazwa_projektu);
+            ResultSet rs = pS.executeQuery();
+            while(rs.next())
+            {
+                id_project = rs.getInt("id");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println("ID projektu to "+id_project);
+
+
+        if(person!=null && nazwa_projektu!=null){
             String id_person = person.getPracownicyTable_id().toString();
-            String id_project = project.getProjektyTable_id().toString();
             try {
                 String query = " insert into `szp`.`pracownicy_i_projekty` (`ID_Pracownik_FK`, `ID_Projekt_FK`) values (?, ?)";
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.setString(1, id_person);
-                pst.setString(2, id_project);
+                pst.setInt(2, id_project);
                 pst.executeUpdate();
 
                 System.out.println("Rekord został wstawiony do tabeli projekty!");
@@ -175,16 +162,31 @@ public class HeadGUIController implements Initializable  {
     @FXML
     private void usunPracownikaZProjektu() throws SQLException {
         DataPracownicy personDelete = pracownicyInProject_Table.getSelectionModel().getSelectedItem();
-        DataProjekty projectDel =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
+        String projectDel = comboBoxProjektHeada2.getValue().toString();
+        int id_projectDel = 0;
+
+        try {
+            String query_id = "SELECT ID_Projekt AS id FROM szp.projekty WHERE Nazwa_projektu=(?);";
+            PreparedStatement pS = conn.prepareStatement(query_id);
+            pS.setString(1, projectDel);
+            ResultSet rs = pS.executeQuery();
+            while(rs.next())
+            {
+                id_projectDel = rs.getInt("id");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println("ID projektu to "+id_projectDel);
+
 
         if(personDelete != null && projectDel != null) {
             String id_pracownik = personDelete.getPracownicyTable_id().toString();
-            String id_projekt = projectDel.getProjektyTable_id().toString();
             try {
                 String query = "DELETE FROM szp.pracownicy_i_projekty WHERE ID_Pracownik_FK=(?) AND ID_Projekt_FK=(?);";
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.setString(1, id_pracownik);
-                pst.setString(2, id_projekt);
+                pst.setInt(2, id_projectDel);
 
                 pst.executeUpdate();
                 System.out.println("Pracownik został usunięty z projektu!");
@@ -334,6 +336,7 @@ public class HeadGUIController implements Initializable  {
         comboBoxProjects.setItems(options);
         comboBoxHead.setItems(options);
         comboBoxSelectProject2.setItems(options);
+        comboBoxProjektHeada2.setItems(options);
     }
 
     @FXML

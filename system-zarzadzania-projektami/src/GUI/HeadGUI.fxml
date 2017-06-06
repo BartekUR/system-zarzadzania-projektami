@@ -47,32 +47,26 @@
                               <Button fx:id="addButton" layoutX="333.0" layoutY="269.0" mnemonicParsing="false" onAction="#dodajPracownikaDoProjektu" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj" textFill="#f8f8f8" />
                            </children>
                         </VBox>
-                        <Label layoutX="384.0" layoutY="17.0" styleClass="napisy" text="Wybierz projekt:" />
-                        <Label layoutX="17.0" layoutY="92.0" styleClass="napisy" text="Lista dostępnych pracowników" />
-                        <Label layoutX="478.0" layoutY="190.0" styleClass="napisy" text="Lista pracowników w projekcie:" />
-                        <TableView fx:id="pracownikTable" layoutX="30.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="132.0">
+                        <Label layoutX="478.0" layoutY="14.0" styleClass="napisy" text="Wybierz projekt:" />
+                        <Label layoutX="17.0" layoutY="27.0" styleClass="napisy" text="Lista dostępnych pracowników" />
+                        <TableView fx:id="pracownikTable" layoutX="30.0" layoutY="58.0" prefHeight="496.0" prefWidth="305.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="58.0">
                           <columns>
                             <TableColumn fx:id="pracownikTable_id" prefWidth="50.0" text="ID" />
                             <TableColumn fx:id="pracownikTable_imie" prefWidth="110.0" text="Imie" />
                               <TableColumn fx:id="pracownikTable_nazwisko" prefWidth="144.0" text="Nazwisko" />
                           </columns>
                         </TableView>
-                        <TableView fx:id="pracownicyInProject_Table" layoutX="478.0" layoutY="221.0" prefHeight="268.0" prefWidth="305.0" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="478.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="221.0">
+                        <TableView fx:id="pracownicyInProject_Table" layoutX="478.0" layoutY="101.0" prefHeight="388.0" prefWidth="305.0" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="478.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="101.0">
                           <columns>
                             <TableColumn fx:id="pracownicyInProject_Table_id" prefWidth="50.0" text="ID" />
                             <TableColumn fx:id="pracownicyInProject_Table_imie" minWidth="0.0" prefWidth="120.0" text="Imie " />
                               <TableColumn fx:id="pracownicyInProject_Table_nazwisko" maxWidth="500.0" prefWidth="135.0" text="Nazwisko" />
                           </columns>
                         </TableView>
-                        <Button layoutX="205.0" layoutY="88.0" mnemonicParsing="false" styleClass="button_small" text="Odśwież" textFill="#f8f8f8" />
-                        <Button fx:id="pracownicy_projekt" layoutX="651.0" layoutY="186.0" mnemonicParsing="false" onAction="#wyswietlPracownikowProjektuTable" styleClass="button_small" text="Wyświetl" textFill="#f8f8f8" />
-                        <TableView fx:id="projectsOfTheOnlineHead" layoutX="479.0" layoutY="13.0" prefHeight="168.0" prefWidth="305.0">
-                          <columns>
-                            <TableColumn fx:id="idProjectHead" prefWidth="45.0" text="ID" />
-                            <TableColumn fx:id="nazwaProjektHead" prefWidth="258.0" text="Nazwa projektu" />
-                          </columns>
-                        </TableView>
-                        <Button fx:id="deleteButton" layoutX="548.0" layoutY="490.0" mnemonicParsing="false" onAction="#usunPracownikaZProjektu" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text=" Usuń pracownika z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
+                        <Button layoutX="189.0" layoutY="23.0" mnemonicParsing="false" styleClass="button_small" text="Odśwież" textFill="#f8f8f8" />
+                        <Button fx:id="pracownicy_projekt" layoutX="575.0" layoutY="48.0" maxHeight="64.0" maxWidth="135.0" mnemonicParsing="false" onAction="#wyswietlPracownikowProjektuTable" prefHeight="42.0" prefWidth="135.0" styleClass="button_small" text="Wyświetl pracowników projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
+                        <Button fx:id="deleteButton" layoutX="568.0" layoutY="491.0" mnemonicParsing="false" onAction="#usunPracownikaZProjektu" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text=" Usuń pracownika z projektu" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true" />
+                        <ComboBox fx:id="comboBoxProjektHeada2" layoutX="567.0" layoutY="10.0" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
             </content>
