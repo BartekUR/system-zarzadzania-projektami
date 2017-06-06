@@ -34,9 +34,9 @@ public class HeadGUIController implements Initializable  {
     @FXML private TableColumn<DataProjekty, Integer> idProjectHead;
     @FXML private TableColumn<DataProjekty, String> nazwaProjektHead;
 
-    @FXML private TableView<DataTaski> taskiTable, taskiTable1;
-    @FXML private TableColumn<DataTaski, Integer> taskiTable_id, taskiTable_id1;
-    @FXML private TableColumn<DataTaski, String> taskiTable_nazwa, taskiTable_nazwa1;
+    @FXML private TableView<DataTaski> taskiTable1, taskiTable2, taskiTable3;
+    @FXML private TableColumn<DataTaski, Integer> taskiTable_id, taskiTable2_id, taskiTable_id1;
+    @FXML private TableColumn<DataTaski, String> taskiTable_nazwa, taskiTable2_nazwa, taskiTable_nazwa1;
 
     @FXML private ComboBox comboBoxProjects, comboBoxHead, comboBoxSelectProject2, comboBoxSelectPracownik;
 
@@ -61,6 +61,9 @@ public class HeadGUIController implements Initializable  {
 
         taskiTable_id.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
         taskiTable_nazwa.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
+
+        taskiTable2_id.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
+        taskiTable2_nazwa.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
 
         taskiTable_id1.setCellValueFactory(new PropertyValueFactory<>("taskiTable_id"));
         taskiTable_nazwa1.setCellValueFactory(new PropertyValueFactory<>("taskiTable_nazwa"));
@@ -112,7 +115,7 @@ public class HeadGUIController implements Initializable  {
     }
 
     @FXML
-    private void wyswietlPracownikowProjektu() throws SQLException {
+    private void wyswietlPracownikowProjektuTable() throws SQLException {
 
         DataProjekty projectHead =  projectsOfTheOnlineHead.getSelectionModel().getSelectedItem();
 
@@ -165,7 +168,7 @@ public class HeadGUIController implements Initializable  {
             } catch (SQLException d){
                 System.out.println(d.getMessage());
             }
-            wyswietlPracownikowProjektu();
+            wyswietlPracownikowProjektuTable();
         }
     }
 
@@ -188,33 +191,13 @@ public class HeadGUIController implements Initializable  {
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-            wyswietlPracownikowProjektu();
+            wyswietlPracownikowProjektuTable();
         }
 
     }
 
     @FXML
-    private void wyswietlTaskiProjektuTable3() throws SQLException {
-
-        ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
-                "FROM szp.taski t, szp.projekty pro " +
-                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
-                "AND pro.Nazwa_projektu='" + comboBoxProjects.getValue().toString() + "';");
-
-        while (rs.next()) {
-            DataTaski dt = new DataTaski();
-            dt.setTaskiTable_id(rs.getInt("ID_Task"));
-            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
-            data.add(dt);
-        }
-
-        taskiTable1.setItems(data);
-        taskiTable1.refresh();
-    }
-
-    @FXML
-    private void wyswietlTaskiProjektuTable2() throws SQLException {
+    private void wyswietlTaskiProjektuTable1() throws SQLException {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
@@ -229,13 +212,58 @@ public class HeadGUIController implements Initializable  {
             data.add(dt);
         }
 
-        taskiTable.setItems(data);
-        taskiTable.refresh();
+        taskiTable1.setItems(data);
+        taskiTable1.refresh();
         wyswietlPracownikowCombo();
     }
 
     @FXML
-    private void wyswietlTaskiProjektuTable1() throws SQLException  {
+    private void wyswietlTaskiPracownikaProjektu() throws SQLException {
+
+        String[] pracownik = comboBoxSelectPracownik.getValue().toString().split(" ", 2);
+        String pimie = pracownik[0];
+        String pnazwisko = pracownik[1];
+        System.out.println("Imie: " + pimie + " i nazwisko " + pnazwisko);
+
+        ObservableList<DataTaski> data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
+                "FROM  szp.taski t, szp.projekty pro " +
+                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
+                "AND pro.Nazwa_projektu='" + comboBoxSelectProject2.getValue().toString() + "';");
+
+        while (rs.next()) {
+            DataTaski dt = new DataTaski();
+            dt.setTaskiTable_id(rs.getInt("ID_Task"));
+            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+            data.add(dt);
+        }
+
+        taskiTable2.setItems(data);
+        taskiTable2.refresh();
+    }
+
+    @FXML
+    private void wyswietlTaskiProjektuTable2() throws SQLException {
+
+        ObservableList<DataTaski> data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
+                "FROM szp.taski t, szp.projekty pro " +
+                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
+                "AND pro.Nazwa_projektu='" + comboBoxProjects.getValue().toString() + "';");
+
+        while (rs.next()) {
+            DataTaski dt = new DataTaski();
+            dt.setTaskiTable_id(rs.getInt("ID_Task"));
+            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+            data.add(dt);
+        }
+
+        taskiTable3.setItems(data);
+        taskiTable3.refresh();
+    }
+
+    @FXML
+    private void wyswietlProjekt() throws SQLException  {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie,t.Status, t.Termin, t.ID_Task " +
@@ -304,7 +332,7 @@ public class HeadGUIController implements Initializable  {
 
     @FXML
     private void usunTask() throws SQLException {
-        DataTaski taskDelete = taskiTable1.getSelectionModel().getSelectedItem();
+        DataTaski taskDelete = taskiTable3.getSelectionModel().getSelectedItem();
 
         if (taskDelete != null) {
             String id_task = taskDelete.getTaskiTable_id().toString();
@@ -317,7 +345,7 @@ public class HeadGUIController implements Initializable  {
                 System.out.println(e.getMessage());
             }
 
-            wyswietlTaskiProjektuTable3();
+            wyswietlTaskiProjektuTable2();
         }
     }
 
@@ -388,6 +416,6 @@ public class HeadGUIController implements Initializable  {
         {
             System.out.println("Wypełnij pola");
         }
-         wyswietlTaskiProjektuTable3();
+         wyswietlTaskiProjektuTable2();
      }
 }

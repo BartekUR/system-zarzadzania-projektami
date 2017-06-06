@@ -17,12 +17,9 @@ public class LogowanieController {
     private Connection conn = sc.getConn();
     public static String who, what, whoLogin;
 
-    @FXML
-    private TextField log_user;
-    @FXML
-    private PasswordField log_pass;
-    @FXML
-    private Button loginButton;
+    @FXML private TextField log_user;
+    @FXML private PasswordField log_pass;
+    @FXML private Button loginButton;
 
 
     public void login() throws SQLException, IOException {
