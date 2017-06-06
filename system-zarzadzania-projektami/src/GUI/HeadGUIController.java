@@ -224,18 +224,46 @@ public class HeadGUIController implements Initializable  {
         String pimie = pracownik[0];
         String pnazwisko = pracownik[1];
         System.out.println("Imie: " + pimie + " i nazwisko " + pnazwisko);
+        int id_pracownik = 0;
+        String nazwa_projektu = comboBoxSelectProject2.getValue().toString();
+
+        try {
+            String query_id = "SELECT ID_Pracownik  AS id  FROM szp.pracownicy WHERE Imie = (?) AND Nazwisko = (?);";
+            PreparedStatement pS = conn.prepareStatement(query_id);
+            pS.setString(1, pimie);
+            pS.setString(2, pnazwisko);
+            ResultSet rs = pS.executeQuery();
+            while(rs.next())
+            {
+                id_pracownik = rs.getInt("id");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println("ID pracownika to "+id_pracownik);
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
-                "FROM  szp.taski t, szp.projekty pro " +
-                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
-                "AND pro.Nazwa_projektu='" + comboBoxSelectProject2.getValue().toString() + "';");
+        try {
+            String query_id = "SELECT t.ID_Task, t.Nazwa_tasku " +
+                    "FROM szp.taski t, szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.projekty pro " +
+                    "WHERE pra.ID_Pracownik=(?) " +
+                    "AND pra.ID_Pracownik=pit.ID_Pracownik_FK " +
+                    "AND t.ID_Task=pit.ID_Taski_FK " +
+                    "AND t.ID_Projekt_FK=pro.ID_Projekt " +
+                    "AND pro.Nazwa_projektu=(?);";
+            PreparedStatement pS = conn.prepareStatement(query_id);
+            pS.setInt(1, id_pracownik);
+            pS.setString(2, nazwa_projektu);
+            ResultSet rs = pS.executeQuery();
 
-        while (rs.next()) {
-            DataTaski dt = new DataTaski();
-            dt.setTaskiTable_id(rs.getInt("ID_Task"));
-            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
-            data.add(dt);
+            while (rs.next()) {
+                DataTaski dt = new DataTaski();
+                dt.setTaskiTable_id(rs.getInt("ID_Task"));
+                dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+                data.add(dt);
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
 
         taskiTable2.setItems(data);
