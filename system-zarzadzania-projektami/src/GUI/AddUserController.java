@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
 
+/**
+ * Klasa służąca do dodawania użytkowników programu
+ */
 public class AddUserController implements Initializable {
 
     private SqlConnect sc = new SqlConnect();
@@ -31,7 +34,9 @@ public class AddUserController implements Initializable {
         ObservableList<String> du_stanowiskoList = FXCollections.observableArrayList("Head","Pracownik");
         du_stanowisko.setItems(du_stanowiskoList);
     }
-
+    /**
+     * Metoda do obsługiwania przycisku służącego do dodawania użytkownika
+     */
     @FXML
     private void dodajUzytkownika() throws SQLException {
         String imie = du_imie.getText();
@@ -87,6 +92,9 @@ public class AddUserController implements Initializable {
         }
     }
 
+    /**
+     * Metoda obsługująca przycisk do zamykania okna
+     */
     @FXML
     private void closeButtonAction(){
 
@@ -95,3 +103,4 @@ public class AddUserController implements Initializable {
         stage.close();
     }
 }
+
