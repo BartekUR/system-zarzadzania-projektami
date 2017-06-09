@@ -2,6 +2,10 @@ package GUI;
 
 import java.sql.*;
 
+/**
+ * Klasa obsługująca połączenie z bazą danych
+ */
+
 public class SqlConnect {
 
     private static final String pass = "pass";
