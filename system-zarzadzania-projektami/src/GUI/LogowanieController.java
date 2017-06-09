@@ -11,6 +11,10 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.sql.*;
 
+/**
+ * Klasa obsługująca logowanie
+ */
+
 public class LogowanieController {
 
     private SqlConnect sc = new SqlConnect();
@@ -21,6 +25,9 @@ public class LogowanieController {
     @FXML private PasswordField log_pass;
     @FXML private Button loginButton;
 
+    /**
+     * Metoda obsługująca logowanie
+     */
 
     public void login() throws SQLException, IOException {
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM `szp`.`pracownicy` WHERE Login=? AND Haslo=?");
