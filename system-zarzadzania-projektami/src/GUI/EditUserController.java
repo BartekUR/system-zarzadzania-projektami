@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
 
+/**
+ * Klasa służąca do edytowania użytkowników
+ */
 public class EditUserController implements Initializable {
 
     private SqlConnect sc = new SqlConnect();
@@ -22,6 +25,9 @@ public class EditUserController implements Initializable {
     @FXML private ComboBox comboBoxWyborUzytkownika;
     @FXML private Label labelEditUser;
 
+    /**
+     * Metoda obsługująca przycisk do zamykania okna
+     */
     @FXML
     private void closeButtonAction(){
 
@@ -29,7 +35,9 @@ public class EditUserController implements Initializable {
 
         stage.close();
     }
-
+    /**
+     * Metoda wypełniająca combobox
+     */
     @FXML
     private void fillcomboBoxDU() throws SQLException {
         final ObservableList<Integer> options = FXCollections.observableArrayList();
@@ -72,6 +80,10 @@ public class EditUserController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Metoda obsługująca przycisk do edytowania użytkownika
+     */
 
     public void editButtonAction() throws SQLException {
         Object id = comboBoxWyborUzytkownika.getValue().toString();
