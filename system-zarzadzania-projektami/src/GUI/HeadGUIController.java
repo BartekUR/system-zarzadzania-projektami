@@ -13,6 +13,10 @@ import java.sql.*;
 
 import static GUI.LogowanieController.who;
 
+/**
+ * Klasa  osługująca GUI Heada
+ */
+
 public class HeadGUIController implements Initializable  {
 
     private SqlConnect sc = new SqlConnect();
@@ -70,6 +74,9 @@ public class HeadGUIController implements Initializable  {
             e.printStackTrace();
         }
     }
+    /**
+     * Metoda do wyświetlania pracowników w tabeli
+     */
 
     @FXML
     private void wyswietlPracownikowTable() throws SQLException {
@@ -89,6 +96,9 @@ public class HeadGUIController implements Initializable  {
         pracownikTable.refresh();
     }
 
+    /**
+     * Metoda do wyświetlania pracowników z danego projektu
+     */
     @FXML
     private void wyswietlPracownikowProjektuTable() throws SQLException {
 
@@ -121,6 +131,9 @@ public class HeadGUIController implements Initializable  {
 
     }
 
+    /**
+     * Metoda do dodawania pracownika do danego proejtku
+     */
     @FXML
     private void dodajPracownikaDoProjektu() throws SQLException{
         DataPracownicy person = pracownikTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
@@ -159,6 +172,9 @@ public class HeadGUIController implements Initializable  {
         }
     }
 
+    /**
+     * Metoda do usuwania pracownika z danego projektu
+     */
     @FXML
     private void usunPracownikaZProjektu() throws SQLException {
         DataPracownicy personDelete = pracownicyInProject_Table.getSelectionModel().getSelectedItem();
@@ -198,6 +214,10 @@ public class HeadGUIController implements Initializable  {
 
     }
 
+    /**
+     * Metoda do wyświetlania tasków danego projektu
+     */
+
     @FXML
     private void wyswietlTaskiProjektuTable1() throws SQLException {
 
@@ -218,6 +238,10 @@ public class HeadGUIController implements Initializable  {
         taskiTable1.refresh();
         wyswietlPracownikowCombo();
     }
+
+    /**
+     * Metoda do wyswietlania tasków danego pracownika
+     */
 
     @FXML
     private void wyswietlTaskiPracownikaProjektu() throws SQLException {
@@ -272,6 +296,10 @@ public class HeadGUIController implements Initializable  {
         taskiTable2.refresh();
     }
 
+    /**
+     * Metoda do wyświetlania tasków danego projektu
+     */
+
     @FXML
     private void wyswietlTaskiProjektuTable2() throws SQLException {
 
@@ -291,6 +319,10 @@ public class HeadGUIController implements Initializable  {
         taskiTable3.setItems(data);
         taskiTable3.refresh();
     }
+
+    /**
+     * Metoda do wyświetlania projektu wybranego z comboboxa
+     */
 
     @FXML
     private void wyswietlProjekt() throws SQLException  {
@@ -317,6 +349,10 @@ public class HeadGUIController implements Initializable  {
         mojeProjekty.refresh();
     }
 
+    /**
+     * Metoda obsługująca combobox wyświetlający proejtky heada
+     */
+
     @FXML
     public void wyswietlProjektyHeadaCombo() throws SQLException {
 
@@ -338,6 +374,10 @@ public class HeadGUIController implements Initializable  {
         comboBoxSelectProject2.setItems(options);
         comboBoxProjektHeada2.setItems(options);
     }
+
+    /**
+     * Metoda obsługująca combobox wyświetlający pracowników
+     */
 
     @FXML
     public void wyswietlPracownikowCombo() throws SQLException {
@@ -361,6 +401,10 @@ public class HeadGUIController implements Initializable  {
         }
     }
 
+    /**
+     * Metoda obsługująca przycisk do usuwania tasków
+     */
+
     @FXML
     private void usunTask() throws SQLException {
         DataTaski taskDelete = taskiTable3.getSelectionModel().getSelectedItem();
@@ -379,6 +423,10 @@ public class HeadGUIController implements Initializable  {
             wyswietlTaskiProjektuTable2();
         }
     }
+
+    /**
+     * Metoda do obsługiwania przycisku służącego do dodawania tasków
+     */
 
      public void dodajTask() throws SQLException{
         String task = nazwaTasku.getText();
