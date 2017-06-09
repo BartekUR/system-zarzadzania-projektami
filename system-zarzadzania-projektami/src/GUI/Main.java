@@ -11,6 +11,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 
+/**
+ * Klasa Main
+ */
+
 public class Main extends Application {
 
     private SqlConnect sc = new SqlConnect();
@@ -19,6 +23,10 @@ public class Main extends Application {
         System.out.println("Uruchamianie aplikacji.");
         launch(args);
     }
+
+    /**
+     * Połaczenie z bozą danych
+     */
 
     public void init() throws SQLException, IOException {
         if (sc.open()) {
@@ -49,6 +57,10 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Metoda do włączania okna logowania
+     */
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Logowanie.fxml"));
@@ -59,6 +71,10 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    /**
+     * Metoda do wyłączania okna
+     */
 
     public void stop() {
         sc.close();
