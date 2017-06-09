@@ -21,6 +21,10 @@ import java.sql.*;
 
 import static GUI.LogowanieController.who;
 
+/**
+ * Klasa obsługująca GUI szefa
+ */
+
 public class SzefGUIController implements Initializable {
 
     private SqlConnect sc = new SqlConnect();
@@ -66,6 +70,10 @@ public class SzefGUIController implements Initializable {
         comboBoxStatus.setItems(statusProjektuList);
     }
 
+    /**
+     * Metoda do wyświetalnia pacowników w tablicy
+     */
+
     private void wyswietlPracownikowTable() throws SQLException {
         ObservableList<DataPracownicy> data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy`;");
@@ -80,6 +88,10 @@ public class SzefGUIController implements Initializable {
         pracownicyTable.setItems(data);
         pracownicyTable.refresh();
     }
+
+    /**
+     * Metoda do wyświetlania projektów
+     */
 
     private void wyswietlProjektyTable() throws SQLException {
         ObservableList<DataProjekty> data = FXCollections.observableArrayList();
@@ -97,6 +109,10 @@ public class SzefGUIController implements Initializable {
         projektyTable.refresh();
     }
 
+    /**
+     * Metoda do obsługiwania comboboxa z headami
+     */
+
     @FXML
     private void wyswietlHeadowCombo() throws SQLException {
         ObservableList<String> options = FXCollections.observableArrayList();
@@ -108,6 +124,10 @@ public class SzefGUIController implements Initializable {
         }
         comboBoxSzef.setItems(options);
     }
+
+    /**
+     * Metoda do obsługiwania przycisku do usuwania projektów
+     */
 
     @FXML
     private void usunProjekt() throws SQLException {
@@ -127,6 +147,10 @@ public class SzefGUIController implements Initializable {
             wyswietlProjektyTable();
         }
     }
+
+    /**
+     * Metoda do obsługiwania przycisku służącego do dodawania projektów
+     */
 
     @FXML
     private void dodajProjekt() throws SQLException  {
@@ -178,6 +202,11 @@ public class SzefGUIController implements Initializable {
         }
             refresh();
     }
+
+    /**
+     * Metoda do obsługiwania przycisku do dodawania użytkowników
+     */
+
     @FXML
     private void dodajUzytkownika() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("AddUser.fxml"));
@@ -188,6 +217,10 @@ public class SzefGUIController implements Initializable {
         info_stage.initOwner(addUser.getScene().getWindow());
         info_stage.showAndWait();
     }
+
+    /**
+     * Metoda służąca do obsługiwania przycisku do usuwania użytkownika
+     */
 
     @FXML
     private void usunUzytkownika() throws IOException,SQLException {
@@ -209,6 +242,10 @@ public class SzefGUIController implements Initializable {
         }
     }
 
+    /**
+     * Metod ado obsługi przycisku do edytowania użytkownika
+     */
+
     @FXML
     private void edytujUzytkownika() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("EditUser.fxml"));
@@ -219,6 +256,10 @@ public class SzefGUIController implements Initializable {
         info_stage.initOwner(editUser.getScene().getWindow());
         info_stage.showAndWait();
     }
+
+    /**
+     * Metoda służaca do obsługi przycisku wypełniającaego przykładowymi danymi baze danych
+     */
 
     @FXML
     private void wypelnijBaze() throws SQLException, IOException {
@@ -234,6 +275,10 @@ public class SzefGUIController implements Initializable {
         conn.commit();
         refresh();
     }
+
+    /**
+     * Metoda do odświerzania
+     */
 
     private void refresh() throws SQLException {
         try {
