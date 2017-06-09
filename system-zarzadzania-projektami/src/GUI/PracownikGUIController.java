@@ -14,6 +14,10 @@ import java.sql.*;
 import static GUI.LogowanieController.who;
 import static GUI.LogowanieController.whoLogin;
 
+/**
+ * Klasa obsługująca GUI pracownika
+ */
+
 public class PracownikGUIController implements Initializable {
 
     private SqlConnect sc = new SqlConnect();
@@ -55,6 +59,10 @@ public class PracownikGUIController implements Initializable {
         comboBoxStatusTasku.setItems(statusTaskuList);
     }
 
+    /**
+     * Metoda do wyświetlania proejktów pracownika
+     */
+
     @FXML
     private void wyswietlProjektyPracownikaTable() throws SQLException {
 
@@ -82,6 +90,10 @@ public class PracownikGUIController implements Initializable {
         tableProjektPracownika.refresh();
     }
 
+    /**
+     * Metoda obsługująca combobox projektów pracownika
+     */
+
     @FXML
     private void wyswietlProjektyPracownikaCombo() throws SQLException {
 
@@ -106,6 +118,10 @@ public class PracownikGUIController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Metoda do wyświetlania tasków pracownika w tablicy
+     */
 
     @FXML
     private void wyswietlTaskiPracownikaProjektuTable() throws SQLException {
@@ -143,6 +159,10 @@ public class PracownikGUIController implements Initializable {
         wyswietlTaskiPracownikaProjektuCombo();
     }
 
+    /**
+     * Metoda do wyświetlania tasków pracownika w comboboxie
+     */
+
     @FXML
     private void wyswietlTaskiPracownikaProjektuCombo() throws SQLException {
         String projekt = comboBoxProjektPracownika.getValue().toString();
@@ -170,6 +190,10 @@ public class PracownikGUIController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Metoda do obługiwania przycisku służącego do zmiany statusu tasku
+     */
 
     @FXML
     private void zmienStatusTasku() throws SQLException {
