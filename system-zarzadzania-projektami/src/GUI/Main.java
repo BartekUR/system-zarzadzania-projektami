@@ -43,7 +43,7 @@ public class Main extends Application {
             if (!found) {
                 String line;
 
-                BufferedReader br = new BufferedReader(new FileReader("db_init.sql"));
+                BufferedReader br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_init.sql"));
                 System.out.println("Nie znaleziono bazy. Inicjalizuję nową bazę...");
                 Statement stmt = conn.createStatement();
                 while ((line = br.readLine()) != null) {

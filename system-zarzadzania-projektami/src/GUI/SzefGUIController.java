@@ -265,7 +265,7 @@ public class SzefGUIController implements Initializable {
     private void wypelnijBaze() throws SQLException, IOException {
         String line;
 
-        BufferedReader br = new BufferedReader(new FileReader("db_test.sql"));
+        BufferedReader br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_test.sql"));
         System.out.println("Wypełnianie bazy testowymi danymi...");
         Statement stmt = conn.createStatement();
         while ((line = br.readLine()) != null) {
