@@ -231,11 +231,10 @@ public class SzefGUIController implements Initializable {
         if(person != null) {
             String id = person.getPracownicyTable_id().toString();
             try {
-                String query = " DELETE FROM szp.pracownicy WHERE ID_Pracownik=(?)";
+                String query = "DELETE FROM szp.pracownicy WHERE ID_Pracownik=(?) and `Stanowisko` !='Szef';";
                 PreparedStatement preparedStmt = conn.prepareStatement(query);
                 preparedStmt.setString(1, id);
-                preparedStmt.executeUpdate();
-                System.out.println("Rekord został usunięty z tabeli pracownicy!");
+                preparedStmt.executeUpdate();                
                 wyswietlPracownikowTable();
 
             } catch (SQLException e) {
@@ -243,7 +242,6 @@ public class SzefGUIController implements Initializable {
             }
         }
     }
-
     /**
      * Metod ado obsługi przycisku do edytowania użytkownika
      */
