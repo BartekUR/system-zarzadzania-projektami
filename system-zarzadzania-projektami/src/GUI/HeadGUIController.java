@@ -224,6 +224,100 @@ public class HeadGUIController implements Initializable  {
     }
 
     /**
+     * Metoda do przydzielania pracownika do tasku
+     */
+    @FXML
+    private void dodajPracownikaDoTasku() throws SQLException{
+        String[] pracownik = comboBoxSelectPracownik.getValue().toString().split(" ", 2);
+        String pimie = pracownik[0];
+        String pnazwisko = pracownik[1];
+        System.out.println("Imie: " + pimie + " i nazwisko " + pnazwisko);
+        int id_pracownik = 0;
+
+        try {
+            String query_id = "SELECT ID_Pracownik  AS id  FROM szp.pracownicy WHERE Imie = (?) AND Nazwisko = (?);";
+            PreparedStatement pS = conn.prepareStatement(query_id);
+            pS.setString(1, pimie);
+            pS.setString(2, pnazwisko);
+            ResultSet rs = pS.executeQuery();
+            while(rs.next())
+            {
+                id_pracownik = rs.getInt("id");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println("ID pracownika to "+id_pracownik);
+        DataTaski task = taskiTable1.getSelectionModel().getSelectedItem();
+
+
+        if(task!=null && id_pracownik!=0){
+            int id_task = task.getTaskiTable_id();
+            System.out.println("ID tasku to "+id_task);
+            try {
+                String query = " insert into `szp`.`pracownicy_i_taski` (`ID_Pracownik_FK`, `ID_Taski_FK`) values (?, ?)";
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setInt(1, id_pracownik);
+                pst.setInt(2, id_task);
+                pst.executeUpdate();
+
+                System.out.println("Pracownik został dodany do tasku!");
+            } catch (SQLException d){
+                System.out.println(d.getMessage());
+            }
+            wyswietlTaskiPracownikaProjektu();
+        }
+    }
+
+    /**
+     * Metoda do usuwania pracownika z danego tasku
+     */
+    @FXML
+    private void usunPracownikaZTasku() throws SQLException {
+        String[] pracownik = comboBoxSelectPracownik.getValue().toString().split(" ", 2);
+        String pimie = pracownik[0];
+        String pnazwisko = pracownik[1];
+        System.out.println("Imie: " + pimie + " i nazwisko " + pnazwisko);
+        int id_pracownik = 0;
+
+        try {
+            String query_id = "SELECT ID_Pracownik  AS id  FROM szp.pracownicy WHERE Imie = (?) AND Nazwisko = (?);";
+            PreparedStatement pS = conn.prepareStatement(query_id);
+            pS.setString(1, pimie);
+            pS.setString(2, pnazwisko);
+            ResultSet rs = pS.executeQuery();
+            while(rs.next())
+            {
+                id_pracownik = rs.getInt("id");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println("ID pracownika to "+id_pracownik);
+        DataTaski task = taskiTable2.getSelectionModel().getSelectedItem();
+
+        if(task!=null && id_pracownik!=0){
+            int id_task = task.getTaskiTable_id();
+            System.out.println("ID tasku to "+id_task);
+            try {
+                String query = "DELETE FROM szp.pracownicy_i_taski WHERE ID_Pracownik_FK=(?) AND ID_Taski_FK=(?);";
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setInt(1, id_pracownik);
+                pst.setInt(2, id_task);
+                pst.executeUpdate();
+
+                System.out.println("Pracownik został usunięty z tasku!");
+            } catch (SQLException d){
+                System.out.println(d.getMessage());
+            }
+            wyswietlTaskiPracownikaProjektu();
+        }
+
+    }
+
+    /**
+
+    /**
      * Metoda do wyświetlania tasków danego projektu
      */
 
