@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SzefGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SzefGUIController">
     <children>
         <TabPane prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
@@ -47,11 +47,11 @@
                             <children>
                                 <TableView fx:id="projektyTable" layoutX="18.0" layoutY="111.0" prefHeight="486.0" prefWidth="765.0" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
                                     <columns>
-                                        <TableColumn fx:id="projektyTable_id" prefWidth="41.0" text="ID" />
-                                        <TableColumn fx:id="projektyTable_nazwa" prefWidth="164.0" text="Nazwa projektu" />
-                                        <TableColumn fx:id="projektyTable_head" prefWidth="153.0" text="Head projektu" />
-                                        <TableColumn fx:id="projektyTable_status" prefWidth="111.0" text="Status" />
-                                        <TableColumn fx:id="projektyTable_termin" prefWidth="125.0" text="Termin" />
+                                        <TableColumn fx:id="projektyTable_id" prefWidth="51.99998474121094" text="ID" />
+                                        <TableColumn fx:id="projektyTable_nazwa" prefWidth="182.00001525878906" text="Nazwa projektu" />
+                                        <TableColumn fx:id="projektyTable_head" prefWidth="204.0" text="Head projektu" />
+                                        <TableColumn fx:id="projektyTable_status" prefWidth="158.0" text="Status" />
+                                        <TableColumn fx:id="projektyTable_termin" prefWidth="164.0" text="Termin" />
                                     </columns>
                                 </TableView>
                         <Button layoutX="372.0" layoutY="490.0" mnemonicParsing="false" onAction="#usunProjekt" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń" textFill="#f8f8f8" />
