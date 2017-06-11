@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SzefGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to top, #004d66 0%, #0099cc 100%);;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SzefGUIController">
     <children>
         <TabPane prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
@@ -28,12 +28,13 @@
                                         <TableColumn fx:id="pracownicyTable_stanowisko" editable="false" minWidth="0.0" prefWidth="218.0" text="Stanowisko" />
                                     </columns>
                                 </TableView>
-                                <HBox layoutX="17.0" layoutY="14.0" spacing="10.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="213.0">
+                                <HBox layoutX="17.0" layoutY="14.0" prefHeight="50.0" prefWidth="760.0" spacing="10.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="23.0">
                                     <children>
                                         <Button fx:id="addUser" layoutX="33.0" layoutY="14.0" mnemonicParsing="false" onAction="#dodajUzytkownika" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Dodaj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="632.0" />
                                         <Button fx:id="deleteUser" layoutX="179.0" layoutY="14.0" mnemonicParsing="false" onAction="#usunUzytkownika" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Usuń użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="486.0" />
                                         <Button fx:id="editUser" layoutX="333.0" layoutY="16.0" mnemonicParsing="false" onAction="#edytujUzytkownika" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Edytuj użytkownika" textFill="#f8f8f8" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="332.0" />
                                         <Button fx:id="fillDB" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" onAction="#wypelnijBaze" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Wypełnij bazę" textFill="#f8f8f8" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="182.0" />
+                              <Button fx:id="genRaport" layoutX="445.0" layoutY="10.0" mnemonicParsing="false" onAction="#generowanieRaport" prefHeight="50.0" prefWidth="131.0" styleClass="button_big" text="Generuj raport" textFill="#f8f8f8" />
                                     </children>
                                 </HBox>
                             </children>
