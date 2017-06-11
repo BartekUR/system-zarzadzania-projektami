@@ -81,6 +81,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do wyświetalnia pacowników w tablicy
+     * @throws MySqlCantConnectException
      */
 
     private void wyswietlPracownikowTable() throws MySqlQueryException {
@@ -104,6 +105,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do wyświetlania projektów
+     * @throws MySqlCantConnectException
      */
 
     private void wyswietlProjektyTable() throws MySqlQueryException {
@@ -128,6 +130,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do obsługiwania comboboxa z headami
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -149,6 +152,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do obsługiwania przycisku do usuwania projektów
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -172,6 +176,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do obsługiwania przycisku służącego do dodawania projektów
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -223,6 +228,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do obsługiwania przycisku do dodawania użytkowników
+     * @throws MyIOException
      */
 
     @FXML
@@ -243,6 +249,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda służąca do obsługiwania przycisku do usuwania użytkownika
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -265,11 +272,17 @@ public class SzefGUIController implements Initializable {
     }
     /**
      * Metoda do obsługi przycisku do edytowania użytkownika
+     * @throws MyIOException
      */
 
     @FXML
-    private void edytujUzytkownika() throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("EditUser.fxml"));
+    private void edytujUzytkownika() throws MyIOException {
+        Parent loader = null;
+        try {
+            loader = FXMLLoader.load(getClass().getResource("EditUser.fxml"));
+        } catch (Exception e) {
+            throw new MyIOException(e);
+        }
         Scene info_scene= new Scene(loader);
         Stage info_stage =new Stage();
         info_stage.setScene(info_scene);
@@ -280,6 +293,8 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda służaca do obsługi przycisku wypełniającego przykładowymi danymi baze danych
+     * @throws MySqlCantConnectException
+     * @throws MyIOException
      */
 
     @FXML
@@ -309,6 +324,8 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do generowania pdfów
+     * @throws MySqlCantConnectException
+     * @throws MyIOException
      */
     @FXML
     private void generujRaportSzefa() throws MyIOException, MySqlQueryException {
@@ -360,6 +377,7 @@ public class SzefGUIController implements Initializable {
 
     /**
      * Metoda do odświeżania
+     * @throws MySqlCantConnectException
      */
 
     private void refresh() throws MySqlQueryException {

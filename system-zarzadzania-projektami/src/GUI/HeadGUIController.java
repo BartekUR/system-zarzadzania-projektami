@@ -81,8 +81,10 @@ public class HeadGUIController implements Initializable  {
             e.printStackTrace();
         }
     }
+
     /**
      * Metoda do wyświetlania pracowników w tabeli
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -109,6 +111,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do wyświetlania pracowników z danego projektu
+     * @throws MySqlCantConnectException
      */
     @FXML
     private void wyswietlPracownikowProjektuTable() throws MySqlQueryException {
@@ -144,6 +147,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do dodawania pracownika do danego proejtku
+     * @throws MySqlCantConnectException
      */
     @FXML
     private void dodajPracownikaDoProjektu() throws MySqlQueryException {
@@ -185,6 +189,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do usuwania pracownika z danego projektu
+     * @throws MySqlCantConnectException
      */
     @FXML
     private void usunPracownikaZProjektu() throws MySqlQueryException {
@@ -227,9 +232,10 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do przydzielania pracownika do tasku
+     * @throws MySqlCantConnectException
      */
     @FXML
-    private void dodajPracownikaDoTasku() throws MySqlQueryException{
+    private void dodajPracownikaDoTasku() throws MySqlQueryException {
         String[] pracownik = comboBoxSelectPracownik.getValue().toString().split(" ", 2);
         String pimie = pracownik[0];
         String pnazwisko = pracownik[1];
@@ -273,6 +279,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do usuwania pracownika z danego tasku
+     * @throws MySqlCantConnectException
      */
     @FXML
     private void usunPracownikaZTasku() throws MySqlQueryException {
@@ -319,6 +326,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do wyświetlania tasków danego projektu
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -348,6 +356,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do wyswietlania tasków danego pracownika
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -405,6 +414,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do wyświetlania tasków danego projektu
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -433,6 +443,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do wyświetlania projektu wybranego z comboboxa
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -466,6 +477,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda obsługująca combobox wyświetlający proejtky heada
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -492,6 +504,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda obsługująca combobox wyświetlający pracowników
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -518,6 +531,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda obsługująca przycisk do usuwania tasków
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -541,6 +555,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do obsługiwania przycisku służącego do dodawania tasków
+     * @throws MySqlCantConnectException
      */
 
      public void dodajTask() throws MySqlQueryException {
@@ -608,6 +623,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do generowania pdfów
+     * @throws MyIOException
      */
     @FXML
     private void generujRaportHeada() throws MyIOException {

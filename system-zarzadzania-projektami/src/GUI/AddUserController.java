@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 import java.sql.*;
 
 /**
- * Klasa służąca do dodawania użytkowników programu
+ * Klasa służąca do dodawania użytkowników
  */
 public class AddUserController implements Initializable {
 
@@ -34,11 +34,13 @@ public class AddUserController implements Initializable {
         ObservableList<String> du_stanowiskoList = FXCollections.observableArrayList("Head","Pracownik");
         du_stanowisko.setItems(du_stanowiskoList);
     }
+
     /**
      * Metoda do obsługiwania przycisku służącego do dodawania użytkownika
+     * @throws MySqlCantConnectException
      */
     @FXML
-    private void dodajUzytkownika() throws SQLException {
+    private void dodajUzytkownika() throws MySqlQueryException {
         String imie = du_imie.getText();
         String nazwisko = du_nazwisko.getText();
         Object stanowisko = du_stanowisko.getValue();
@@ -57,11 +59,9 @@ public class AddUserController implements Initializable {
                 preparedStmte.setString(2, nazwisko);
                 preparedStmte.setObject(3, stanowisko);
                 ResultSet rs = preparedStmte.executeQuery();
-                while(rs.next())
-                {
+                while(rs.next()) {
                     numberOfRows = rs.getInt("total");
                 }
-                try {
                     if (numberOfRows == 0) {
                         String query = " INSERT INTO `szp`.`pracownicy` (`Login`, `Haslo`, `Imie`, `Nazwisko`, `Stanowisko`)"
                                 + " VALUES (?, ?, ?, ?, ?)";
@@ -83,11 +83,8 @@ public class AddUserController implements Initializable {
                         labelRekordIstnieje.setVisible(true);
                         System.out.println("Rekord juz istnieje");
                     }
-                } catch (SQLException e){
-                    System.out.println(e.getMessage());
-                }
-            } catch (SQLException e){
-                System.out.println(e.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
         }
     }

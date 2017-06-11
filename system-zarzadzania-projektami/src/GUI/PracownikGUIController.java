@@ -68,6 +68,7 @@ public class PracownikGUIController implements Initializable {
 
     /**
      * Metoda do wyświetlania proejktów pracownika
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -103,6 +104,7 @@ public class PracownikGUIController implements Initializable {
 
     /**
      * Metoda obsługująca combobox projektów pracownika
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -132,6 +134,7 @@ public class PracownikGUIController implements Initializable {
 
     /**
      * Metoda do wyświetlania tasków pracownika w tablicy
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -172,6 +175,7 @@ public class PracownikGUIController implements Initializable {
 
     /**
      * Metoda do wyświetlania tasków pracownika w comboboxie
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -204,6 +208,7 @@ public class PracownikGUIController implements Initializable {
 
     /**
      * Metoda do obługiwania przycisku służącego do zmiany statusu tasku
+     * @throws MySqlCantConnectException
      */
 
     @FXML
@@ -232,6 +237,7 @@ public class PracownikGUIController implements Initializable {
 
     /**
      * Metoda do generowania pdfów
+     * @throws MyIOException
      */
     @FXML
     private void generujRaportPracownika() throws MyIOException {

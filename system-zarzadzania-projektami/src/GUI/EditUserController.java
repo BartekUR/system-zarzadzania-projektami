@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.security.spec.ECField;
 import java.util.ResourceBundle;
 import java.sql.*;
 
@@ -35,35 +36,42 @@ public class EditUserController implements Initializable {
 
         stage.close();
     }
+
     /**
      * Metoda wypełniająca combobox
+     * @throws MySqlCantConnectException
      */
     @FXML
-    private void fillcomboBoxDU() throws SQLException {
+    private void fillcomboBoxDU() throws MySqlQueryException {
         final ObservableList<Integer> options = FXCollections.observableArrayList();
         String query = "SELECT `ID_Pracownik` FROM `szp`.`pracownicy`;";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        ResultSet rs = preparedStmt.executeQuery();
-        while (rs.next()){
+        PreparedStatement preparedStmt = null;
+        try {
+            preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            while (rs.next()){
 
-            options.add(rs.getInt("ID_Pracownik"));
-        }
-        comboBoxWyborUzytkownika.setItems(options);
-
-        if (comboBoxWyborUzytkownika.getValue() != null){
-            String id = comboBoxWyborUzytkownika.getValue().toString(); 
-            rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `ID_Pracownik`='"+id+"';");
-
-            while(rs.next()) {
-                String imie = rs.getString("Imie");
-                String nazwisko = rs.getString("Nazwisko");
-                String stanowisko = rs.getString("Stanowisko");
-                String haslo = rs.getString("Haslo");
-                euImie.setText(imie);
-                euNazwisko.setText(nazwisko);
-                euStanowisko.setValue(stanowisko);
-                euNoweHaslo.setText(haslo);
+                options.add(rs.getInt("ID_Pracownik"));
             }
+            comboBoxWyborUzytkownika.setItems(options);
+
+            if (comboBoxWyborUzytkownika.getValue() != null){
+                String id = comboBoxWyborUzytkownika.getValue().toString();
+                rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `ID_Pracownik`='"+id+"';");
+
+                while(rs.next()) {
+                    String imie = rs.getString("Imie");
+                    String nazwisko = rs.getString("Nazwisko");
+                    String stanowisko = rs.getString("Stanowisko");
+                    String haslo = rs.getString("Haslo");
+                    euImie.setText(imie);
+                    euNazwisko.setText(nazwisko);
+                    euStanowisko.setValue(stanowisko);
+                    euNoweHaslo.setText(haslo);
+                }
+            }
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
     }
 
@@ -76,16 +84,17 @@ public class EditUserController implements Initializable {
 
         try {
             fillcomboBoxDU();
-        } catch (SQLException e) {
+        } catch (MySqlQueryException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Metoda obsługująca przycisk do edytowania użytkownika
+     * @throws MySqlCantConnectException
      */
 
-    public void editButtonAction() throws SQLException {
+    public void editButtonAction() throws MySqlQueryException {
         Object id = comboBoxWyborUzytkownika.getValue().toString();
         String imie = euImie.getText();
         String nazwisko = euNazwisko.getText();
@@ -108,8 +117,8 @@ public class EditUserController implements Initializable {
             labelEditUser.setVisible(true);
             System.out.println("Rekord "+id+" został edytowany!");
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
 
 

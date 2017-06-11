@@ -12,6 +12,10 @@ public class SqlConnect {
     private static final String user = "root";
     private static Connection conn = null;
 
+    /**
+     * Metoda otwierająca połączenie z bazą danych
+     * @throws MySqlCantConnectException
+     */
     public void open() throws MySqlCantConnectException {
         try {
             conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=" + user + "&password=" + pass);
@@ -21,6 +25,10 @@ public class SqlConnect {
         }
     }
 
+    /**
+     * Metoda zamykająca połączenie z bazą danych
+     * @throws MySqlCantDisconnectException
+     */
     public void close() throws MySqlCantDisconnectException {
         try {
             conn.close();
