@@ -2,6 +2,7 @@ package GUI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +28,7 @@ import static GUI.LogowanieController.who;
 
 public class SzefGUIController implements Initializable {
 
+    public Button genRaport;
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
 
@@ -224,7 +226,7 @@ public class SzefGUIController implements Initializable {
 
     @FXML
     private void usunUzytkownika() throws IOException,SQLException {
-        DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
+        DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();
 
         if(person != null) {
             String id = person.getPracownicyTable_id().toString();
@@ -297,4 +299,8 @@ public class SzefGUIController implements Initializable {
     public void setNazwaProjektu(TextField nazwaProjektu) {
         this.nazwaProjektu = nazwaProjektu;
     }
+
+    public void generowanieRaport(ActionEvent actionEvent) {
+    }
 }
+
