@@ -1,12 +1,21 @@
 package GUI;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
@@ -497,4 +506,56 @@ public class HeadGUIController implements Initializable  {
         }
          wyswietlTaskiProjektuTable2();
      }
+
+    /**
+     * Metoda do generowania pdfów
+     */
+    @FXML
+    private void generujRaportHeada(ActionEvent event)throws IOException, SQLException {
+
+        try{
+
+            Document document= new Document();
+            PdfWriter.getInstance(document,new FileOutputStream("./system-zarzadzania-projektami/raport_heada.pdf"));
+
+            document.open();
+            Paragraph p1=new Paragraph("Rozpoczete projekty: ");
+            p1.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(4);
+            PdfPCell cell = new PdfPCell(new Phrase("Nazwa projektu"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Head"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Status"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Data zakonczenia"));
+            table.addCell(cell);
+            table.setHeaderRows(1);
+            try {
+
+                String query= "SELECT Nazwa_projektu, Head, `Status`, Termin FROM szp.projekty WHERE `Status`='Rozpoczęty';";
+                PreparedStatement preparedStmte = conn.prepareStatement(query);
+                ResultSet rs = preparedStmte.executeQuery();
+
+                while (rs.next()) {
+
+                    table.addCell(rs.getString("Nazwa_projektu"));
+                    table.addCell(rs.getString("Head"));
+                    table.addCell(rs.getString("Status"));
+                    table.addCell(rs.getString("Termin"));
+                }
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+            document.add(p1);
+            document.add(table);
+            document.close();
+            System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_heada.pdf ");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

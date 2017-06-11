@@ -1,12 +1,21 @@
 package GUI;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
@@ -217,5 +226,64 @@ public class PracownikGUIController implements Initializable {
             System.out.println(e.getMessage());
         }
         wyswietlTaskiPracownikaProjektuTable();
+    }
+
+    /**
+     * Metoda do generowania pdfów
+     */
+    @FXML
+    private void generujRaportPracownika(ActionEvent event)throws IOException, SQLException {
+
+        try{
+
+            Document document= new Document();
+            PdfWriter.getInstance(document,new FileOutputStream("./system-zarzadzania-projektami/raport_pracownika.pdf"));
+
+            document.open();
+            Paragraph p1=new Paragraph("Przydzielone projekty: ");
+            p1.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(4);
+            PdfPCell cell = new PdfPCell(new Phrase("Nazwa projektu"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Head"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Status"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Data zakonczenia"));
+            table.addCell(cell);
+            table.setHeaderRows(1);
+            try {
+
+                String query= "SELECT pro.Nazwa_projektu, pro.Head, pro.`Status`,pro.Termin \n" +
+                        "FROM szp.projekty pro, szp.pracownicy pra, szp.pracownicy_i_projekty pip\n" +
+                        "WHERE `Status`='Rozpoczety'\n" +
+                        "AND pra.ID_Pracownik = pip.ID_Pracownik_FK\n" +
+                        "AND pro.ID_Projekt = pip.ID_Projekt_FK\n" +
+                        "AND pra.Login = (?);";
+
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, whoLogin);
+
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+
+                    table.addCell(rs.getString("Nazwa_projektu"));
+                    table.addCell(rs.getString("Head"));
+                    table.addCell(rs.getString("Status"));
+                    table.addCell(rs.getString("Termin"));
+                }
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+            document.add(p1);
+            document.add(table);
+            document.close();
+            System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_pracownika.pdf ");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

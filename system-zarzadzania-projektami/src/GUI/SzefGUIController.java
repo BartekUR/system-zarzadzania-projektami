@@ -1,11 +1,19 @@
 package GUI;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -13,6 +21,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+
+import javax.swing.text.*;
+import java.awt.*;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.BufferedReader;
@@ -21,6 +33,7 @@ import java.io.IOException;
 import java.sql.*;
 
 import static GUI.LogowanieController.who;
+
 
 /**
  * Klasa obsługująca GUI szefa
@@ -48,6 +61,8 @@ public class SzefGUIController implements Initializable {
     @FXML private Button addUser;
     @FXML private Button editUser;
 
+    String newLine = System.getProperty("line.separator");
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         pracownicyTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
@@ -68,7 +83,7 @@ public class SzefGUIController implements Initializable {
             e.printStackTrace();
         }
 
-        ObservableList <String> statusProjektuList = FXCollections.observableArrayList("Rozpoczęty","W trakcie","Opóźniony", "Zakończony" );
+        ObservableList <String> statusProjektuList = FXCollections.observableArrayList("Rozpoczety","W trakcie","Opozniony", "Gotowy" );
         comboBoxStatus.setItems(statusProjektuList);
     }
 
@@ -243,7 +258,7 @@ public class SzefGUIController implements Initializable {
         }
     }
     /**
-     * Metod ado obsługi przycisku do edytowania użytkownika
+     * Metoda do obsługi przycisku do edytowania użytkownika
      */
 
     @FXML
@@ -258,7 +273,7 @@ public class SzefGUIController implements Initializable {
     }
 
     /**
-     * Metoda służaca do obsługi przycisku wypełniającaego przykładowymi danymi baze danych
+     * Metoda służaca do obsługi przycisku wypełniającego przykładowymi danymi baze danych
      */
 
     @FXML
@@ -277,7 +292,59 @@ public class SzefGUIController implements Initializable {
     }
 
     /**
-     * Metoda do odświerzania
+     * Metoda do generowania pdfów
+     */
+    @FXML
+    private void generujRaportSzefa(ActionEvent event)throws IOException, SQLException {
+
+        try{
+
+            Document document= new Document();
+            PdfWriter.getInstance(document,new FileOutputStream("./system-zarzadzania-projektami/raport_szefa.pdf"));
+
+            document.open();
+            Paragraph p1=new Paragraph("Gotowe projekty: ");
+            p1.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(4);
+            PdfPCell cell = new PdfPCell(new Phrase("Nazwa projektu"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Head"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Status"));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Data zakonczenia"));
+            table.addCell(cell);
+            table.setHeaderRows(1);
+            try {
+
+                String query= "SELECT Nazwa_projektu, Head, `Status`, Termin FROM szp.projekty WHERE `Status`='Gotowy';";
+                PreparedStatement preparedStmte = conn.prepareStatement(query);
+                ResultSet rs = preparedStmte.executeQuery();
+
+                while (rs.next()) {
+
+                table.addCell(rs.getString("Nazwa_projektu"));
+                table.addCell(rs.getString("Head"));
+                table.addCell(rs.getString("Status"));
+                table.addCell(rs.getString("Termin"));
+                }
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+            document.add(p1);
+            document.add(table);
+            document.close();
+            System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_heada.pdf ");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Metoda do odświeżania
      */
 
     private void refresh() throws SQLException {

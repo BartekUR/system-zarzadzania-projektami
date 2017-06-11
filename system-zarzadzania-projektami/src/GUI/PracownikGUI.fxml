@@ -16,20 +16,21 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PracownikGUIController">
    <children>
-      <TabPane layoutX="-8.0" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+      <TabPane layoutX="-8.0" prefHeight="600.0" prefWidth="808.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab styleClass="tlo" text="Projekty">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="zakladki">
                      <children>
-                        <TableView fx:id="tableProjektPracownika" layoutX="94.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="17.0">
+                        <TableView fx:id="tableProjektPracownika" layoutX="94.0" layoutY="73.0" prefHeight="481.0" prefWidth="766.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="73.0">
                           <columns>
                             <TableColumn fx:id="columnProjekt" prefWidth="171.0" text="Projekt" />
                             <TableColumn fx:id="columnHead" prefWidth="181.0" text="Head" />
                               <TableColumn fx:id="columnStatus" prefWidth="198.0" text="Status" />
-                              <TableColumn fx:id="columnTermin" prefWidth="215.0" text="Termin" />
+                              <TableColumn fx:id="columnTermin" prefWidth="223.0" text="Termin" />
                           </columns>
                         </TableView>
+                        <Button layoutX="648.0" layoutY="14.0" mnemonicParsing="false" onAction="#generujRaportPracownika" prefHeight="50.0" prefWidth="135.0" styleClass="button_big" text="Generuj raport" />
                      </children>
                   </AnchorPane>
             </content>
