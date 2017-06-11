@@ -12,31 +12,22 @@ public class SqlConnect {
     private static final String user = "root";
     private static Connection conn = null;
 
-    public boolean open() {
+    public void open() throws MySqlCantConnectException {
         try {
             conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=" + user + "&password=" + pass);
             System.out.println("Łączenie z MariaDB powiodło się!");
-            return true;
         } catch (Exception e) {
-            System.out.println("Łączenie z MariaDB nie powiodło się!\n");
-            e.printStackTrace();
-            return false;
+            throw new MySqlCantConnectException(e);
         }
     }
 
-    public boolean close() {
-        if (conn != null) {
-            try {
-                conn.close();
-                System.out.println("Rozłączenie z MariaDB powiodło sie!");
-                return true;
-            } catch (Exception e) {
-                System.out.println("Rozłączenie z MariaDB nie powiodło sie!\n");
-                e.printStackTrace();
-                return false;
-            }
+    public void close() throws MySqlCantDisconnectException {
+        try {
+            conn.close();
+            System.out.println("Rozłączenie z MariaDB powiodło sie!");
+        } catch (Exception e) {
+            throw new MySqlCantDisconnectException(e);
         }
-        return true;
     }
 
     public Connection getConn() {

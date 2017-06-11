@@ -6,7 +6,6 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,14 +21,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
-import javax.swing.text.*;
-import java.awt.*;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.*;
 
 import static GUI.LogowanieController.who;
@@ -61,8 +55,6 @@ public class SzefGUIController implements Initializable {
     @FXML private Button addUser;
     @FXML private Button editUser;
 
-    String newLine = System.getProperty("line.separator");
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         pracownicyTable_id.setCellValueFactory(new PropertyValueFactory<>("pracownicyTable_id"));
@@ -79,7 +71,7 @@ public class SzefGUIController implements Initializable {
 
         try {
             refresh();
-        } catch (SQLException e) {
+        } catch (MySqlQueryException e) {
             e.printStackTrace();
         }
 
@@ -91,16 +83,20 @@ public class SzefGUIController implements Initializable {
      * Metoda do wyświetalnia pacowników w tablicy
      */
 
-    private void wyswietlPracownikowTable() throws SQLException {
+    private void wyswietlPracownikowTable() throws MySqlQueryException {
         ObservableList<DataPracownicy> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy`;");
-        while (rs.next()) {
-            DataPracownicy dp = new DataPracownicy();
-            dp.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
-            dp.setPracownicyTable_imie(rs.getString("Imie"));
-            dp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
-            dp.setPracownicyTable_stanowisko(rs.getString("Stanowisko"));
-            data.add(dp);
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy`;");
+            while (rs.next()) {
+                DataPracownicy dp = new DataPracownicy();
+                dp.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
+                dp.setPracownicyTable_imie(rs.getString("Imie"));
+                dp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
+                dp.setPracownicyTable_stanowisko(rs.getString("Stanowisko"));
+                data.add(dp);
+            }
+        } catch (SQLException e) {
+            throw new MySqlQueryException(e);
         }
         pracownicyTable.setItems(data);
         pracownicyTable.refresh();
@@ -110,17 +106,21 @@ public class SzefGUIController implements Initializable {
      * Metoda do wyświetlania projektów
      */
 
-    private void wyswietlProjektyTable() throws SQLException {
+    private void wyswietlProjektyTable() throws MySqlQueryException {
         ObservableList<DataProjekty> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty`;");
-        while (rs.next()) {
-            DataProjekty dp = new DataProjekty();
-            dp.setProjektyTable_id(rs.getInt("ID_Projekt"));
-            dp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
-            dp.setProjektyTable_head(rs.getString("Head"));
-            dp.setProjektyTable_status(rs.getString("Status"));
-            dp.setProjektyTable_termin(rs.getString("Termin"));
-            data.add(dp);
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`projekty`;");
+            while (rs.next()) {
+                DataProjekty dp = new DataProjekty();
+                dp.setProjektyTable_id(rs.getInt("ID_Projekt"));
+                dp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
+                dp.setProjektyTable_head(rs.getString("Head"));
+                dp.setProjektyTable_status(rs.getString("Status"));
+                dp.setProjektyTable_termin(rs.getString("Termin"));
+                data.add(dp);
+            }
+        } catch (SQLException e) {
+            throw new MySqlQueryException(e);
         }
         projektyTable.setItems(data);
         projektyTable.refresh();
@@ -131,13 +131,18 @@ public class SzefGUIController implements Initializable {
      */
 
     @FXML
-    private void wyswietlHeadowCombo() throws SQLException {
+    private void wyswietlHeadowCombo() throws MySqlQueryException {
         ObservableList<String> options = FXCollections.observableArrayList();
-        String query = "SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Head';";
-        PreparedStatement pst = conn.prepareStatement(query);
-        ResultSet rs = pst.executeQuery();
-        while (rs.next()) {
-            options.add(rs.getString("Imie") + " " + rs.getString("Nazwisko"));
+        try {
+            String query = "SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Head';";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = null;
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                options.add(rs.getString("Imie") + " " + rs.getString("Nazwisko"));
+            }
+        } catch (SQLException e) {
+            throw new MySqlQueryException(e);
         }
         comboBoxSzef.setItems(options);
     }
@@ -147,7 +152,7 @@ public class SzefGUIController implements Initializable {
      */
 
     @FXML
-    private void usunProjekt() throws SQLException {
+    private void usunProjekt() throws MySqlQueryException {
         DataProjekty projectDelete = projektyTable.getSelectionModel().getSelectedItem();
 
         if(projectDelete != null) {
@@ -157,8 +162,8 @@ public class SzefGUIController implements Initializable {
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.executeUpdate();
                 System.out.println("Projekt został usunięty!");
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                throw new MySqlQueryException(e);
             }
 
             wyswietlProjektyTable();
@@ -170,7 +175,7 @@ public class SzefGUIController implements Initializable {
      */
 
     @FXML
-    private void dodajProjekt() throws SQLException  {
+    private void dodajProjekt() throws MySqlQueryException {
         String name = nazwaProjektu.getText();
         String head = comboBoxSzef.getValue().toString();
         String status = comboBoxStatus.getValue().toString();
@@ -188,33 +193,29 @@ public class SzefGUIController implements Initializable {
                 preparedStmte.setString(3, status);
                 preparedStmte.setString(4, termin);
                 ResultSet rs = preparedStmte.executeQuery();
-                while(rs.next())
-                {
+                while(rs.next()) {
                     numberOfRows = rs.getInt("total");
                 }
-                try {
-                    if (numberOfRows == 0) {
 
-                    String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Termin`)"
-                            + " values (?, ?, ?, ?)";
+                if (numberOfRows == 0) {
 
-                    PreparedStatement pst = conn.prepareStatement(query);
-                    pst.setString(1, name);
-                    pst.setString(2, head);
-                    pst.setString(3, status);
-                    pst.setString(4, termin);
+                String query = " insert into `szp`.`projekty` (`Nazwa_projektu`, `Head`, `Status`, `Termin`)"
+                        + " values (?, ?, ?, ?)";
 
-                    pst.executeUpdate();
-                    labelProjektWstawiony.setVisible(true);
-                    System.out.println("Rekord został wstawiony do tabeli projekty!");
-                    } else if(numberOfRows >= 1){
-                        System.out.println("Rekord juz istnieje");
-                    }
-                } catch (SQLException e){
-                    System.out.println(e.getMessage());
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, name);
+                pst.setString(2, head);
+                pst.setString(3, status);
+                pst.setString(4, termin);
+
+                pst.executeUpdate();
+                labelProjektWstawiony.setVisible(true);
+                System.out.println("Rekord został wstawiony do tabeli projekty!");
+                } else if(numberOfRows >= 1){
+                    System.out.println("Rekord juz istnieje");
                 }
-            } catch (SQLException e){
-                System.out.println(e.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
         }
             refresh();
@@ -225,10 +226,15 @@ public class SzefGUIController implements Initializable {
      */
 
     @FXML
-    private void dodajUzytkownika() throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("AddUser.fxml"));
-        Scene info_scene= new Scene(loader);
-        Stage info_stage =new Stage();
+    private void dodajUzytkownika() throws MyIOException {
+        Parent loader;
+        try {
+            loader = FXMLLoader.load(getClass().getResource("AddUser.fxml"));
+        } catch (Exception e) {
+            throw new MyIOException(e);
+        }
+        Scene info_scene = new Scene(loader);
+        Stage info_stage = new Stage();
         info_stage.setScene(info_scene);
         info_stage.initModality(Modality.APPLICATION_MODAL);
         info_stage.initOwner(addUser.getScene().getWindow());
@@ -240,7 +246,7 @@ public class SzefGUIController implements Initializable {
      */
 
     @FXML
-    private void usunUzytkownika() throws IOException,SQLException {
+    private void usunUzytkownika() throws MySqlQueryException {
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();
 
         if(person != null) {
@@ -252,8 +258,8 @@ public class SzefGUIController implements Initializable {
                 preparedStmt.executeUpdate();                
                 wyswietlPracownikowTable();
 
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                throw new MySqlQueryException(e);
             }
         }
     }
@@ -277,17 +283,27 @@ public class SzefGUIController implements Initializable {
      */
 
     @FXML
-    private void wypelnijBaze() throws SQLException, IOException {
+    private void wypelnijBaze() throws MySqlQueryException, MyIOException {
         String line;
 
-        BufferedReader br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_test.sql"));
-        System.out.println("Wypełnianie bazy testowymi danymi...");
-        Statement stmt = conn.createStatement();
-        while ((line = br.readLine()) != null) {
-            if (line.length() != 0)
-                stmt.executeUpdate(line);
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_test.sql"));
+        } catch (Exception e) {
+            throw new MyIOException(e);
         }
-        conn.commit();
+        System.out.println("Wypełnianie bazy testowymi danymi...");
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            while ((line = br.readLine()) != null) {
+                if (line.length() != 0)
+                    stmt.executeUpdate(line);
+            }
+            conn.commit();
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
+        }
         refresh();
     }
 
@@ -295,9 +311,9 @@ public class SzefGUIController implements Initializable {
      * Metoda do generowania pdfów
      */
     @FXML
-    private void generujRaportSzefa(ActionEvent event)throws IOException, SQLException {
+    private void generujRaportSzefa() throws MyIOException, MySqlQueryException {
 
-        try{
+        try {
 
             Document document= new Document();
             PdfWriter.getInstance(document,new FileOutputStream("./system-zarzadzania-projektami/raport_szefa.pdf"));
@@ -329,17 +345,16 @@ public class SzefGUIController implements Initializable {
                 table.addCell(rs.getString("Status"));
                 table.addCell(rs.getString("Termin"));
                 }
-            } catch (SQLException e){
-                System.out.println(e.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
             document.add(p1);
             document.add(table);
             document.close();
             System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_heada.pdf ");
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+        catch(Exception e) {
+            throw new MyIOException(e);
         }
     }
 
@@ -347,25 +362,14 @@ public class SzefGUIController implements Initializable {
      * Metoda do odświeżania
      */
 
-    private void refresh() throws SQLException {
+    private void refresh() throws MySqlQueryException {
         try {
             wyswietlPracownikowTable();
             wyswietlProjektyTable();
             wyswietlHeadowCombo();
-        } catch (SQLException e) {
+        } catch (MySqlQueryException e) {
             e.printStackTrace();
         }
-    }
-
-    public TextField getNazwaProjektu() {
-        return nazwaProjektu;
-    }
-
-    public void setNazwaProjektu(TextField nazwaProjektu) {
-        this.nazwaProjektu = nazwaProjektu;
-    }
-
-    public void generowanieRaport(ActionEvent actionEvent) {
     }
 }
 

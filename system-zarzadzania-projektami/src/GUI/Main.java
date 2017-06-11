@@ -28,11 +28,13 @@ public class Main extends Application {
      * Połaczenie z bozą danych
      */
 
-    public void init() throws SQLException, IOException {
-        if (sc.open()) {
-            Connection conn = sc.getConn();
+    public void init() throws MySqlCantConnectException, MySqlQueryException, MyIOException {
+        sc.open();
+        Connection conn = sc.getConn();
+        boolean found;
+        try {
             ResultSet resultSet = conn.getMetaData().getCatalogs();
-            boolean found = false;
+            found = false;
 
             while (resultSet.next()) {
                 if (resultSet.getString(1).contains("szp")) {
@@ -40,20 +42,29 @@ public class Main extends Application {
                     System.out.println("Znaleziono bazę. Korzystam z istniejącej bazy.");
                 }
             }
-            if (!found) {
-                String line;
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
+        }
+        if (!found) {
+            String line;
 
-                BufferedReader br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_init.sql"));
-                System.out.println("Nie znaleziono bazy. Inicjalizuję nową bazę...");
+            BufferedReader br;
+            try {
+                br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_init.sql"));
+            } catch(Exception e) {
+                throw new MyIOException(e);
+            }
+            System.out.println("Nie znaleziono bazy. Inicjalizuję nową bazę...");
+            try {
                 Statement stmt = conn.createStatement();
                 while ((line = br.readLine()) != null) {
                     if (line.length() != 0)
                         stmt.executeUpdate(line);
                 }
                 conn.commit();
+            } catch(Exception e) {
+                throw new MySqlQueryException(e);
             }
-        } else {
-            System.out.println("Brak połączenia z MariaDB!");
         }
     }
 
@@ -76,7 +87,7 @@ public class Main extends Application {
      * Metoda do wyłączania okna
      */
 
-    public void stop() {
+    public void stop() throws MySqlCantDisconnectException {
         sc.close();
         System.out.println("Zamykanie aplikacji.");
     }

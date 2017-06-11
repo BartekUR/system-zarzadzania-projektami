@@ -8,14 +8,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
@@ -79,7 +77,7 @@ public class HeadGUIController implements Initializable  {
         try {
             wyswietlProjektyHeadaCombo();
             wyswietlPracownikowTable();
-        } catch (SQLException e) {
+        } catch (MySqlQueryException e) {
             e.printStackTrace();
         }
     }
@@ -88,17 +86,21 @@ public class HeadGUIController implements Initializable  {
      */
 
     @FXML
-    private void wyswietlPracownikowTable() throws SQLException {
+    private void wyswietlPracownikowTable() throws MySqlQueryException {
 
         ObservableList<DataPracownicy> employees = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Pracownik';");
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM `szp`.`pracownicy` where `Stanowisko`='Pracownik';");
 
-        while (rs.next()) {
-            DataPracownicy emp = new DataPracownicy();
-            emp.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
-            emp.setPracownicyTable_imie(rs.getString("Imie"));
-            emp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
-            employees.add(emp);
+            while (rs.next()) {
+                DataPracownicy emp = new DataPracownicy();
+                emp.setPracownicyTable_id(rs.getInt("ID_Pracownik"));
+                emp.setPracownicyTable_imie(rs.getString("Imie"));
+                emp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
+                employees.add(emp);
+            }
+        } catch(Exception e) {
+            throw new MySqlQueryException(e);
         }
 
         pracownikTable.setItems(employees);
@@ -109,7 +111,7 @@ public class HeadGUIController implements Initializable  {
      * Metoda do wyświetlania pracowników z danego projektu
      */
     @FXML
-    private void wyswietlPracownikowProjektuTable() throws SQLException {
+    private void wyswietlPracownikowProjektuTable() throws MySqlQueryException {
 
         String name_project = comboBoxProjektHeada2.getValue().toString();
 
@@ -132,8 +134,8 @@ public class HeadGUIController implements Initializable  {
                     ep.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
                     employeesInProject.add(ep);
                 }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                throw new MySqlQueryException(e);
             }
             pracownicyInProject_Table.setItems(employeesInProject);
         }
@@ -144,7 +146,7 @@ public class HeadGUIController implements Initializable  {
      * Metoda do dodawania pracownika do danego proejtku
      */
     @FXML
-    private void dodajPracownikaDoProjektu() throws SQLException{
+    private void dodajPracownikaDoProjektu() throws MySqlQueryException {
         DataPracownicy person = pracownikTable.getSelectionModel().getSelectedItem();//obiekt DataPracownicy zaznaczonego wiersza
         String nazwa_projektu = comboBoxProjektHeada2.getValue().toString();
         int id_project = 0;
@@ -158,8 +160,8 @@ public class HeadGUIController implements Initializable  {
             {
                 id_project = rs.getInt("id");
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        }catch (Exception e){
+            throw new MySqlQueryException(e);
         }
         System.out.println("ID projektu to "+id_project);
 
@@ -174,8 +176,8 @@ public class HeadGUIController implements Initializable  {
                 pst.executeUpdate();
 
                 System.out.println("Rekord został wstawiony do tabeli projekty!");
-            } catch (SQLException d){
-                System.out.println(d.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
             wyswietlPracownikowProjektuTable();
         }
@@ -185,7 +187,7 @@ public class HeadGUIController implements Initializable  {
      * Metoda do usuwania pracownika z danego projektu
      */
     @FXML
-    private void usunPracownikaZProjektu() throws SQLException {
+    private void usunPracownikaZProjektu() throws MySqlQueryException {
         DataPracownicy personDelete = pracownicyInProject_Table.getSelectionModel().getSelectedItem();
         String projectDel = comboBoxProjektHeada2.getValue().toString();
         int id_projectDel = 0;
@@ -199,8 +201,8 @@ public class HeadGUIController implements Initializable  {
             {
                 id_projectDel = rs.getInt("id");
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        }catch (Exception e){
+            throw new MySqlQueryException(e);
         }
         System.out.println("ID projektu to "+id_projectDel);
 
@@ -215,8 +217,8 @@ public class HeadGUIController implements Initializable  {
 
                 pst.executeUpdate();
                 System.out.println("Pracownik został usunięty z projektu!");
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                throw new MySqlQueryException(e);
             }
             wyswietlPracownikowProjektuTable();
         }
@@ -227,7 +229,7 @@ public class HeadGUIController implements Initializable  {
      * Metoda do przydzielania pracownika do tasku
      */
     @FXML
-    private void dodajPracownikaDoTasku() throws SQLException{
+    private void dodajPracownikaDoTasku() throws MySqlQueryException{
         String[] pracownik = comboBoxSelectPracownik.getValue().toString().split(" ", 2);
         String pimie = pracownik[0];
         String pnazwisko = pracownik[1];
@@ -235,7 +237,7 @@ public class HeadGUIController implements Initializable  {
         int id_pracownik = 0;
 
         try {
-            String query_id = "SELECT ID_Pracownik  AS id  FROM szp.pracownicy WHERE Imie = (?) AND Nazwisko = (?);";
+            String query_id = "SELECT ID_Pracownik AS id  FROM szp.pracownicy WHERE Imie = (?) AND Nazwisko = (?);";
             PreparedStatement pS = conn.prepareStatement(query_id);
             pS.setString(1, pimie);
             pS.setString(2, pnazwisko);
@@ -244,8 +246,8 @@ public class HeadGUIController implements Initializable  {
             {
                 id_pracownik = rs.getInt("id");
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        }catch (Exception e){
+            throw new MySqlQueryException(e);
         }
         System.out.println("ID pracownika to "+id_pracownik);
         DataTaski task = taskiTable1.getSelectionModel().getSelectedItem();
@@ -262,8 +264,8 @@ public class HeadGUIController implements Initializable  {
                 pst.executeUpdate();
 
                 System.out.println("Pracownik został dodany do tasku!");
-            } catch (SQLException d){
-                System.out.println(d.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
             wyswietlTaskiPracownikaProjektu();
         }
@@ -273,7 +275,7 @@ public class HeadGUIController implements Initializable  {
      * Metoda do usuwania pracownika z danego tasku
      */
     @FXML
-    private void usunPracownikaZTasku() throws SQLException {
+    private void usunPracownikaZTasku() throws MySqlQueryException {
         String[] pracownik = comboBoxSelectPracownik.getValue().toString().split(" ", 2);
         String pimie = pracownik[0];
         String pnazwisko = pracownik[1];
@@ -290,8 +292,8 @@ public class HeadGUIController implements Initializable  {
             {
                 id_pracownik = rs.getInt("id");
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        }catch (Exception e){
+            throw new MySqlQueryException(e);
         }
         System.out.println("ID pracownika to "+id_pracownik);
         DataTaski task = taskiTable2.getSelectionModel().getSelectedItem();
@@ -307,8 +309,8 @@ public class HeadGUIController implements Initializable  {
                 pst.executeUpdate();
 
                 System.out.println("Pracownik został usunięty z tasku!");
-            } catch (SQLException d){
-                System.out.println(d.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
             wyswietlTaskiPracownikaProjektu();
         }
@@ -316,25 +318,27 @@ public class HeadGUIController implements Initializable  {
     }
 
     /**
-
-    /**
      * Metoda do wyświetlania tasków danego projektu
      */
 
     @FXML
-    private void wyswietlTaskiProjektuTable1() throws SQLException {
+    private void wyswietlTaskiProjektuTable1() throws MySqlQueryException {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
-                "FROM  szp.taski t, szp.projekty pro " +
-                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
-                "AND pro.Nazwa_projektu='" + comboBoxSelectProject2.getValue().toString() + "';");
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
+                    "FROM  szp.taski t, szp.projekty pro " +
+                    "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
+                    "AND pro.Nazwa_projektu='" + comboBoxSelectProject2.getValue().toString() + "';");
 
-        while (rs.next()) {
-            DataTaski dt = new DataTaski();
-            dt.setTaskiTable_id(rs.getInt("ID_Task"));
-            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
-            data.add(dt);
+            while (rs.next()) {
+                DataTaski dt = new DataTaski();
+                dt.setTaskiTable_id(rs.getInt("ID_Task"));
+                dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+                data.add(dt);
+            }
+        } catch(Exception e) {
+            throw new MySqlQueryException(e);
         }
 
         taskiTable1.setItems(data);
@@ -347,7 +351,7 @@ public class HeadGUIController implements Initializable  {
      */
 
     @FXML
-    private void wyswietlTaskiPracownikaProjektu() throws SQLException {
+    private void wyswietlTaskiPracownikaProjektu() throws MySqlQueryException {
 
         String[] pracownik = comboBoxSelectPracownik.getValue().toString().split(" ", 2);
         String pimie = pracownik[0];
@@ -366,8 +370,8 @@ public class HeadGUIController implements Initializable  {
             {
                 id_pracownik = rs.getInt("id");
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        }catch (Exception e){
+            throw new MySqlQueryException(e);
         }
         System.out.println("ID pracownika to "+id_pracownik);
 
@@ -391,8 +395,8 @@ public class HeadGUIController implements Initializable  {
                 dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
                 data.add(dt);
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        }catch (Exception e){
+            throw new MySqlQueryException(e);
         }
 
         taskiTable2.setItems(data);
@@ -404,19 +408,23 @@ public class HeadGUIController implements Initializable  {
      */
 
     @FXML
-    private void wyswietlTaskiProjektuTable2() throws SQLException {
+    private void wyswietlTaskiProjektuTable2() throws MySqlQueryException {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
-                "FROM szp.taski t, szp.projekty pro " +
-                "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
-                "AND pro.Nazwa_projektu='" + comboBoxProjects.getValue().toString() + "';");
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Task, t.Nazwa_tasku " +
+                    "FROM szp.taski t, szp.projekty pro " +
+                    "WHERE pro.ID_Projekt=t.ID_Projekt_FK " +
+                    "AND pro.Nazwa_projektu='" + comboBoxProjects.getValue().toString() + "';");
 
-        while (rs.next()) {
-            DataTaski dt = new DataTaski();
-            dt.setTaskiTable_id(rs.getInt("ID_Task"));
-            dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
-            data.add(dt);
+            while (rs.next()) {
+                DataTaski dt = new DataTaski();
+                dt.setTaskiTable_id(rs.getInt("ID_Task"));
+                dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
+                data.add(dt);
+            }
+        } catch(Exception e) {
+            throw new MySqlQueryException(e);
         }
 
         taskiTable3.setItems(data);
@@ -428,24 +436,28 @@ public class HeadGUIController implements Initializable  {
      */
 
     @FXML
-    private void wyswietlProjekt() throws SQLException  {
+    private void wyswietlProjekt() throws MySqlQueryException {
 
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie,t.Status, t.Termin, t.ID_Task " +
-                        "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro " +
-                        "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK " +
-                        "AND t.ID_Task=pit.ID_Taski_FK " +
-                        "AND pro.ID_Projekt=t.ID_Projekt_FK " +
-                        "AND pro.Nazwa_projektu='" + comboBoxHead.getValue().toString() + "';");
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT t.ID_Projekt_FK, t.Nazwa_tasku, pra.Nazwisko, pra.Imie,t.Status, t.Termin, t.ID_Task " +
+                    "FROM szp.pracownicy pra, szp.pracownicy_i_taski pit, szp.taski t, szp.projekty pro " +
+                    "WHERE pra.ID_Pracownik=pit.ID_Pracownik_FK " +
+                    "AND t.ID_Task=pit.ID_Taski_FK " +
+                    "AND pro.ID_Projekt=t.ID_Projekt_FK " +
+                    "AND pro.Nazwa_projektu='" + comboBoxHead.getValue().toString() + "';");
 
-        while (rs.next()) {
-            DataTaski dt = new DataTaski();
-            dt.setTaskiTable_id(rs.getInt("t.ID_Task"));
-            dt.setTaskiTable_nazwa(rs.getString("t.Nazwa_tasku"));
-            dt.setTaskiTable_pracownik(rs.getString("pra.Nazwisko") + " " + rs.getString("pra.Imie"));
-            dt.setTaskiTable_status(rs.getString("t.Status"));
-            dt.setTaskiTable_termin(rs.getString("t.Termin"));
-            data.add(dt);
+            while (rs.next()) {
+                DataTaski dt = new DataTaski();
+                dt.setTaskiTable_id(rs.getInt("t.ID_Task"));
+                dt.setTaskiTable_nazwa(rs.getString("t.Nazwa_tasku"));
+                dt.setTaskiTable_pracownik(rs.getString("pra.Nazwisko") + " " + rs.getString("pra.Imie"));
+                dt.setTaskiTable_status(rs.getString("t.Status"));
+                dt.setTaskiTable_termin(rs.getString("t.Termin"));
+                data.add(dt);
+            }
+        } catch(Exception e) {
+            throw new MySqlQueryException(e);
         }
 
         mojeProjekty.setItems(data);
@@ -457,7 +469,7 @@ public class HeadGUIController implements Initializable  {
      */
 
     @FXML
-    public void wyswietlProjektyHeadaCombo() throws SQLException {
+    public void wyswietlProjektyHeadaCombo() throws MySqlQueryException {
 
         ObservableList<String> options = FXCollections.observableArrayList();
 
@@ -468,8 +480,8 @@ public class HeadGUIController implements Initializable  {
             while (rs.next()) {
                 options.add(rs.getString("Nazwa_projektu"));
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
 
         comboBoxProjects.setItems(options);
@@ -483,7 +495,7 @@ public class HeadGUIController implements Initializable  {
      */
 
     @FXML
-    public void wyswietlPracownikowCombo() throws SQLException {
+    public void wyswietlPracownikowCombo() throws MySqlQueryException {
 
         ObservableList<String> options = FXCollections.observableArrayList();
 
@@ -499,8 +511,8 @@ public class HeadGUIController implements Initializable  {
                 options.add(rs.getString("Imie") + " " + rs.getString("Nazwisko"));
             }
             comboBoxSelectPracownik.setItems(options);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
     }
 
@@ -509,7 +521,7 @@ public class HeadGUIController implements Initializable  {
      */
 
     @FXML
-    private void usunTask() throws SQLException {
+    private void usunTask() throws MySqlQueryException {
         DataTaski taskDelete = taskiTable3.getSelectionModel().getSelectedItem();
 
         if (taskDelete != null) {
@@ -519,8 +531,8 @@ public class HeadGUIController implements Initializable  {
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.executeUpdate();
                 System.out.println("Task został usunięty z projektu!");
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                throw new MySqlQueryException(e);
             }
 
             wyswietlTaskiProjektuTable2();
@@ -531,7 +543,7 @@ public class HeadGUIController implements Initializable  {
      * Metoda do obsługiwania przycisku służącego do dodawania tasków
      */
 
-     public void dodajTask() throws SQLException{
+     public void dodajTask() throws MySqlQueryException {
         String task = nazwaTasku.getText();
         String termin = terminTasku.getValue().toString();
         String projekt = comboBoxProjects.getValue().toString();
@@ -548,8 +560,8 @@ public class HeadGUIController implements Initializable  {
             {
                 id_project = rs.getInt("id");
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        } catch (Exception e){
+            throw new MySqlQueryException(e);
         }
 
         if (task.length() !=0 || termin.length() !=0) {
@@ -565,37 +577,30 @@ public class HeadGUIController implements Initializable  {
                 preparedStmte.setString(3, status);
                 preparedStmte.setString(4, termin);
                 ResultSet rs = preparedStmte.executeQuery();
-                while(rs.next())
-                {
+                while(rs.next()) {
                     numberOfRows = rs.getInt("total");
                 }
-                try {
-                    if (numberOfRows == 0) {
+                if (numberOfRows == 0) {
 
-                        String query = " INSERT INTO `szp`.`taski` (`ID_Projekt_FK`, `Nazwa_tasku`, `Status`, `Termin`) \n" +
-                                "values (?, ?, ?, ?);";
+                    String query = " INSERT INTO `szp`.`taski` (`ID_Projekt_FK`, `Nazwa_tasku`, `Status`, `Termin`) \n" +
+                            "values (?, ?, ?, ?);";
 
-                        PreparedStatement pst = conn.prepareStatement(query);
-                        pst .setInt(1, id_project);
-                        pst .setString(2, task);
-                        pst .setString(3, status);
-                        pst .setString(4, termin);
+                    PreparedStatement pst = conn.prepareStatement(query);
+                    pst .setInt(1, id_project);
+                    pst .setString(2, task);
+                    pst .setString(3, status);
+                    pst .setString(4, termin);
 
-                        pst.executeUpdate();
+                    pst.executeUpdate();
 
-                        System.out.println("Rekord został wstawiony");
-                    } else if(numberOfRows >= 1){
-                        System.out.println("Rekord juz istnieje");
-                    }
-                } catch (SQLException e){
-                    System.out.println(e.getMessage());
+                    System.out.println("Rekord został wstawiony");
+                } else if(numberOfRows >= 1) {
+                    System.out.println("Rekord juz istnieje");
                 }
-            } catch (SQLException e){
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                throw new MySqlQueryException(e);
             }
-        }
-        else
-        {
+        } else {
             System.out.println("Wypełnij pola");
         }
          wyswietlTaskiProjektuTable2();
@@ -605,7 +610,7 @@ public class HeadGUIController implements Initializable  {
      * Metoda do generowania pdfów
      */
     @FXML
-    private void generujRaportHeada(ActionEvent event)throws IOException, SQLException {
+    private void generujRaportHeada() throws MyIOException {
 
         try{
 
@@ -639,17 +644,16 @@ public class HeadGUIController implements Initializable  {
                     table.addCell(rs.getString("Status"));
                     table.addCell(rs.getString("Termin"));
                 }
-            } catch (SQLException e){
-                System.out.println(e.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
             document.add(p1);
             document.add(table);
             document.close();
             System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_heada.pdf ");
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+        catch(Exception e) {
+            throw new MyIOException(e);
         }
     }
 }

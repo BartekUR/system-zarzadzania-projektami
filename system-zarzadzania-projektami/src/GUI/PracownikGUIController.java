@@ -8,14 +8,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
@@ -60,7 +58,7 @@ public class PracownikGUIController implements Initializable {
         try {
             wyswietlProjektyPracownikaTable();
             wyswietlProjektyPracownikaCombo();
-        } catch (SQLException e) {
+        } catch (MySqlQueryException e) {
             e.printStackTrace();
         }
 
@@ -73,26 +71,30 @@ public class PracownikGUIController implements Initializable {
      */
 
     @FXML
-    private void wyswietlProjektyPracownikaTable() throws SQLException {
+    private void wyswietlProjektyPracownikaTable() throws MySqlQueryException {
 
         ObservableList<DataProjekty> dataProjekty2 = FXCollections.observableArrayList();
 
-        String query = "SELECT pro.`Nazwa_projektu`, pro.`Head`, pro.`Status`, pro.`Termin`\n" +
-                "FROM szp.projekty pro , szp.pracownicy_i_projekty pip, szp.pracownicy pra\n" +
-                "WHERE pro.ID_Projekt = pip.ID_Projekt_FK\n" +
-                "AND pra.ID_Pracownik = pip.ID_Pracownik_FK\n" +
-                "AND pra.Login =(?);";
-        PreparedStatement pst = conn.prepareStatement(query);
-        pst.setString(1, whoLogin);
-        ResultSet rs = pst.executeQuery();
+        try {
+            String query = "SELECT pro.`Nazwa_projektu`, pro.`Head`, pro.`Status`, pro.`Termin`\n" +
+                    "FROM szp.projekty pro , szp.pracownicy_i_projekty pip, szp.pracownicy pra\n" +
+                    "WHERE pro.ID_Projekt = pip.ID_Projekt_FK\n" +
+                    "AND pra.ID_Pracownik = pip.ID_Pracownik_FK\n" +
+                    "AND pra.Login =(?);";
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, whoLogin);
+            ResultSet rs = pst.executeQuery();
 
-        while (rs.next()) {
-            DataProjekty dp = new DataProjekty();
-            dp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
-            dp.setProjektyTable_head(rs.getString("Head"));
-            dp.setProjektyTable_status(rs.getString("Status"));
-            dp.setProjektyTable_termin(rs.getString("Termin"));
-            dataProjekty2.add(dp);
+            while (rs.next()) {
+                DataProjekty dp = new DataProjekty();
+                dp.setProjektyTable_nazwa(rs.getString("Nazwa_projektu"));
+                dp.setProjektyTable_head(rs.getString("Head"));
+                dp.setProjektyTable_status(rs.getString("Status"));
+                dp.setProjektyTable_termin(rs.getString("Termin"));
+                dataProjekty2.add(dp);
+            }
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
 
         tableProjektPracownika.setItems(dataProjekty2);
@@ -104,7 +106,7 @@ public class PracownikGUIController implements Initializable {
      */
 
     @FXML
-    private void wyswietlProjektyPracownikaCombo() throws SQLException {
+    private void wyswietlProjektyPracownikaCombo() throws MySqlQueryException {
 
         ObservableList<String> options = FXCollections.observableArrayList();
 
@@ -123,8 +125,8 @@ public class PracownikGUIController implements Initializable {
             }
             comboBoxProjektPracownika.setItems(options);
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
     }
 
@@ -133,7 +135,7 @@ public class PracownikGUIController implements Initializable {
      */
 
     @FXML
-    private void wyswietlTaskiPracownikaProjektuTable() throws SQLException {
+    private void wyswietlTaskiPracownikaProjektuTable() throws MySqlQueryException {
 
         String projekt = comboBoxProjektPracownika.getValue().toString();
         ObservableList<DataTaski> data = FXCollections.observableArrayList();
@@ -160,8 +162,8 @@ public class PracownikGUIController implements Initializable {
                 dt.setTaskiTable_termin(rs.getString("t.Termin"));
                 data.add(dt);
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
 
         tableTaskiProjektu.setItems(data);
@@ -173,7 +175,7 @@ public class PracownikGUIController implements Initializable {
      */
 
     @FXML
-    private void wyswietlTaskiPracownikaProjektuCombo() throws SQLException {
+    private void wyswietlTaskiPracownikaProjektuCombo() throws MySqlQueryException {
         String projekt = comboBoxProjektPracownika.getValue().toString();
 
         ObservableList<Integer> idTaskuList = FXCollections.observableArrayList();
@@ -195,8 +197,8 @@ public class PracownikGUIController implements Initializable {
                 idTaskuList.add(rs.getInt("ID_Task"));
             }
             comboBoxIdTask.setItems(idTaskuList);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
     }
 
@@ -205,7 +207,7 @@ public class PracownikGUIController implements Initializable {
      */
 
     @FXML
-    private void zmienStatusTasku() throws SQLException {
+    private void zmienStatusTasku() throws MySqlQueryException {
 
         String status = comboBoxStatusTasku.getValue().toString();
         String id_tasku = comboBoxIdTask.getValue().toString();
@@ -222,8 +224,8 @@ public class PracownikGUIController implements Initializable {
             labelZmianaStatusu.setVisible(true);
             System.out.println("Rekord "+id_tasku+" został edytowany!");
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new MySqlQueryException(e);
         }
         wyswietlTaskiPracownikaProjektuTable();
     }
@@ -232,9 +234,9 @@ public class PracownikGUIController implements Initializable {
      * Metoda do generowania pdfów
      */
     @FXML
-    private void generujRaportPracownika(ActionEvent event)throws IOException, SQLException {
+    private void generujRaportPracownika() throws MyIOException {
 
-        try{
+        try {
 
             Document document= new Document();
             PdfWriter.getInstance(document,new FileOutputStream("./system-zarzadzania-projektami/raport_pracownika.pdf"));
@@ -273,17 +275,16 @@ public class PracownikGUIController implements Initializable {
                     table.addCell(rs.getString("Status"));
                     table.addCell(rs.getString("Termin"));
                 }
-            } catch (SQLException e){
-                System.out.println(e.getMessage());
+            } catch (Exception e){
+                throw new MySqlQueryException(e);
             }
             document.add(p1);
             document.add(table);
             document.close();
             System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_pracownika.pdf ");
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+        catch(Exception e) {
+            throw new MyIOException(e);
         }
     }
 }
