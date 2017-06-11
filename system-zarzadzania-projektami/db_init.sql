@@ -11,4 +11,4 @@ CREATE TABLE IF NOT EXISTS `taski` ( `ID_Task` int(11) NOT NULL AUTO_INCREMENT, 
 
 CREATE TABLE IF NOT EXISTS `pracownicy_i_taski` ( `ID_Pracownik_FK` int(11) DEFAULT NULL, `ID_Taski_FK` int(11) DEFAULT NULL, KEY `ID_Pracownik_FKpt` (`ID_Pracownik_FK`), KEY `ID_Taski_FK2pt` (`ID_Taski_FK`), CONSTRAINT `ID_Pracownik_FKpt` FOREIGN KEY (`ID_Pracownik_FK`) REFERENCES `pracownicy` (`ID_Pracownik`) ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `ID_Taski_FK2pt` FOREIGN KEY (`ID_Taski_FK`) REFERENCES `taski` (`ID_Task`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB;
 
-INSERT INTO `pracownicy` (`ID_Pracownik`, `Login`, `Haslo`, `Imie`, `Nazwisko`, `Stanowisko`) VALUES (9999, 'admin', 'admin', 'admin', 'admin', 'Szef');
+INSERT INTO `pracownicy` (`ID_Pracownik`, `Login`, `Haslo`, `Imie`, `Nazwisko`, `Stanowisko`) VALUES (1, 'admin', 'admin', 'admin', 'admin', 'Szef');
