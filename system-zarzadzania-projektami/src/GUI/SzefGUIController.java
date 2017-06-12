@@ -358,7 +358,7 @@ public class SzefGUIController implements Initializable {
             document.add(p1);
             document.add(table);
             document.close();
-            System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_heada.pdf ");
+            System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_szefa.pdf ");
         }
         catch(Exception e) {
             throw new MyIOException(e);
