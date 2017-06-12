@@ -3,6 +3,9 @@ package GUI;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * Klasa zawierająca informacje o pracownikach
+ */
 public class DataPracownicy {
 
     private final SimpleIntegerProperty pracownicyTable_idProperty = new SimpleIntegerProperty(0);

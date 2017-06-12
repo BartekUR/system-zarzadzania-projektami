@@ -3,6 +3,9 @@ package GUI;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * Klasa zawierająca informacje o zadaniach
+ */
 public class DataTaski {
 
     private final SimpleIntegerProperty taskiTable_idProperty = new SimpleIntegerProperty(0);

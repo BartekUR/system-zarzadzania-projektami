@@ -5,7 +5,6 @@ import java.sql.*;
 /**
  * Klasa obsługująca połączenie z bazą danych
  */
-
 public class SqlConnect {
 
     private static final String pass = "pass";
@@ -38,6 +37,10 @@ public class SqlConnect {
         }
     }
 
+    /**
+     * Metoda zwracająca połączenie
+     * @return connection
+     */
     public Connection getConn() {
         return conn;
     }

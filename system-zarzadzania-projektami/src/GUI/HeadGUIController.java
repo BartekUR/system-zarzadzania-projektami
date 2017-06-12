@@ -23,7 +23,6 @@ import static GUI.LogowanieController.who;
 /**
  * Klasa  osługująca GUI Heada
  */
-
 public class HeadGUIController implements Initializable  {
 
     private SqlConnect sc = new SqlConnect();
@@ -86,7 +85,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda do wyświetlania pracowników w tabeli
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlPracownikowTable() throws MySqlQueryException {
 
@@ -358,7 +356,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda do wyswietlania tasków danego pracownika
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlTaskiPracownikaProjektu() throws MySqlQueryException {
 
@@ -416,7 +413,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda do wyświetlania tasków danego projektu
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlTaskiProjektuTable2() throws MySqlQueryException {
 
@@ -445,7 +441,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda do wyświetlania projektu wybranego z comboboxa
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlProjekt() throws MySqlQueryException {
 
@@ -479,7 +474,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda obsługująca combobox wyświetlający proejtky heada
      * @throws MySqlCantConnectException
      */
-
     @FXML
     public void wyswietlProjektyHeadaCombo() throws MySqlQueryException {
 
@@ -506,7 +500,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda obsługująca combobox wyświetlający pracowników
      * @throws MySqlCantConnectException
      */
-
     @FXML
     public void wyswietlPracownikowCombo() throws MySqlQueryException {
 
@@ -533,7 +526,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda obsługująca przycisk do usuwania tasków
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void usunTask() throws MySqlQueryException {
         DataTaski taskDelete = taskiTable3.getSelectionModel().getSelectedItem();
@@ -557,7 +549,6 @@ public class HeadGUIController implements Initializable  {
      * Metoda do obsługiwania przycisku służącego do dodawania tasków
      * @throws MySqlCantConnectException
      */
-
      public void dodajTask() throws MySqlQueryException {
         String task = nazwaTasku.getText();
         String termin = terminTasku.getValue().toString();

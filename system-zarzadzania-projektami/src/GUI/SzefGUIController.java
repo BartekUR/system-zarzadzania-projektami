@@ -32,7 +32,6 @@ import static GUI.LogowanieController.who;
 /**
  * Klasa obsługująca GUI szefa
  */
-
 public class SzefGUIController implements Initializable {
 
     public Button genRaport;
@@ -83,7 +82,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do wyświetalnia pacowników w tablicy
      * @throws MySqlCantConnectException
      */
-
     private void wyswietlPracownikowTable() throws MySqlQueryException {
         ObservableList<DataPracownicy> data = FXCollections.observableArrayList();
         try {
@@ -107,7 +105,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do wyświetlania projektów
      * @throws MySqlCantConnectException
      */
-
     private void wyswietlProjektyTable() throws MySqlQueryException {
         ObservableList<DataProjekty> data = FXCollections.observableArrayList();
         try {
@@ -132,7 +129,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do obsługiwania comboboxa z headami
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlHeadowCombo() throws MySqlQueryException {
         ObservableList<String> options = FXCollections.observableArrayList();
@@ -154,7 +150,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do obsługiwania przycisku do usuwania projektów
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void usunProjekt() throws MySqlQueryException {
         DataProjekty projectDelete = projektyTable.getSelectionModel().getSelectedItem();
@@ -178,7 +173,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do obsługiwania przycisku służącego do dodawania projektów
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void dodajProjekt() throws MySqlQueryException {
         String name = nazwaProjektu.getText();
@@ -230,7 +224,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do obsługiwania przycisku do dodawania użytkowników
      * @throws MyIOException
      */
-
     @FXML
     private void dodajUzytkownika() throws MyIOException {
         Parent loader;
@@ -251,7 +244,6 @@ public class SzefGUIController implements Initializable {
      * Metoda służąca do obsługiwania przycisku do usuwania użytkownika
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void usunUzytkownika() throws MySqlQueryException {
         DataPracownicy person = pracownicyTable.getSelectionModel().getSelectedItem();
@@ -274,7 +266,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do obsługi przycisku do edytowania użytkownika
      * @throws MyIOException
      */
-
     @FXML
     private void edytujUzytkownika() throws MyIOException {
         Parent loader = null;
@@ -296,7 +287,6 @@ public class SzefGUIController implements Initializable {
      * @throws MySqlCantConnectException
      * @throws MyIOException
      */
-
     @FXML
     private void wypelnijBaze() throws MySqlQueryException, MyIOException {
         String line;
@@ -379,7 +369,6 @@ public class SzefGUIController implements Initializable {
      * Metoda do odświeżania
      * @throws MySqlCantConnectException
      */
-
     private void refresh() throws MySqlQueryException {
         try {
             wyswietlPracownikowTable();

@@ -70,7 +70,6 @@ public class PracownikGUIController implements Initializable {
      * Metoda do wyświetlania proejktów pracownika
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlProjektyPracownikaTable() throws MySqlQueryException {
 
@@ -106,7 +105,6 @@ public class PracownikGUIController implements Initializable {
      * Metoda obsługująca combobox projektów pracownika
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlProjektyPracownikaCombo() throws MySqlQueryException {
 
@@ -136,7 +134,6 @@ public class PracownikGUIController implements Initializable {
      * Metoda do wyświetlania tasków pracownika w tablicy
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlTaskiPracownikaProjektuTable() throws MySqlQueryException {
 
@@ -177,7 +174,6 @@ public class PracownikGUIController implements Initializable {
      * Metoda do wyświetlania tasków pracownika w comboboxie
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void wyswietlTaskiPracownikaProjektuCombo() throws MySqlQueryException {
         String projekt = comboBoxProjektPracownika.getValue().toString();
@@ -210,7 +206,6 @@ public class PracownikGUIController implements Initializable {
      * Metoda do obługiwania przycisku służącego do zmiany statusu tasku
      * @throws MySqlCantConnectException
      */
-
     @FXML
     private void zmienStatusTasku() throws MySqlQueryException {
 

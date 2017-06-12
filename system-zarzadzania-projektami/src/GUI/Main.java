@@ -14,7 +14,6 @@ import java.sql.*;
 /**
  * Klasa Main
  */
-
 public class Main extends Application {
 
     private SqlConnect sc = new SqlConnect();
@@ -27,7 +26,6 @@ public class Main extends Application {
     /**
      * Połaczenie z bozą danych
      */
-
     public void init() throws MySqlCantConnectException, MySqlQueryException, MyIOException {
         sc.open();
         Connection conn = sc.getConn();
@@ -71,7 +69,6 @@ public class Main extends Application {
     /**
      * Metoda do włączania okna logowania
      */
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Logowanie.fxml"));
@@ -86,7 +83,6 @@ public class Main extends Application {
     /**
      * Metoda do wyłączania okna
      */
-
     public void stop() throws MySqlCantDisconnectException {
         sc.close();
         System.out.println("Zamykanie aplikacji.");

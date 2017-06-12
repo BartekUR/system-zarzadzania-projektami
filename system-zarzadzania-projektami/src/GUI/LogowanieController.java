@@ -28,7 +28,6 @@ public class LogowanieController {
     /**
      * Metoda obsługująca logowanie
      */
-
     public void login() throws SQLException, IOException {
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM `szp`.`pracownicy` WHERE Login=? AND Haslo=?");
         pst.setString(1, log_user.getText());
