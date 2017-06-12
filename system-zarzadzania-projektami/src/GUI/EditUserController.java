@@ -92,7 +92,7 @@ public class EditUserController implements Initializable {
 
     /**
      * Metoda obsługująca przycisk do edytowania użytkownika
-     * @throws MySqlCantConnectException
+     * @throws MySqlQueryException
      */
     public void editButtonAction() throws MySqlQueryException {
         Object id = comboBoxWyborUzytkownika.getValue().toString();

@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS `szp` CHARACTER SET = 'utf8' COLLATE  = 'utf8_polish_ci';
 USE `szp`;
 
 CREATE TABLE IF NOT EXISTS `pracownicy` ( `ID_Pracownik` int(11) NOT NULL AUTO_INCREMENT, `Login` varchar(50) NOT NULL, `Haslo` varchar(50) NOT NULL, `Imie` text NOT NULL, `Nazwisko` text NOT NULL, `Stanowisko` varchar(50) NOT NULL, PRIMARY KEY (`ID_Pracownik`)) ENGINE=InnoDB;

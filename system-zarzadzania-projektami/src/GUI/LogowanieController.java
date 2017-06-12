@@ -29,6 +29,8 @@ public class LogowanieController {
 
     /**
      * Metoda obsługująca logowanie
+     * @throws MySqlQueryException
+     * @throws MyIOException
      */
     public void login() throws MySqlQueryException, MyIOException {
         Checks check = new Checks();

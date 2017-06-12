@@ -477,7 +477,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda obsługująca combobox wyświetlający proejtky heada
-     * @throws MySqlCantConnectException
+     * @throws MySqlQueryException
      */
     @FXML
     public void wyswietlProjektyHeadaCombo() throws MySqlQueryException {
@@ -503,7 +503,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda obsługująca combobox wyświetlający pracowników
-     * @throws MySqlCantConnectException
+     * @throws MySqlQueryException
      */
     @FXML
     public void wyswietlPracownikowCombo() throws MySqlQueryException {
@@ -552,7 +552,7 @@ public class HeadGUIController implements Initializable  {
 
     /**
      * Metoda do obsługiwania przycisku służącego do dodawania tasków
-     * @throws MySqlCantConnectException
+     * @throws MySqlQueryException
      */
      public void dodajTask() throws MySqlQueryException {
         String task = nazwaTasku.getText();
