@@ -60,6 +60,7 @@ public class Main extends Application {
             try {
                 Statement stmt = conn.createStatement();
                 try {
+                    stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS `szp` CHARACTER SET = 'utf8' COLLATE = 'utf8_polish_ci';");
                     while ((line = br.readLine()) != null) {
                         if (line.length() != 0)
                             stmt.executeUpdate(line);
