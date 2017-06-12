@@ -4,6 +4,7 @@ import Utils.MyIOException;
 import Utils.MySqlCantConnectException;
 import Utils.MySqlQueryException;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.*;
@@ -73,7 +74,7 @@ public class SzefGUIController implements Initializable {
 
         try {
             refresh();
-        } catch (MySqlQueryException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -164,7 +165,7 @@ public class SzefGUIController implements Initializable {
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.executeUpdate();
                 System.out.println("Projekt został usunięty!");
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new MySqlQueryException(e);
             }
 
@@ -216,7 +217,7 @@ public class SzefGUIController implements Initializable {
                 } else if(numberOfRows >= 1){
                     System.out.println("Rekord juz istnieje");
                 }
-            } catch (Exception e){
+            } catch (SQLException e){
                 throw new MySqlQueryException(e);
             }
         }
@@ -232,7 +233,7 @@ public class SzefGUIController implements Initializable {
         Parent loader;
         try {
             loader = FXMLLoader.load(getClass().getResource("AddUser.fxml"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new MyIOException(e);
         }
         Scene info_scene = new Scene(loader);
@@ -260,7 +261,7 @@ public class SzefGUIController implements Initializable {
                 preparedStmt.executeUpdate();                
                 wyswietlPracownikowTable();
 
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new MySqlQueryException(e);
             }
         }
@@ -274,7 +275,7 @@ public class SzefGUIController implements Initializable {
         Parent loader = null;
         try {
             loader = FXMLLoader.load(getClass().getResource("EditUser.fxml"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new MyIOException(e);
         }
         Scene info_scene= new Scene(loader);
@@ -297,20 +298,20 @@ public class SzefGUIController implements Initializable {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_test.sql"));
-        } catch (Exception e) {
-            throw new MyIOException(e);
-        }
-        System.out.println("Wypełnianie bazy testowymi danymi...");
-        Statement stmt = null;
-        try {
-            stmt = conn.createStatement();
-            while ((line = br.readLine()) != null) {
-                if (line.length() != 0)
-                    stmt.executeUpdate(line);
+            System.out.println("Wypełnianie bazy testowymi danymi...");
+            Statement stmt = null;
+            try {
+                stmt = conn.createStatement();
+                while ((line = br.readLine()) != null) {
+                    if (line.length() != 0)
+                        stmt.executeUpdate(line);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                throw new MySqlQueryException(e);
             }
-            conn.commit();
-        } catch (Exception e) {
-            throw new MySqlQueryException(e);
+        } catch (IOException e) {
+            throw new MyIOException(e);
         }
         refresh();
     }
@@ -321,52 +322,51 @@ public class SzefGUIController implements Initializable {
      * @throws MyIOException
      */
     @FXML
-    private void generujRaportSzefa() throws MyIOException, MySqlQueryException {
+    private void generujRaportSzefa() throws MyIOException, MySqlQueryException, DocumentException {
 
+
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("./system-zarzadzania-projektami/raport_szefa.pdf"));
+        } catch (IOException e) {
+            throw new MyIOException(e);
+        }
+
+        document.open();
+        Paragraph p1 = new Paragraph("Gotowe projekty: ");
+        p1.add(new Paragraph(" "));
+
+        PdfPTable table = new PdfPTable(4);
+        PdfPCell cell = new PdfPCell(new Phrase("Nazwa projektu"));
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase("Head"));
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase("Status"));
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase("Data zakonczenia"));
+        table.addCell(cell);
+        table.setHeaderRows(1);
         try {
 
-            Document document= new Document();
-            PdfWriter.getInstance(document,new FileOutputStream("./system-zarzadzania-projektami/raport_szefa.pdf"));
+            String query = "SELECT Nazwa_projektu, Head, `Status`, Termin FROM szp.projekty WHERE `Status`='Gotowy';";
+            PreparedStatement preparedStmte = conn.prepareStatement(query);
+            ResultSet rs = preparedStmte.executeQuery();
 
-            document.open();
-            Paragraph p1=new Paragraph("Gotowe projekty: ");
-            p1.add(new Paragraph(" "));
-
-            PdfPTable table = new PdfPTable(4);
-            PdfPCell cell = new PdfPCell(new Phrase("Nazwa projektu"));
-            table.addCell(cell);
-            cell = new PdfPCell(new Phrase("Head"));
-            table.addCell(cell);
-            cell = new PdfPCell(new Phrase("Status"));
-            table.addCell(cell);
-            cell = new PdfPCell(new Phrase("Data zakonczenia"));
-            table.addCell(cell);
-            table.setHeaderRows(1);
-            try {
-
-                String query= "SELECT Nazwa_projektu, Head, `Status`, Termin FROM szp.projekty WHERE `Status`='Gotowy';";
-                PreparedStatement preparedStmte = conn.prepareStatement(query);
-                ResultSet rs = preparedStmte.executeQuery();
-
-                while (rs.next()) {
-
+            while (rs.next()) {
                 table.addCell(rs.getString("Nazwa_projektu"));
                 table.addCell(rs.getString("Head"));
                 table.addCell(rs.getString("Status"));
                 table.addCell(rs.getString("Termin"));
-                }
-            } catch (Exception e){
-                throw new MySqlQueryException(e);
             }
-            document.add(p1);
-            document.add(table);
-            document.close();
-            System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_szefa.pdf ");
+        } catch (SQLException se) {
+            throw new MySqlQueryException(se);
         }
-        catch(Exception e) {
-            throw new MyIOException(e);
-        }
+        document.add(p1);
+        document.add(table);
+        document.close();
+        System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_szefa.pdf ");
     }
+
 
     /**
      * Metoda do odświeżania
@@ -377,8 +377,8 @@ public class SzefGUIController implements Initializable {
             wyswietlPracownikowTable();
             wyswietlProjektyTable();
             wyswietlHeadowCombo();
-        } catch (MySqlQueryException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new MySqlQueryException(e);
         }
     }
 }

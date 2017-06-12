@@ -4,6 +4,7 @@ import Utils.MyIOException;
 import Utils.MySqlCantConnectException;
 import Utils.MySqlQueryException;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -17,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
@@ -102,7 +104,7 @@ public class HeadGUIController implements Initializable  {
                 emp.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
                 employees.add(emp);
             }
-        } catch(Exception e) {
+        } catch(SQLException e) {
             throw new MySqlQueryException(e);
         }
 
@@ -138,7 +140,7 @@ public class HeadGUIController implements Initializable  {
                     ep.setPracownicyTable_nazwisko(rs.getString("Nazwisko"));
                     employeesInProject.add(ep);
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new MySqlQueryException(e);
             }
             pracownicyInProject_Table.setItems(employeesInProject);
@@ -165,7 +167,7 @@ public class HeadGUIController implements Initializable  {
             {
                 id_project = rs.getInt("id");
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             throw new MySqlQueryException(e);
         }
         System.out.println("ID projektu to "+id_project);
@@ -181,7 +183,7 @@ public class HeadGUIController implements Initializable  {
                 pst.executeUpdate();
 
                 System.out.println("Rekord został wstawiony do tabeli projekty!");
-            } catch (Exception e){
+            } catch (SQLException e){
                 throw new MySqlQueryException(e);
             }
             wyswietlPracownikowProjektuTable();
@@ -207,7 +209,7 @@ public class HeadGUIController implements Initializable  {
             {
                 id_projectDel = rs.getInt("id");
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             throw new MySqlQueryException(e);
         }
         System.out.println("ID projektu to "+id_projectDel);
@@ -223,7 +225,7 @@ public class HeadGUIController implements Initializable  {
 
                 pst.executeUpdate();
                 System.out.println("Pracownik został usunięty z projektu!");
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new MySqlQueryException(e);
             }
             wyswietlPracownikowProjektuTable();
@@ -253,7 +255,7 @@ public class HeadGUIController implements Initializable  {
             {
                 id_pracownik = rs.getInt("id");
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             throw new MySqlQueryException(e);
         }
         System.out.println("ID pracownika to "+id_pracownik);
@@ -271,7 +273,7 @@ public class HeadGUIController implements Initializable  {
                 pst.executeUpdate();
 
                 System.out.println("Pracownik został dodany do tasku!");
-            } catch (Exception e){
+            } catch (SQLException e){
                 throw new MySqlQueryException(e);
             }
             wyswietlTaskiPracownikaProjektu();
@@ -300,7 +302,7 @@ public class HeadGUIController implements Initializable  {
             {
                 id_pracownik = rs.getInt("id");
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             throw new MySqlQueryException(e);
         }
         System.out.println("ID pracownika to "+id_pracownik);
@@ -317,7 +319,7 @@ public class HeadGUIController implements Initializable  {
                 pst.executeUpdate();
 
                 System.out.println("Pracownik został usunięty z tasku!");
-            } catch (Exception e){
+            } catch (SQLException e){
                 throw new MySqlQueryException(e);
             }
             wyswietlTaskiPracownikaProjektu();
@@ -346,7 +348,7 @@ public class HeadGUIController implements Initializable  {
                 dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
                 data.add(dt);
             }
-        } catch(Exception e) {
+        } catch(SQLException e) {
             throw new MySqlQueryException(e);
         }
 
@@ -379,7 +381,7 @@ public class HeadGUIController implements Initializable  {
             {
                 id_pracownik = rs.getInt("id");
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             throw new MySqlQueryException(e);
         }
         System.out.println("ID pracownika to "+id_pracownik);
@@ -404,7 +406,7 @@ public class HeadGUIController implements Initializable  {
                 dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
                 data.add(dt);
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             throw new MySqlQueryException(e);
         }
 
@@ -432,7 +434,7 @@ public class HeadGUIController implements Initializable  {
                 dt.setTaskiTable_nazwa(rs.getString("Nazwa_tasku"));
                 data.add(dt);
             }
-        } catch(Exception e) {
+        } catch(SQLException e) {
             throw new MySqlQueryException(e);
         }
 
@@ -465,7 +467,7 @@ public class HeadGUIController implements Initializable  {
                 dt.setTaskiTable_termin(rs.getString("t.Termin"));
                 data.add(dt);
             }
-        } catch(Exception e) {
+        } catch(SQLException e) {
             throw new MySqlQueryException(e);
         }
 
@@ -489,7 +491,7 @@ public class HeadGUIController implements Initializable  {
             while (rs.next()) {
                 options.add(rs.getString("Nazwa_projektu"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
 
@@ -520,7 +522,7 @@ public class HeadGUIController implements Initializable  {
                 options.add(rs.getString("Imie") + " " + rs.getString("Nazwisko"));
             }
             comboBoxSelectPracownik.setItems(options);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
     }
@@ -540,7 +542,7 @@ public class HeadGUIController implements Initializable  {
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.executeUpdate();
                 System.out.println("Task został usunięty z projektu!");
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new MySqlQueryException(e);
             }
 
@@ -569,7 +571,7 @@ public class HeadGUIController implements Initializable  {
             {
                 id_project = rs.getInt("id");
             }
-        } catch (Exception e){
+        } catch (SQLException e){
             throw new MySqlQueryException(e);
         }
 
@@ -606,7 +608,7 @@ public class HeadGUIController implements Initializable  {
                 } else if(numberOfRows >= 1) {
                     System.out.println("Rekord juz istnieje");
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new MySqlQueryException(e);
             }
         } else {
@@ -620,7 +622,7 @@ public class HeadGUIController implements Initializable  {
      * @throws MyIOException
      */
     @FXML
-    private void generujRaportHeada() throws MyIOException {
+    private void generujRaportHeada() throws MyIOException, DocumentException, SQLException {
 
         try{
 
@@ -641,28 +643,24 @@ public class HeadGUIController implements Initializable  {
             cell = new PdfPCell(new Phrase("Data zakonczenia"));
             table.addCell(cell);
             table.setHeaderRows(1);
-            try {
 
-                String query= "SELECT Nazwa_projektu, Head, `Status`, Termin FROM szp.projekty WHERE `Status`='Rozpoczęty';";
-                PreparedStatement preparedStmte = conn.prepareStatement(query);
-                ResultSet rs = preparedStmte.executeQuery();
+            String query= "SELECT Nazwa_projektu, Head, `Status`, Termin FROM szp.projekty WHERE `Status`='Rozpoczęty';";
+            PreparedStatement preparedStmte = conn.prepareStatement(query);
+            ResultSet rs = preparedStmte.executeQuery();
 
-                while (rs.next()) {
+            while (rs.next()) {
 
-                    table.addCell(rs.getString("Nazwa_projektu"));
-                    table.addCell(rs.getString("Head"));
-                    table.addCell(rs.getString("Status"));
-                    table.addCell(rs.getString("Termin"));
-                }
-            } catch (Exception e){
-                throw new MySqlQueryException(e);
+                table.addCell(rs.getString("Nazwa_projektu"));
+                table.addCell(rs.getString("Head"));
+                table.addCell(rs.getString("Status"));
+                table.addCell(rs.getString("Termin"));
             }
             document.add(p1);
             document.add(table);
             document.close();
             System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_heada.pdf ");
         }
-        catch(Exception e) {
+        catch(IOException e) {
             throw new MyIOException(e);
         }
     }

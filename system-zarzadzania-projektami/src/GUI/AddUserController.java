@@ -85,7 +85,7 @@ public class AddUserController implements Initializable {
                         labelRekordIstnieje.setVisible(true);
                         System.out.println("Rekord juz istnieje");
                     }
-            } catch (Exception e){
+            } catch (SQLException e){
                 throw new MySqlQueryException(e);
             }
         }

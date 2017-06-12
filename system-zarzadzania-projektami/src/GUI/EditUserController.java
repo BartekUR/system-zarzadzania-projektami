@@ -71,7 +71,7 @@ public class EditUserController implements Initializable {
                     euNoweHaslo.setText(haslo);
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
     }
@@ -117,7 +117,7 @@ public class EditUserController implements Initializable {
             labelEditUser.setVisible(true);
             System.out.println("Rekord "+id+" został edytowany!");
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
 

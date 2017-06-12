@@ -4,6 +4,7 @@ import Utils.MyIOException;
 import Utils.MySqlCantConnectException;
 import Utils.MySqlQueryException;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -17,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.sql.*;
@@ -96,7 +98,7 @@ public class PracownikGUIController implements Initializable {
                 dp.setProjektyTable_termin(rs.getString("Termin"));
                 dataProjekty2.add(dp);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
 
@@ -128,7 +130,7 @@ public class PracownikGUIController implements Initializable {
             }
             comboBoxProjektPracownika.setItems(options);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
     }
@@ -165,7 +167,7 @@ public class PracownikGUIController implements Initializable {
                 dt.setTaskiTable_termin(rs.getString("t.Termin"));
                 data.add(dt);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
 
@@ -200,7 +202,7 @@ public class PracownikGUIController implements Initializable {
                 idTaskuList.add(rs.getInt("ID_Task"));
             }
             comboBoxIdTask.setItems(idTaskuList);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
     }
@@ -227,7 +229,7 @@ public class PracownikGUIController implements Initializable {
             labelZmianaStatusu.setVisible(true);
             System.out.println("Rekord "+id_tasku+" został edytowany!");
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
         wyswietlTaskiPracownikaProjektuTable();
@@ -238,7 +240,7 @@ public class PracownikGUIController implements Initializable {
      * @throws MyIOException
      */
     @FXML
-    private void generujRaportPracownika() throws MyIOException {
+    private void generujRaportPracownika() throws MyIOException, DocumentException, MySqlQueryException {
 
         try {
 
@@ -279,7 +281,7 @@ public class PracownikGUIController implements Initializable {
                     table.addCell(rs.getString("Status"));
                     table.addCell(rs.getString("Termin"));
                 }
-            } catch (Exception e){
+            } catch (SQLException e){
                 throw new MySqlQueryException(e);
             }
             document.add(p1);
@@ -287,7 +289,7 @@ public class PracownikGUIController implements Initializable {
             document.close();
             System.out.println("Pdf został wygenerowany jego lokalizacja to:./system-zarzadzania-projektami/raport_pracownika.pdf ");
         }
-        catch(Exception e) {
+        catch(IOException e) {
             throw new MyIOException(e);
         }
     }

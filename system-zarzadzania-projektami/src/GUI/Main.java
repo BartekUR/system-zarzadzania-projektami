@@ -12,6 +12,7 @@ import javafx.stage.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 
 /**
@@ -43,7 +44,7 @@ public class Main extends Application {
                     System.out.println("Znaleziono bazę. Korzystam z istniejącej bazy.");
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new MySqlQueryException(e);
         }
         if (!found) {
@@ -52,18 +53,22 @@ public class Main extends Application {
             BufferedReader br;
             try {
                 br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_init.sql"));
-            } catch(Exception e) {
+            } catch(IOException e) {
                 throw new MyIOException(e);
             }
             System.out.println("Nie znaleziono bazy. Inicjalizuję nową bazę...");
             try {
                 Statement stmt = conn.createStatement();
-                while ((line = br.readLine()) != null) {
-                    if (line.length() != 0)
-                        stmt.executeUpdate(line);
+                try {
+                    while ((line = br.readLine()) != null) {
+                        if (line.length() != 0)
+                            stmt.executeUpdate(line);
+                    }
+                } catch(IOException e) {
+                    throw new MyIOException(e);
                 }
                 conn.commit();
-            } catch(Exception e) {
+            } catch(SQLException e) {
                 throw new MySqlQueryException(e);
             }
         }
