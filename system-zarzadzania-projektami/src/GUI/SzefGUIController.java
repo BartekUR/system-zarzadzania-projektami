@@ -297,7 +297,7 @@ public class SzefGUIController implements Initializable {
 
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_test.sql"));
+            br = new BufferedReader(new FileReader("./db_test.sql"));
             System.out.println("Wypełnianie bazy testowymi danymi...");
             Statement stmt = null;
             try {

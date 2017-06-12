@@ -52,7 +52,7 @@ public class Main extends Application {
 
             BufferedReader br;
             try {
-                br = new BufferedReader(new FileReader("./system-zarzadzania-projektami/db_init.sql"));
+                br = new BufferedReader(new FileReader("./db_init.sql"));
             } catch(IOException e) {
                 throw new MyIOException(e);
             }
@@ -60,7 +60,6 @@ public class Main extends Application {
             try {
                 Statement stmt = conn.createStatement();
                 try {
-                    stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS `szp` CHARACTER SET = 'utf8' COLLATE = 'utf8_polish_ci';");
                     while ((line = br.readLine()) != null) {
                         if (line.length() != 0)
                             stmt.executeUpdate(line);
