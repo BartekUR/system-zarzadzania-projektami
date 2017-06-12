@@ -1,12 +1,12 @@
 package GUI;
 
+import Utils.Checks;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.*;
@@ -19,7 +19,7 @@ public class LogowanieController {
 
     private SqlConnect sc = new SqlConnect();
     private Connection conn = sc.getConn();
-    public static String who, what, whoLogin;
+    public static String who, pass, what, whoLogin;
 
     @FXML private TextField log_user;
     @FXML private PasswordField log_pass;
@@ -29,16 +29,28 @@ public class LogowanieController {
      * Metoda obsługująca logowanie
      */
     public void login() throws SQLException, IOException {
-        PreparedStatement pst = conn.prepareStatement("SELECT * FROM `szp`.`pracownicy` WHERE Login=? AND Haslo=?");
+        Checks check = new Checks();
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM `szp`.`pracownicy` WHERE Login=?");
         pst.setString(1, log_user.getText());
-        pst.setString(2, log_pass.getText());
         ResultSet rs = pst.executeQuery();
 
         if (rs.next()) {
             who = rs.getString("Imie") + " " + rs.getString("Nazwisko");
             whoLogin = rs.getString( "Login");
             what = rs.getString("Stanowisko");
-            System.out.println("Zostałeś zalogowany jako " + who + " ze stanowiskiem " + what + ".");
+            pass = rs.getString("Haslo");
+
+            if (check.checkPass(log_pass.getText(), pass))
+                System.out.println("Zostałeś zalogowany jako " + who + " ze stanowiskiem " + what + ".");
+            else {
+                System.out.println(log_pass.getText() + " != " + pass);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Niepoprawne hasło!");
+                alert.setHeaderText(null);
+                alert.setContentText("Spróbuj ponownie wprowadzić hasło.");
+                alert.showAndWait();
+                return;
+            }
 
             Stage oldStage = (Stage) loginButton.getScene().getWindow();
             oldStage.close();

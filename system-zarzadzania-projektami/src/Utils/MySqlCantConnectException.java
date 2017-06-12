@@ -1,4 +1,4 @@
-package GUI;
+package Utils;
 
 /**
  * Klasa obsługująca wyjątki błędów łączenia się z bazą danych

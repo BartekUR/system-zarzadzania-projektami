@@ -1,5 +1,8 @@
 package GUI;
 
+import Utils.MySqlCantConnectException;
+import Utils.MySqlCantDisconnectException;
+
 import java.sql.*;
 
 /**

@@ -1,5 +1,7 @@
 package GUI;
 
+import Utils.MySqlCantConnectException;
+import Utils.MySqlQueryException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

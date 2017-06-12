@@ -1,4 +1,4 @@
-package GUI;
+package Utils;
 
 /**
  * Klasa obsługująca wyjątki błędów odczytu i zapisu

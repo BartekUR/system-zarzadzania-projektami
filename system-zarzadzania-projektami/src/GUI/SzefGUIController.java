@@ -1,5 +1,8 @@
 package GUI;
 
+import Utils.MyIOException;
+import Utils.MySqlCantConnectException;
+import Utils.MySqlQueryException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;

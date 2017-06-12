@@ -1,5 +1,9 @@
 package GUI;
 
+import Utils.MyIOException;
+import Utils.MySqlCantConnectException;
+import Utils.MySqlCantDisconnectException;
+import Utils.MySqlQueryException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +12,6 @@ import javafx.stage.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.sql.*;
 
 /**
